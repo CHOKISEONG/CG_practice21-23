@@ -1,13 +1,19 @@
 #define _CRT_SECURE_NO_WARNINGS 
 
 #include "GLGL.h"
+#include "Camera.h"
 #include "Cube.h"
 
+// 셰이더, 마우스 위치
 GLGL* GLGL::my = nullptr;
 GLuint shaderProgramID;
 float crx, cry;
 float pvx, pvy;
 
+// 카메라
+Camera* cam = nullptr;
+
+// 그릴 도형들
 Cube* test = nullptr;
 
 GLvoid GLGL::ReShape(int w, int h)
@@ -36,6 +42,7 @@ GLvoid GLGL::Draw()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
+	cam->settingCamera(shaderProgramID);
 
 	test->Draw(shaderProgramID);
 
@@ -44,6 +51,7 @@ GLvoid GLGL::Draw()
 
 GLvoid GLGL::Idle()
 {
+	cam->update();
 	glutPostRedisplay();
 }
 
@@ -74,7 +82,7 @@ GLvoid GLGL::Mouse(int button, int state, int x, int y)
 
 GLvoid TimerFunction(int value)
 {
-	std::cout << "elapsed_time: " << glutGet(GLUT_ELAPSED_TIME) << "\n";
+	std::cout << "실행 시간: " << glutGet(GLUT_ELAPSED_TIME) / 1000 << "." << (glutGet(GLUT_ELAPSED_TIME) % 1000) / 100 << "초\n";
 	glutPostRedisplay();
 	glutTimerFunc(100, TimerFunction, 1);
 }
@@ -85,7 +93,7 @@ void GLGL::run(int argc, char** argv)
 	my = this;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowPosition(800, 200);
+	glutInitWindowPosition(400, 200);
 	glutInitWindowSize(my->width, my->height);
 	glutCreateWindow("openGL practice 21");
 
@@ -99,9 +107,13 @@ void GLGL::run(int argc, char** argv)
 		std::cout << "GLEW Initialized\n";
 
 	make_shaderProgram();
+	cam = new Camera();
+	
 
 	test = new Cube();
+
 	//glEnable(GL_CULL_FACE);
+	//glFrontFace(GL_CW);
 	//glEnable(GL_DEPTH_TEST);
 
 	glutDisplayFunc(GLGL::Draw);
