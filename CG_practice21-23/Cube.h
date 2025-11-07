@@ -2,6 +2,12 @@
 
 #include "header.h"
 
+struct Vertex
+{
+	glm::vec3 pos;
+	glm::vec3 color;
+};
+
 class Cube
 {
 public:
@@ -10,8 +16,8 @@ public:
 
 	void Draw(GLuint shaderProgram);
 private:
-	GLuint VAO, VBO_pos, EBO;
+	GLuint VAO = 0, VBO = 0, EBO = 0;
 
-	std::vector<glm::vec3> vPositionList;
+	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;
 };
