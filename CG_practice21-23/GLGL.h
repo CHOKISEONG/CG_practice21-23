@@ -35,5 +35,4 @@ private:
 	GLuint width = 1920, height = 1080;
 	GLchar* vertexSource, * fragmentSource;
 	GLuint vertexShader, fragmentShader;
-	GLuint shaderProgramID;
 };

@@ -1,26 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS 
 
 #include "GLGL.h"
+#include "Cube.h"
 
 GLGL* GLGL::my = nullptr;
-
-const GLfloat triShape[3][3]
-{
-	{ -0.5f, -0.5f, 0.0f },
-	{ 0.5f, -0.5f, 0.0f },
-	{ 0.0f, 0.5f, 0.0f }
-};
-const GLfloat colors[3][3]
-{
-	{ 1.0f, 0.0f, 0.0f },
-	{ 0.0f, 1.0f, 0.0f },
-	{ 0.0f, 0.0f, 1.0f }
-};
-
-GLuint vao, vbo[2];
+GLuint shaderProgramID;
+float crx, cry;
 float pvx, pvy;
 
-void initBuffer();
+Cube* test = nullptr;
+
 GLvoid GLGL::ReShape(int w, int h)
 {
 	my->width = w;
@@ -46,10 +35,9 @@ GLvoid GLGL::Draw()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glUseProgram(my->shaderProgramID);
+	glUseProgram(shaderProgramID);
 
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	test->Draw(shaderProgramID);
 
 	glutSwapBuffers();
 }
@@ -62,7 +50,7 @@ GLvoid GLGL::Idle()
 
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
-
+	
 }
 
 
@@ -112,8 +100,7 @@ void GLGL::run(int argc, char** argv)
 
 	make_shaderProgram();
 
-	initBuffer();
-
+	test = new Cube();
 	//glEnable(GL_CULL_FACE);
 	//glEnable(GL_DEPTH_TEST);
 
@@ -134,16 +121,16 @@ void GLGL::make_shaderProgram()
 	make_vertexShaders();
 	make_fragmentShaders();
 
-	my->shaderProgramID = glCreateProgram();
+	shaderProgramID = glCreateProgram();
 
-	glAttachShader(my->shaderProgramID, my->vertexShader);
-	glAttachShader(my->shaderProgramID, my->fragmentShader);
-	glLinkProgram(my->shaderProgramID);
+	glAttachShader(shaderProgramID, my->vertexShader);
+	glAttachShader(shaderProgramID, my->fragmentShader);
+	glLinkProgram(shaderProgramID);
 
 	glDeleteShader(my->vertexShader);
 	glDeleteShader(my->fragmentShader);
 
-	glUseProgram(my->shaderProgramID);
+	glUseProgram(shaderProgramID);
 }
 void GLGL::make_vertexShaders()
 {
@@ -202,21 +189,3 @@ char* GLGL::filetobuf(const char* file)
 	buf[length] = 0;
 	return buf;
 }
-
-void initBuffer()
-{
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	glGenBuffers(2, vbo);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), triShape, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), colors, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-}
-
