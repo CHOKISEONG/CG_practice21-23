@@ -14,6 +14,10 @@
 
 void make_vertexShaders();
 void make_fragmentShaders();
+void make_shaderProgram();
+char* filetobuf(const char* file);
+void initBuffer();
+
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 GLvoid Idle();
@@ -27,18 +31,32 @@ GLvoid TimerFunction(int value);
 
 GLint windowWidth, windowHeight;
 GLuint shaderProgramID;
-GLuint vertexShader;
-GLuint fragmentShader;
+GLchar* vertexSource, * fragmentSource;
+GLuint vertexShader, fragmentShader;
+
+const GLfloat triShape[3][3]
+{
+	{ -0.5f, -0.5f, 0.0f },
+	{ 0.5f, -0.5f, 0.0f },
+	{ 0.0f, 0.5f, 0.0f }
+};
+const GLfloat colors[3][3]
+{
+	{ 1.0f, 0.0f, 0.0f },
+	{ 0.0f, 1.0f, 0.0f },
+	{ 0.0f, 0.0f, 1.0f }
+};
+
+GLuint vao, vbo[2];
 
 void main(int argc, char** argv)
 {
-	//--- 윈도우 생성하기
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(500, 200);
 	glutInitWindowSize(1920, 1080);
 	glutCreateWindow("practice 21");
-	//--- GLEW 초기화하기
+
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
@@ -50,7 +68,9 @@ void main(int argc, char** argv)
 
 	make_vertexShaders();
 	make_fragmentShaders();
-	shaderProgramID = make_shaderProgram();
+	make_shaderProgram();
+
+	initBuffer();
 
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(Reshape);
@@ -70,7 +90,8 @@ GLvoid drawScene()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
 
-
+	glBindVertexArray(vao);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glutSwapBuffers();
 }
@@ -117,10 +138,9 @@ GLvoid TimerFunction(int value)
 
 void make_vertexShaders()
 {
-	GLchar* vertexSource;
 	vertexSource = filetobuf("vertex.glsl");
-		vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexSource, NULL);
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, (const GLchar**)&vertexSource, 0);
 	glCompileShader(vertexShader);
 	GLint result;
 	GLchar errorLog[512];
@@ -134,10 +154,9 @@ void make_vertexShaders()
 }
 void make_fragmentShaders()
 {
-	GLchar* fragmentSource;
 	fragmentSource = filetobuf("fragment.glsl");
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+	glShaderSource(fragmentShader, 1, (const GLchar**)&fragmentSource, 0);
 	glCompileShader(fragmentShader);
 	GLint result;
 	GLchar errorLog[512];
@@ -145,29 +164,25 @@ void make_fragmentShaders()
 	if (!result)
 	{
 		glGetShaderInfoLog(fragmentShader, 512, NULL, errorLog);
-		std::cerr << "ERROR: frag_shader 컴파일 실패\n" << errorLog << std::endl;
+		std::cerr << "ERROR: fragment shader 컴파일 실패\n" << errorLog << std::endl;
 		return;
 	}
 }
-GLuint make_shaderProgram()
+void make_shaderProgram()
 {
-	GLint result;
-	GLchar* errorLog = NULL;
-	GLuint shaderID;
-	shaderID = glCreateProgram();
-	glAttachShader(shaderID, vertexShader);
-	glAttachShader(shaderID, fragmentShader);
-	glLinkProgram(shaderID);
+	make_vertexShaders();
+	make_fragmentShaders();
+
+	shaderProgramID = glCreateProgram();
+
+	glAttachShader(shaderProgramID, vertexShader);
+	glAttachShader(shaderProgramID, fragmentShader);
+	glLinkProgram(shaderProgramID);
+
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-	glGetProgramiv(shaderID, GL_LINK_STATUS, &result);
-	if (!result) {
-		glGetProgramInfoLog(shaderID, 512, NULL, errorLog);
-		std::cerr << "ERROR: shader program 연결 실패\n" << errorLog << std::endl;
-		return false;
-	}
-	glUseProgram(shaderID);
-	return shaderID;
+
+	glUseProgram(shaderProgramID);
 }
 char* filetobuf(const char* file)
 {
@@ -185,4 +200,21 @@ char* filetobuf(const char* file)
 	fclose(fptr);
 	buf[length] = 0;
 	return buf;
+}
+
+void initBuffer()
+{
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glGenBuffers(2, vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), triShape, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), colors, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
 }
