@@ -18,7 +18,6 @@ public:
 	static void Idle();
 	static void Mouse(int button, int state, int x, int y);
 	static void Keyboard(unsigned char key, int x, int y);
-	static void KeyboardUp(unsigned char key, int x, int y);
 	static void SpecialKeyboard(int key, int x, int y);
 	
 

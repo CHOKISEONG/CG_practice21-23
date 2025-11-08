@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <random>
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>

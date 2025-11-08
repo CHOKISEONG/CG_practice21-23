@@ -72,6 +72,17 @@ Cube::Cube(float zPos, float rad)
 	initBuffer();
 }
 
+const std::vector<glm::vec3> Cube::getPos()
+{
+	std::vector<glm::vec3> pos;
+	for (int i{}; i < vertices.size(); ++i)
+	{
+		pos.push_back(vertices[i].pos);
+	}
+	
+	return pos;
+}
+
 void Cube::initBuffer()
 {
 	glGenVertexArrays(1, &VAO);
@@ -107,6 +118,10 @@ void Cube::Draw(GLuint shaderProgram) {
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
 
+	glm::mat4 model = glm::mat4(1.0f);
+	GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
@@ -125,7 +140,7 @@ void Cube::move(glm::vec3 v)
 
 void Cube::rotate(float dx, float dy)
 {
-	const float rad = (dx > 0) ? -0.5f : 0.5f;
+	const float rad = (dx > 0) ? -0.1f : 0.1f;
 	if (rotateAmount >= 60.0f && rad > 0.0f) return;
 	if (rotateAmount <= -60.0f && rad < 0.0f) return;
 

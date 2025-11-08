@@ -3,6 +3,7 @@
 #include "GLGL.h"
 #include "Camera.h"
 #include "Cube.h"
+#include "Ball.h"
 
 // 셰이더, 마우스 위치
 GLGL* GLGL::my = nullptr;
@@ -16,6 +17,8 @@ Camera* cam = nullptr;
 // 그릴 도형들
 Cube* cube = nullptr;
 std::vector<Cube*> smallCube;
+
+std::vector<Ball*> balls;
 
 void make_objects()
 {
@@ -67,36 +70,64 @@ GLvoid GLGL::Draw()
 	cam->settingCamera(shaderProgramID);
 
 	cube->Draw(shaderProgramID);
-
 	for (const auto& sc : smallCube)
 		sc->Draw(shaderProgramID);
+	for (const auto& b : balls)
+		b->draw(shaderProgramID, DrawType::DRAW_WIRE);
 
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
 	glEnable(GL_DEPTH_TEST);
 	glutSwapBuffers();
 }
-
 GLvoid GLGL::Idle()
 {
-	
+	for (auto& sc : smallCube)
+		sc->handlePhysics(cube);
+	for (auto& b : balls)
+		b->update(cube->getPos());
+	cam->update();
 
 	glutPostRedisplay();
 }
-
-
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
-	
+	static float isMoving = false;
+	static double ballSize = 0.0;
+	switch (key)
+	{
+	case 'z':
+		cam->move(0.0f, 0.0f, 1.0f);
+		break;
+	case 'Z':
+		cam->move(0.0f, 0.0f, -1.0f);
+		break;
+	case 'y':
+		if (!isMoving) isMoving = true;
+		else
+		{
+			cam->rotateStart(0.1f);
+		}
+		break;
+	case 'Y':
+		if (!isMoving) isMoving = true;
+		else
+		{
+			cam->rotateStart(-0.1f);
+		}
+		break;
+	case 'B':
+		
+		if (balls.size() < 5)
+		{
+			ballSize += 0.02;
+			balls.push_back(new Ball(ballSize, ballSize, ballSize, ballSize));
+		}
+		break;
+	default:
+		break;
+	}
 }
-
-
-GLvoid GLGL::KeyboardUp(unsigned char key, int x, int y)
-{
-
-}
-
-
 GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 {
 	switch (key)
@@ -120,23 +151,10 @@ GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 
 	glutPostRedisplay();
 }
-
-
 GLvoid GLGL::Mouse(int button, int state, int x, int y)
 {
 
 }
-
-
-GLvoid TimerFunction(int value)
-{
-	for (auto& sc : smallCube)
-		sc->handlePhysics(cube);
-
-	glutPostRedisplay();
-	glutTimerFunc(10, TimerFunction, 1);
-}
-
 
 void GLGL::run(int argc, char** argv)
 {
@@ -166,10 +184,8 @@ void GLGL::run(int argc, char** argv)
 	glutMotionFunc(GLGL::Motion);
 	glutPassiveMotionFunc(GLGL::PassiveMotion);
 	glutKeyboardFunc(GLGL::Keyboard);
-	glutKeyboardUpFunc(GLGL::KeyboardUp);
 	glutSpecialFunc(GLGL::SpecialKeyboard);
 	glutIdleFunc(GLGL::Idle);
-	glutTimerFunc(100, TimerFunction, 1);
 	glutMainLoop();
 }
 void GLGL::make_shaderProgram()

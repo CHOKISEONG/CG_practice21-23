@@ -17,6 +17,8 @@ public:
 	// 실습21 작은 큐브 생성을 위한 생성자
 	Cube(float zPos, float rad);
 
+	const std::vector<glm::vec3> getPos();
+
 	void initBuffer();
 	void updateVBO();
 	void Draw(GLuint shaderProgram);
