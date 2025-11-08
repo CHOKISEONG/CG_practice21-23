@@ -7,8 +7,12 @@ Ball::Ball(GLdouble rad, float x, float y, float z)
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<float> zeroToOne(0.0f,1.0f);
-	moveDir.x = zeroToOne(gen);
-	moveDir.y = zeroToOne(gen);
+	moveDir.x = zeroToOne(gen) - 0.5f;
+	moveDir.y = zeroToOne(gen) - 0.5f;
+
+	colors[0] = zeroToOne(gen);
+	colors[1] = zeroToOne(gen);
+	colors[2] = zeroToOne(gen);
 }
 
 Ball::~Ball()
@@ -43,18 +47,10 @@ void Ball::update(const std::vector<glm::vec3> rectPoints)
 	pos.y += moveDir.y / 40;
 
 	if (isBallInPolygon(rectPoints)) {
-		// 사각형 중심 계산
-		glm::vec2 center(0.0f, 0.0f);
-		for (const auto& pt : rectPoints) {
-			center += glm::vec2(pt.x, pt.y);
-		}
-		center /= static_cast<float>(rectPoints.size());
-
-		// 공에서 중심 방향 벡터 계산
-		glm::vec2 toCenter = center - glm::vec2(pos.x, pos.y);
-		if (glm::length(toCenter) > 0.0001f) { // 0 division 방지
+		glm::vec2 toCenter = -glm::vec2(pos.x, pos.y);
+		if (glm::length(toCenter) > 0.0001f) {
 			glm::vec2 dir = glm::normalize(toCenter);
-			moveDir.x = dir.x * glm::length(moveDir); // 기존 속도 유지
+			moveDir.x = dir.x * glm::length(moveDir);
 			moveDir.y = dir.y * glm::length(moveDir);
 		}
 	}
@@ -76,6 +72,7 @@ void Ball::draw(GLuint shaderProgram, DrawType drawType) const
 	glPushMatrix();
 
 	glTranslatef(pos.x, pos.y, pos.z);
+	glColor3f(colors[0], colors[1], colors[2]);
 	gluSphere(obj, radius, slices, stacks);
 
 	glPopMatrix();

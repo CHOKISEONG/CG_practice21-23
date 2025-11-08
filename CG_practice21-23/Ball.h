@@ -22,6 +22,8 @@ class Ball
     int slices = 20;
     int stacks = 20;
 
+    GLfloat colors[3];
+
     glm::vec3 moveDir;
 public:
     Ball(GLdouble rad = 1.0, float x = 0.0f, float y = 0.0f, float z = 0.0f);
