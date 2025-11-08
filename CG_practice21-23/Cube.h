@@ -32,6 +32,7 @@ public:
 	void adaptC(Cube* c);
 
 	void baseOpen();
+	bool getBaseOpened() { return isBaseOpened; }
 	void baseOpenAnimation();
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;

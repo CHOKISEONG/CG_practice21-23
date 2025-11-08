@@ -46,8 +46,13 @@ GLvoid GLGL::PassiveMotion(int x, int y)
 	float dy = cry - pvy;
 
 	cube->rotate(dx, dy);
-	for (auto& sc : smallCube)
-		sc->rotate(dx, dy);
+
+	if (!cube->getBaseOpened())
+	{
+		for (auto& sc : smallCube)
+			sc->rotate(dx, dy);
+	}
+	
 
 	pvx = crx;
 	pvy = cry;

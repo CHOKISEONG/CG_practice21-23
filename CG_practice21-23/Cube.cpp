@@ -261,6 +261,7 @@ void Cube::handlePhysics(Cube* c)
 	if (c->isBaseOpened)
 	{
 		move(glm::vec3(0.0f, -0.01f, 0.0f));
+		updateVBO();
 		return;
 	}
 
