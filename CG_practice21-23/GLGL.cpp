@@ -24,15 +24,21 @@ GLvoid GLGL::ReShape(int w, int h)
 }
 GLvoid GLGL::PassiveMotion(int x, int y)
 {
-	pvx = (2.0f * x - my->width) / my->width;
-	pvy = -(2.0f * y - my->height) / my->height;
+	crx = (2.0f * x - my->width) / my->width;
+	cry = -(2.0f * y - my->height) / my->height;
+
+	float dx = crx - pvx;
+	float dy = cry - pvy;
+
+	cube->rotate(dx, dy);
+
+	pvx = crx;
+	pvy = cry;
 }
 GLvoid GLGL::Motion(int x, int y)
 {
 	crx = (2.0f * x - my->width) / my->width;
 	cry = -(2.0f * y - my->height) / my->height;
-
-	
 
 	pvx = crx;
 	pvy = cry;

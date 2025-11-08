@@ -1,37 +1,45 @@
 #include "Cube.h"
 
-Cube::Cube(int practiceNum)
+Cube::Cube(int practiceNum, int type)
 {
 	if (practiceNum == 21)
 	{
-		float length = 1.0f;
-
-		// Á¤»ç°¢Çü Å×½ºÆ®
-		vertices =
+		// °øÀ» Æ¢±æ °ø°£
+		if (type == 0)
 		{
-			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
-			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
-			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
-			{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
-			{ {  length,  length, -length }, {1.0f, 1.0f, 1.0f} },
-			{ {  length, -length, -length }, {1.0f, 1.0f, 1.0f} },
-			{ { -length, -length, -length }, {1.0f, 1.0f, 1.0f} },
-			{ { -length,  length, -length }, {1.0f, 1.0f, 1.0f} },
-		};
-		index =
+			float length = 1.0f;
+
+			// Á¤»ç°¢Çü Å×½ºÆ®
+			vertices =
+			{
+				{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
+				{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
+				{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
+				{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
+				{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+				{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
+				{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
+				{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+			};
+			index =
+			{
+				// ¿À¸¥ÂÊ¸é
+				0, 1, 5, 0, 5, 4,
+				// ¿ÞÂÊ¸é
+				3, 6, 2, 3, 7, 6,
+				// À­¸é
+				0, 7, 3, 0, 4, 7,
+				// ¾Æ·§¸é
+				1, 2, 6, 1, 6, 5,
+				// µÞ¸é
+				4, 5, 6, 4, 6, 7,
+			};
+		}
+		// ¹Ù´Ú¿¡ ´ê¾ÆÀÖ´Â À°¸éÃ¼
+		else if (type == 1)
 		{
 
-			// ¿À¸¥ÂÊ¸é
-			0, 1, 5, 0, 5, 4,
-			// ¿ÞÂÊ¸é
-			3, 6, 2, 3, 7, 6,
-			// À­¸é
-			0, 7, 3, 0, 4, 7,
-			// ¾Æ·§¸é
-			1, 2, 6, 1, 6, 5,
-			// µÞ¸é
-			4, 5, 6, 4, 6, 7,
-		};
+		}
 	}
 
 	initBuffer();
@@ -62,6 +70,12 @@ void Cube::initBuffer()
 	glBindVertexArray(0);
 }
 
+void Cube::updateVBO()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+}
+
 void Cube::Draw(GLuint shaderProgram) {
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
@@ -69,6 +83,26 @@ void Cube::Draw(GLuint shaderProgram) {
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+}
 
-	
+void Cube::rotate(float dx, float dy)
+{
+	const float rad = (dx > 0) ? -1.0f : 1.0f;
+	if (rotateAmount >= 60.0f && rad > 0.0f) return;
+	if (rotateAmount <= -60.0f && rad < 0.0f) return;
+
+	for (int i{}; i < vertices.size(); ++i)
+	{
+		glm::vec4 pos(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z, 1.0f);
+		glm::mat4 rotMatrix = glm::mat4(1.0f);
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), glm::vec3(0.0f, 0.0f, 1.0f));
+		pos = rotMatrix * pos;
+		vertices[i].pos.x = pos.x;
+		vertices[i].pos.y = pos.y;
+		vertices[i].pos.z = pos.z;
+	}
+
+	rotateAmount += rad;
+
+	updateVBO();
 }
