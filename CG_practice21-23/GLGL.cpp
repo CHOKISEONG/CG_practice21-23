@@ -82,6 +82,7 @@ GLvoid GLGL::Draw()
 }
 GLvoid GLGL::Idle()
 {
+	cube->baseOpenAnimation();
 	for (auto& sc : smallCube)
 		sc->handlePhysics(cube);
 	for (auto& b : balls)
@@ -153,7 +154,12 @@ GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 }
 GLvoid GLGL::Mouse(int button, int state, int x, int y)
 {
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+	{
+		std::cout << "바닥이 열린다.\n";
 
+		cube->baseOpen();
+	}
 }
 
 void GLGL::run(int argc, char** argv)

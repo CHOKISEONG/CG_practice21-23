@@ -17,6 +17,8 @@ Cube::Cube(int practiceNum)
 			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
 			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
 			{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
+			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
 		};
 		orgVertices = vertices;
 		index =
@@ -193,9 +195,74 @@ void Cube::adaptC(Cube* c)
 	if (fabs(avgDist) > threshold)
 		move(glm::vec3(-normal.x * avgDist, -normal.y * avgDist, 0.0f));
 }
+
+void Cube::baseOpen()
+{
+	isBaseOpened = true;
+
+	index =
+	{
+		// ¿À¸¥ÂÊ¸é
+		0, 1, 5, 0, 5, 4,
+		// ¿ÞÂÊ¸é
+		3, 6, 2, 3, 7, 6,
+		// À­¸é
+		0, 7, 3, 0, 4, 7,
+		// ¾Æ·§¸é
+		8, 9, 6, 8, 6, 5,
+		// µÞ¸é
+		4, 5, 6, 4, 6, 7,
+	};
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW);
+	glBindVertexArray(0);
+}
+
+void Cube::baseOpenAnimation()
+{
+	if (!isBaseOpened) return;
+	static float angleAmount = 0.0f;
+	if (angleAmount <= -1.5f) return;
+
+	glm::vec3 A = vertices[5].pos; 
+	glm::vec3 B = vertices[6].pos; 
+	glm::vec3 axis = glm::normalize(B - A); 
+	constexpr float angle = glm::radians(-1.0f); 
+
+	glm::vec4 pos(vertices[8].pos, 1.0f);
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, A);         
+	model = glm::rotate(model, angle, axis);  
+	model = glm::translate(model, -A);        
+	pos = model * pos;
+
+	vertices[8].pos = glm::vec3(pos);
+
+	pos = glm::vec4(vertices[9].pos, 1.0f);
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, A);
+	model = glm::rotate(model, angle, axis);
+	model = glm::translate(model, -A);
+	pos = model * pos;
+
+	vertices[9].pos = glm::vec3(pos);
+
+	angleAmount += angle;
+	updateVBO();
+}
+
 void Cube::handlePhysics(Cube* c)
 {
 	if (!isThisHavePhysics) return;
+
+	if (c->isBaseOpened)
+	{
+		move(glm::vec3(0.0f, -0.01f, 0.0f));
+		return;
+	}
 
 	adaptC(c);
 

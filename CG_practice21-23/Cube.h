@@ -30,6 +30,9 @@ public:
 	void handlePhysics(Cube* c);
 
 	void adaptC(Cube* c);
+
+	void baseOpen();
+	void baseOpenAnimation();
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 
@@ -41,4 +44,5 @@ private:
 	float rotateAmount = 0.0f;
 
 	bool isThisHavePhysics = false;
+	bool isBaseOpened = false;
 };
