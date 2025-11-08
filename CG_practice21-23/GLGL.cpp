@@ -15,6 +15,18 @@ Camera* cam = nullptr;
 
 // 그릴 도형들
 Cube* cube = nullptr;
+std::vector<Cube*> smallCube;
+
+void make_objects()
+{
+	cam = new Camera();
+
+	cube = new Cube(21);
+
+	smallCube.push_back(new Cube(0.8f, 0.1f));
+	smallCube.push_back(new Cube(0.5f, 0.2f));
+	smallCube.push_back(new Cube(-0.1f, 0.4f));
+}
 
 GLvoid GLGL::ReShape(int w, int h)
 {
@@ -31,6 +43,8 @@ GLvoid GLGL::PassiveMotion(int x, int y)
 	float dy = cry - pvy;
 
 	cube->rotate(dx, dy);
+	for (auto& sc : smallCube)
+		sc->rotate(dx, dy);
 
 	pvx = crx;
 	pvy = cry;
@@ -54,6 +68,9 @@ GLvoid GLGL::Draw()
 
 	cube->Draw(shaderProgramID);
 
+	for (const auto& sc : smallCube)
+		sc->Draw(shaderProgramID);
+
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
 	glEnable(GL_DEPTH_TEST);
@@ -62,7 +79,8 @@ GLvoid GLGL::Draw()
 
 GLvoid GLGL::Idle()
 {
-	cam->update();
+	
+
 	glutPostRedisplay();
 }
 
@@ -112,9 +130,11 @@ GLvoid GLGL::Mouse(int button, int state, int x, int y)
 
 GLvoid TimerFunction(int value)
 {
-	std::cout << "실행 시간: " << glutGet(GLUT_ELAPSED_TIME) / 1000 << "." << (glutGet(GLUT_ELAPSED_TIME) % 1000) / 100 << "초\n";
+	for (auto& sc : smallCube)
+		sc->handlePhysics(cube);
+
 	glutPostRedisplay();
-	glutTimerFunc(100, TimerFunction, 1);
+	glutTimerFunc(10, TimerFunction, 1);
 }
 
 
@@ -138,12 +158,7 @@ void GLGL::run(int argc, char** argv)
 
 	make_shaderProgram();
 	
-
-	cam = new Camera();
-	
-
-	cube = new Cube(21);
-	
+	make_objects();
 
 	glutDisplayFunc(GLGL::Draw);
 	glutReshapeFunc(GLGL::ReShape);

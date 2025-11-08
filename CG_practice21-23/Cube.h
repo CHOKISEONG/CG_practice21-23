@@ -12,18 +12,31 @@ class Cube
 {
 public:
 	// 실습 번호마다 맞게 생성을 위해
-	Cube(int practiceNum, int type = 0);
+	Cube(int practiceNum);
+
+	// 실습21 작은 큐브 생성을 위한 생성자
+	Cube(float zPos, float rad);
+
 	void initBuffer();
 	void updateVBO();
 	void Draw(GLuint shaderProgram);
 
+	void move(glm::vec3 v);
 	void rotate(float dx = 0.0f, float dy = 0.0f);
+
+	// 물리 다루기 연습
+	void handlePhysics(Cube* c);
+
+	void adaptC(Cube* c);
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 
+	std::vector<Vertex> orgVertices;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;
-	float midPoint[3] = { 0.0f,0.0f };
+	glm::vec3 bottomPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	float rotateAmount = 0.0f;
+
+	bool isThisHavePhysics = false;
 };

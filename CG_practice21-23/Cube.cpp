@@ -1,51 +1,78 @@
 #include "Cube.h"
 
-Cube::Cube(int practiceNum, int type)
+Cube::Cube(int practiceNum)
 {
 	if (practiceNum == 21)
 	{
-		// °øÀ» Æ¢±æ °ø°£
-		if (type == 0)
-		{
-			float length = 1.0f;
+		float length = 1.0f;
 
-			// Á¤»ç°¢Çü Å×½ºÆ®
-			vertices =
-			{
-				{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
-				{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
-				{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
-				{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
-				{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f} },
-				{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
-				{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
-				{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
-			};
-			index =
-			{
-				// ¿À¸¥ÂÊ¸é
-				0, 1, 5, 0, 5, 4,
-				// ¿ÞÂÊ¸é
-				3, 6, 2, 3, 7, 6,
-				// À­¸é
-				0, 7, 3, 0, 4, 7,
-				// ¾Æ·§¸é
-				1, 2, 6, 1, 6, 5,
-				// µÞ¸é
-				4, 5, 6, 4, 6, 7,
-			};
-		}
-		// ¹Ù´Ú¿¡ ´ê¾ÆÀÖ´Â À°¸éÃ¼
-		else if (type == 1)
+		// Á¤»ç°¢Çü Å×½ºÆ®
+		vertices =
 		{
+			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
+			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
+			{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
+			{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+		};
+		orgVertices = vertices;
+		index =
+		{
+			// ¿À¸¥ÂÊ¸é
+			0, 1, 5, 0, 5, 4,
+			// ¿ÞÂÊ¸é
+			3, 6, 2, 3, 7, 6,
+			// À­¸é
+			0, 7, 3, 0, 4, 7,
+			// ¾Æ·§¸é
+			1, 2, 6, 1, 6, 5,
+			// µÞ¸é
+			4, 5, 6, 4, 6, 7,
+		};
 
-		}
+		bottomPos.y = -length;
 	}
 
 	initBuffer();
 }
 
-void Cube::initBuffer() 
+Cube::Cube(float zPos, float rad)
+{
+	const float color = static_cast<float>(rand()) / RAND_MAX;
+
+	vertices =
+	{
+		{ {  rad,  rad, rad }, {color, color, color} },
+		{ {  rad, -rad, rad }, {color, color, color} },
+		{ { -rad, -rad, rad }, {color, color, color} },
+		{ { -rad,  rad, rad }, {color, color, color} },
+		{ {  rad,  rad, -rad },	{color, color, color} },
+		{ {  rad, -rad, -rad },	{color, color, color} },
+		{ { -rad, -rad, -rad },	{color, color, color} },
+		{ { -rad,  rad, -rad },	{color, color, color} },
+	};
+	orgVertices = vertices;
+	index =
+	{
+		0, 1, 5, 0, 5, 4,
+		3, 6, 2, 3, 7, 6,
+		0, 7, 3, 0, 4, 7,
+		1, 2, 6, 1, 6, 5,
+		4, 5, 6, 4, 6, 7,
+		0, 1, 2, 0, 2, 3
+	};
+	bottomPos.y = -rad;
+
+	isThisHavePhysics = true;
+	move(glm::vec3(0.0f, -1.0f + rad, zPos));
+
+	initBuffer();
+}
+
+void Cube::initBuffer()
 {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -85,9 +112,20 @@ void Cube::Draw(GLuint shaderProgram) {
 	glBindVertexArray(0);
 }
 
+void Cube::move(glm::vec3 v)
+{
+	for (auto& i : vertices)
+	{
+		i.pos += v;
+	}
+	bottomPos += v;
+
+	updateVBO();
+}
+
 void Cube::rotate(float dx, float dy)
 {
-	const float rad = (dx > 0) ? -1.0f : 1.0f;
+	const float rad = (dx > 0) ? -0.5f : 0.5f;
 	if (rotateAmount >= 60.0f && rad > 0.0f) return;
 	if (rotateAmount <= -60.0f && rad < 0.0f) return;
 
@@ -102,7 +140,70 @@ void Cube::rotate(float dx, float dy)
 		vertices[i].pos.z = pos.z;
 	}
 
+	glm::vec4 pos(bottomPos.x, bottomPos.y, bottomPos.z, 1.0f);
+	glm::mat4 rotMatrix = glm::mat4(1.0f);
+	rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), glm::vec3(0.0f, 0.0f, 1.0f));
+	pos = rotMatrix * pos;
+	bottomPos.x = pos.x;
+	bottomPos.y = pos.y;
+	bottomPos.z = pos.z;
+
 	rotateAmount += rad;
 
+	updateVBO();
+}
+
+void Cube::adaptC(Cube* c)
+{
+	glm::vec2 a(c->vertices[1].pos.x, c->vertices[1].pos.y);
+	glm::vec2 b(c->vertices[2].pos.x, c->vertices[2].pos.y);
+
+	glm::vec2 point1(vertices[1].pos.x, vertices[1].pos.y);
+	glm::vec2 point2(vertices[2].pos.x, vertices[2].pos.y);
+
+	glm::vec2 ab = b - a;
+	glm::vec2 abNorm = glm::normalize(ab);
+	glm::vec2 normal(-abNorm.y, abNorm.x);
+
+	float dist1 = glm::dot(point1 - a, normal);
+	float dist2 = glm::dot(point2 - a, normal);
+
+	float avgDist = (dist1 + dist2) / 2.0f;
+	const float threshold = 1e-3f;
+
+	if (fabs(avgDist) > threshold)
+		move(glm::vec3(-normal.x * avgDist, -normal.y * avgDist, 0.0f));
+}
+void Cube::handlePhysics(Cube* c)
+{
+	if (!isThisHavePhysics) return;
+
+	adaptC(c);
+
+	glm::vec2 a(c->vertices[1].pos.x, c->vertices[1].pos.y);
+	glm::vec2 b(c->vertices[2].pos.x, c->vertices[2].pos.y);
+	glm::vec2 ab = b - a;
+	glm::vec2 abNorm = glm::normalize(ab);
+
+	glm::vec2 gravityVec(0.0f, -0.02f);
+	float slideAmount = glm::dot(gravityVec, abNorm);
+
+	glm::vec2 moveVec = abNorm * slideAmount;
+
+	glm::vec2 p1(vertices[1].pos.x, vertices[1].pos.y);
+	glm::vec2 p2(vertices[2].pos.x, vertices[2].pos.y);
+
+	glm::vec2 p1Next = p1 + moveVec;
+	glm::vec2 p2Next = p2 + moveVec;
+
+	float ab2 = glm::dot(ab, ab);
+	float t1 = glm::dot(p1Next - a, ab) / ab2;
+	float t2 = glm::dot(p2Next - a, ab) / ab2;
+
+	if (t1 >= 0.0f && t1 <= 1.0f && t2 >= 0.0f && t2 <= 1.0f)
+	{
+		move(glm::vec3(moveVec.x, moveVec.y, 0.0f));
+	}
+	
 	updateVBO();
 }
