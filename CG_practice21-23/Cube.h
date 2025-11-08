@@ -11,7 +11,8 @@ struct Vertex
 class Cube
 {
 public:
-	Cube();
+	// 실습 번호마다 맞게 생성을 위해
+	Cube(int practiceNum);
 	void initBuffer();
 
 	void Draw(GLuint shaderProgram);

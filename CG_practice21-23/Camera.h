@@ -16,8 +16,8 @@ private:
 	float zNear = 0.1f;		// 가까운 클리핑 평면까지의 거리
 	float zFar = 100.0f;	// 먼	 클리핑 평면까지의 거리
 
-	bool isRotating = true;
-	bool isRotateSelf = true;
+	bool isRotating = false;
+	bool isRotateSelf = false;
 	float rotateSpeed = 0.5f;
 public:
 	void settingCamera(GLuint shaderProgram);

@@ -14,7 +14,7 @@ float pvx, pvy;
 Camera* cam = nullptr;
 
 // 그릴 도형들
-Cube* test = nullptr;
+Cube* cube = nullptr;
 
 GLvoid GLGL::ReShape(int w, int h)
 {
@@ -24,13 +24,15 @@ GLvoid GLGL::ReShape(int w, int h)
 }
 GLvoid GLGL::PassiveMotion(int x, int y)
 {
-	float pvx = (2.0f * x - my->width) / my->width;
-	float pvy = -(2.0f * y - my->height) / my->height;
+	pvx = (2.0f * x - my->width) / my->width;
+	pvy = -(2.0f * y - my->height) / my->height;
 }
 GLvoid GLGL::Motion(int x, int y)
 {
-	float crx = (2.0f * x - my->width) / my->width;
-	float cry = -(2.0f * y - my->height) / my->height;
+	crx = (2.0f * x - my->width) / my->width;
+	cry = -(2.0f * y - my->height) / my->height;
+
+	
 
 	pvx = crx;
 	pvy = cry;
@@ -40,12 +42,15 @@ GLvoid GLGL::Motion(int x, int y)
 GLvoid GLGL::Draw()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
 	cam->settingCamera(shaderProgramID);
 
-	test->Draw(shaderProgramID);
+	cube->Draw(shaderProgramID);
 
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+	glEnable(GL_DEPTH_TEST);
 	glutSwapBuffers();
 }
 
@@ -70,7 +75,26 @@ GLvoid GLGL::KeyboardUp(unsigned char key, int x, int y)
 
 GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 {
+	switch (key)
+	{
+	case GLUT_KEY_LEFT:
+		cam->move(-1.0f,0.0f);
+		break;
+	case GLUT_KEY_RIGHT:
+		cam->move(1.0f, 0.0f);
+		break;
+	case GLUT_KEY_UP:
+		cam->move(0.0f, 1.0f);
+		break;
+	case GLUT_KEY_DOWN:
+		cam->move(0.0f, -1.0f);
+		break;
+	
+	default:
+		break;
+	}
 
+	glutPostRedisplay();
 }
 
 
@@ -107,14 +131,13 @@ void GLGL::run(int argc, char** argv)
 		std::cout << "GLEW Initialized\n";
 
 	make_shaderProgram();
+	
+
 	cam = new Camera();
 	
 
-	test = new Cube();
-
-	//glEnable(GL_CULL_FACE);
-	//glFrontFace(GL_CW);
-	//glEnable(GL_DEPTH_TEST);
+	cube = new Cube(21);
+	
 
 	glutDisplayFunc(GLGL::Draw);
 	glutReshapeFunc(GLGL::ReShape);

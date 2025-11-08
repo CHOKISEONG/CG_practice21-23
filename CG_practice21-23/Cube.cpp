@@ -1,17 +1,38 @@
 #include "Cube.h"
 
-Cube::Cube()
+Cube::Cube(int practiceNum)
 {
-	float length = 0.5f;
+	if (practiceNum == 21)
+	{
+		float length = 1.0f;
 
-	// 정사각형 테스트
-	vertices = {
-		{ {  length,  length, 0.0f }, {1.0f, 0.0f, 0.0f} },
-		{ {  length, -length, 0.0f }, {0.0f, 1.0f, 0.0f} },
-		{ { -length, -length, 0.0f }, {0.0f, 0.0f, 1.0f} },
-		{ { -length,  length, 0.0f }, {1.0f, 1.0f, 0.0f} } 
-	};
-	index = { 0, 1, 3, 1, 2, 3 };
+		// 정사각형 테스트
+		vertices =
+		{
+			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
+			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
+			{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
+			{ {  length,  length, -length }, {1.0f, 1.0f, 1.0f} },
+			{ {  length, -length, -length }, {1.0f, 1.0f, 1.0f} },
+			{ { -length, -length, -length }, {1.0f, 1.0f, 1.0f} },
+			{ { -length,  length, -length }, {1.0f, 1.0f, 1.0f} },
+		};
+		index =
+		{
+
+			// 오른쪽면
+			0, 1, 5, 0, 5, 4,
+			// 왼쪽면
+			3, 6, 2, 3, 7, 6,
+			// 윗면
+			0, 7, 3, 0, 4, 7,
+			// 아랫면
+			1, 2, 6, 1, 6, 5,
+			// 뒷면
+			4, 5, 6, 4, 6, 7,
+		};
+	}
 
 	initBuffer();
 }
