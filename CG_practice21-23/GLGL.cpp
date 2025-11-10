@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Ball.h"
+#include "Robot.h"
 
 // 셰이더, 마우스 위치
 GLGL* GLGL::my = nullptr;
@@ -17,12 +18,15 @@ Camera* cam = nullptr;
 // 그릴 도형들
 Cube* cube = nullptr;
 std::vector<Cube*> smallCube;
+Robot* robot;
 
 void make_objects()
 {
 	cam = new Camera();
 
 	cube = new Cube(22);
+
+	robot = new Robot();
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -79,6 +83,7 @@ GLvoid GLGL::Draw()
 	cube->Draw(shaderProgramID);
 	for (const auto& sc : smallCube)
 		sc->Draw(shaderProgramID);
+	robot->Draw(shaderProgramID);
 
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);

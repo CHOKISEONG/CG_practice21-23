@@ -1,19 +1,18 @@
 #pragma once
 
 #include "header.h"
-
-struct Vertex
-{
-	glm::vec3 pos;
-	glm::vec3 color;
-};
+#include "Cube.h"
 
 class Robot
 {
 public:
 	Robot();
+	void initBuffer();
+	void updateVBO();
 
+	void move(glm::vec3 v);
 
+	void Draw(GLuint shaderProgram);
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 
