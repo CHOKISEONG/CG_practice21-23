@@ -120,11 +120,23 @@ void Robot::update()
 	// 그다음은 점프하는거 처리
 	jump();
 
-	// 마지막은 이동
-	for (auto& i : vertices)
+	// 마지막은 이동하기
+	// 1. tmp를 먼저 이동시켜보고
+	std::vector<Vertex> tmp = vertices;
+	for (auto& i : tmp)
 	{
 		i.pos += moveDir;
 	}
+	// 2. 벽이랑 충돌 안하는 이동일 때만 원본인 vertices를 이동하게 함
+	if (tmp[26].pos.x >= -1.0f && tmp[32].pos.x <= 1.0f
+		&& tmp[0].pos.z <= 1.0f && tmp[4].pos.z >= -1.0f)
+	{
+		for (auto& i : vertices)
+		{
+			i.pos += moveDir;
+		}
+	}
+	
 
 	updateVBO();
 }
