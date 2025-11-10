@@ -24,7 +24,11 @@ public:
 
 	void update();
 	void changeWidthHeight(float w, float h) { width = w, height = h; }
-	void move(float x, float y, float z = 0.0f) { pos.x += x; pos.y += y; pos.z += z; }
+	void move(float x, float y, float z = 0.0f)
+	{ 
+		pos += glm::vec3(x, y, z);
+		direction += glm::vec3(x, y, z);
+	}
 
 	// rotateX가 true면 x축회전, false면 y축회전으로 함
 	void rotate(float theta, bool rotateX);

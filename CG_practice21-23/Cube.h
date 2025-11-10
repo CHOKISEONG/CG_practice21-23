@@ -14,8 +14,8 @@ public:
 	// 실습 번호마다 맞게 생성을 위해
 	Cube(int practiceNum);
 
-	// 실습21 작은 큐브 생성을 위한 생성자
-	Cube(float zPos, float rad);
+	// 실습22 장애물큐브 생성을 위한 생성자
+	Cube(glm::vec2 pos, float rad);
 
 	const std::vector<glm::vec3> getPos();
 
@@ -31,8 +31,8 @@ public:
 
 	void adaptC(Cube* c);
 
-	void baseOpen();
-	bool getBaseOpened() { return isBaseOpened; }
+	void CubeOpen();
+	bool getBaseOpened() { return isOpened; }
 	void baseOpenAnimation();
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
@@ -45,5 +45,5 @@ private:
 	float rotateAmount = 0.0f;
 
 	bool isThisHavePhysics = false;
-	bool isBaseOpened = false;
+	bool isOpened = false;
 };

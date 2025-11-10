@@ -16,9 +16,10 @@ public:
 	static void Motion(int x, int y);
 	static void PassiveMotion(int x, int y);
 	static void Idle();
-	static void Mouse(int button, int state, int x, int y);
+	//static void Mouse(int button, int state, int x, int y);
 	static void Keyboard(unsigned char key, int x, int y);
-	static void SpecialKeyboard(int key, int x, int y);
+	//static void SpecialKeyboard(int key, int x, int y);
+	static void KeyboardUp(unsigned char key, int x, int y);
 	
 
 	void run(int argc, char** argv);

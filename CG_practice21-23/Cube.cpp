@@ -37,11 +37,48 @@ Cube::Cube(int practiceNum)
 
 		bottomPos.y = -length;
 	}
+	if (practiceNum == 22)
+	{
+		float length = 1.0f;
+
+		// Á¤»ç°¢Çü Å×½ºÆ®
+		vertices =
+		{
+			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
+			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
+			{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
+			{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
+			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
+		};
+		orgVertices = vertices;
+		index =
+		{
+			// ¿À¸¥ÂÊ¸é
+			0, 1, 5, 0, 5, 4,
+			// ¿ÞÂÊ¸é
+			3, 6, 2, 3, 7, 6,
+			// À­¸é
+			0, 7, 3, 0, 4, 7,
+			// ¾Æ·§¸é
+			1, 2, 6, 1, 6, 5,
+			// µÞ¸é
+			4, 5, 6, 4, 6, 7,
+			// ¾Õ¸é
+			0, 1, 2, 0, 2, 3
+		};
+
+		bottomPos.y = -length;
+	}
 
 	initBuffer();
 }
 
-Cube::Cube(float zPos, float rad)
+Cube::Cube(glm::vec2 pos, float rad)
 {
 	
 	std::random_device rd;
@@ -73,7 +110,7 @@ Cube::Cube(float zPos, float rad)
 	bottomPos.y = -rad;
 
 	isThisHavePhysics = true;
-	move(glm::vec3(0.0f, -1.0f + rad, zPos));
+	move(glm::vec3(pos.x, -1.0f + rad, pos.y));
 
 	initBuffer();
 }
@@ -196,9 +233,9 @@ void Cube::adaptC(Cube* c)
 		move(glm::vec3(-normal.x * avgDist, -normal.y * avgDist, 0.0f));
 }
 
-void Cube::baseOpen()
+void Cube::CubeOpen()
 {
-	isBaseOpened = true;
+	isOpened = true;
 
 	index =
 	{
@@ -209,9 +246,11 @@ void Cube::baseOpen()
 		// À­¸é
 		0, 7, 3, 0, 4, 7,
 		// ¾Æ·§¸é
-		8, 9, 6, 8, 6, 5,
+		1, 2, 6, 1, 6, 5,
 		// µÞ¸é
 		4, 5, 6, 4, 6, 7,
+		// ¾Õ¸é
+		0, 8, 9, 0, 9, 3
 	};
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -223,14 +262,14 @@ void Cube::baseOpen()
 
 void Cube::baseOpenAnimation()
 {
-	if (!isBaseOpened) return;
+	if (!isOpened) return;
 	static float angleAmount = 0.0f;
-	if (angleAmount <= -1.5f) return;
+	if (angleAmount >= 1.7f) return;
 
-	glm::vec3 A = vertices[5].pos; 
-	glm::vec3 B = vertices[6].pos; 
+	glm::vec3 A = vertices[0].pos; 
+	glm::vec3 B = vertices[3].pos; 
 	glm::vec3 axis = glm::normalize(B - A); 
-	constexpr float angle = glm::radians(-1.0f); 
+	constexpr float angle = glm::radians(1.0f); 
 
 	glm::vec4 pos(vertices[8].pos, 1.0f);
 	glm::mat4 model = glm::mat4(1.0f);
@@ -257,13 +296,6 @@ void Cube::baseOpenAnimation()
 void Cube::handlePhysics(Cube* c)
 {
 	if (!isThisHavePhysics) return;
-
-	if (c->isBaseOpened)
-	{
-		move(glm::vec3(0.0f, -0.01f, 0.0f));
-		updateVBO();
-		return;
-	}
 
 	adaptC(c);
 

@@ -18,17 +18,19 @@ Camera* cam = nullptr;
 Cube* cube = nullptr;
 std::vector<Cube*> smallCube;
 
-std::vector<Ball*> balls;
-
 void make_objects()
 {
 	cam = new Camera();
 
-	cube = new Cube(21);
+	cube = new Cube(22);
 
-	smallCube.push_back(new Cube(0.8f, 0.1f));
-	smallCube.push_back(new Cube(0.5f, 0.2f));
-	smallCube.push_back(new Cube(-0.1f, 0.4f));
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> randPos(-0.8f, 0.8f);
+
+	smallCube.push_back(new Cube(glm::vec2(randPos(gen), randPos(gen)), 0.11f));
+	smallCube.push_back(new Cube(glm::vec2(randPos(gen), randPos(gen)), 0.13f));
+	smallCube.push_back(new Cube(glm::vec2(randPos(gen), randPos(gen)), 0.15f));
 }
 
 GLvoid GLGL::ReShape(int w, int h)
@@ -37,36 +39,36 @@ GLvoid GLGL::ReShape(int w, int h)
 	my->height = h;
 	glViewport(0, 0, my->width, my->height);
 }
-GLvoid GLGL::PassiveMotion(int x, int y)
-{
-	crx = (2.0f * x - my->width) / my->width;
-	cry = -(2.0f * y - my->height) / my->height;
-
-	float dx = crx - pvx;
-	float dy = cry - pvy;
-
-	cube->rotate(dx, dy);
-
-	if (!cube->getBaseOpened())
-	{
-		for (auto& sc : smallCube)
-			sc->rotate(dx, dy);
-	}
-	
-
-	pvx = crx;
-	pvy = cry;
-}
-GLvoid GLGL::Motion(int x, int y)
-{
-	crx = (2.0f * x - my->width) / my->width;
-	cry = -(2.0f * y - my->height) / my->height;
-
-	pvx = crx;
-	pvy = cry;
-
-	glutPostRedisplay();
-}
+//GLvoid GLGL::PassiveMotion(int x, int y)
+//{
+//	crx = (2.0f * x - my->width) / my->width;
+//	cry = -(2.0f * y - my->height) / my->height;
+//
+//	float dx = crx - pvx;
+//	float dy = cry - pvy;
+//
+//	cube->rotate(dx, dy);
+//
+//	if (!cube->getBaseOpened())
+//	{
+//		for (auto& sc : smallCube)
+//			sc->rotate(dx, dy);
+//	}
+//	
+//
+//	pvx = crx;
+//	pvy = cry;
+//}
+//GLvoid GLGL::Motion(int x, int y)
+//{
+//	crx = (2.0f * x - my->width) / my->width;
+//	cry = -(2.0f * y - my->height) / my->height;
+//
+//	pvx = crx;
+//	pvy = cry;
+//
+//	glutPostRedisplay();
+//}
 GLvoid GLGL::Draw()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -77,8 +79,6 @@ GLvoid GLGL::Draw()
 	cube->Draw(shaderProgramID);
 	for (const auto& sc : smallCube)
 		sc->Draw(shaderProgramID);
-	for (const auto& b : balls)
-		b->draw(shaderProgramID, DrawType::DRAW_WIRE);
 
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
@@ -90,80 +90,75 @@ GLvoid GLGL::Idle()
 	cube->baseOpenAnimation();
 	for (auto& sc : smallCube)
 		sc->handlePhysics(cube);
-	for (auto& b : balls)
-		b->update(cube->getPos());
 	cam->update();
 
 	glutPostRedisplay();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
-	static float isMoving = false;
+	static float isOpen = false;
 	static double ballSize = 0.0;
 	switch (key)
 	{
+	case'o':case'O':
+		cube->CubeOpen();
+		break;
+	// 상하좌우이동
+	case'w':
+		break;
+	case'a':
+		break;
+	case's':
+		break;
+	case'd':
+		break;
+	// 속도 증감
+	case'+':
+		break;
+	case'-':
+		break;
+	// 점프
+	case'j':
+		break;
+	// 초기화
+	case'i':
+		break;
 	case 'z':
 		cam->move(0.0f, 0.0f, 1.0f);
 		break;
 	case 'Z':
 		cam->move(0.0f, 0.0f, -1.0f);
 		break;
-	case 'y':
-		if (!isMoving) isMoving = true;
-		else
-		{
-			cam->rotateStart(0.1f);
-		}
+	case'x':
+		cam->move(1.0f, 0.0f, 0.0f);
 		break;
-	case 'Y':
-		if (!isMoving) isMoving = true;
-		else
-		{
-			cam->rotateStart(-0.1f);
-		}
+	case'X':
+		cam->move(-1.0f, 0.0f, 0.0f);
 		break;
-	case 'B':
-		
-		if (balls.size() < 5)
-		{
-			ballSize += 0.02;
-			balls.push_back(new Ball(ballSize, ballSize, ballSize, ballSize));
-		}
+	case'y':
+		cam->rotateStart(0.1f);
 		break;
+	case'Y':
+		cam->rotateStart(-0.1f);
+		break;
+	case'.':
+		cam->rotateStop();
 	default:
 		break;
 	}
 }
-GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
+void GLGL::KeyboardUp(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case GLUT_KEY_LEFT:
-		cam->move(-1.0f,0.0f);
+	case'w':
 		break;
-	case GLUT_KEY_RIGHT:
-		cam->move(1.0f, 0.0f);
+	case'a':
 		break;
-	case GLUT_KEY_UP:
-		cam->move(0.0f, 1.0f);
+	case's':
 		break;
-	case GLUT_KEY_DOWN:
-		cam->move(0.0f, -1.0f);
+	case'd':
 		break;
-	
-	default:
-		break;
-	}
-
-	glutPostRedisplay();
-}
-GLvoid GLGL::Mouse(int button, int state, int x, int y)
-{
-	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-	{
-		std::cout << "바닥이 열린다.\n";
-
-		cube->baseOpen();
 	}
 }
 
@@ -191,11 +186,11 @@ void GLGL::run(int argc, char** argv)
 
 	glutDisplayFunc(GLGL::Draw);
 	glutReshapeFunc(GLGL::ReShape);
-	glutMouseFunc(GLGL::Mouse);
-	glutMotionFunc(GLGL::Motion);
-	glutPassiveMotionFunc(GLGL::PassiveMotion);
+	//glutMouseFunc(GLGL::Mouse);
+	//glutMotionFunc(GLGL::Motion);
+	//glutPassiveMotionFunc(GLGL::PassiveMotion);
 	glutKeyboardFunc(GLGL::Keyboard);
-	glutSpecialFunc(GLGL::SpecialKeyboard);
+	glutKeyboardUpFunc(GLGL::KeyboardUp);
 	glutIdleFunc(GLGL::Idle);
 	glutMainLoop();
 }

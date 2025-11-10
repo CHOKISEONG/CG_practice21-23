@@ -132,6 +132,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GLGL.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Robot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GLGL.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="Robot.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
