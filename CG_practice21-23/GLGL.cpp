@@ -95,7 +95,7 @@ GLvoid GLGL::Idle()
 	cube->baseOpenAnimation();
 	for (auto& sc : smallCube)
 		sc->handlePhysics(cube);
-	robot->update();
+	robot->update(smallCube);
 	cam->update();
 
 	glutPostRedisplay();
@@ -125,9 +125,11 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	// 속도 증감
 	case'+':
 		robot->increaseMoveSpeed();
+		std::cout << "속도: " << robot->getSpeed() << "\n";
 		break;
 	case'-':
 		robot->decreaseMoveSpeed();
+		std::cout << "속도: " << robot->getSpeed() << "\n";
 		break;
 	// 점프
 	case'j':

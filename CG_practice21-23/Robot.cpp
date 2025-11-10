@@ -107,7 +107,7 @@ void Robot::move(glm::vec3 v)
 	updateVBO();
 }
 
-void Robot::update()
+void Robot::update(std::vector<Cube*>& cube)
 {
 	// 0 - 몸통 
 	// 8,16 - 다리 
@@ -116,14 +116,25 @@ void Robot::update()
 
 	// 팔 흔들기 먼저
 	shakeArm();
-
-	// 그다음은 점프하는거 처리
-	jump();
-
-	// 마지막은 이동하기
-	moving();
 	
+	// 큐브랑 충돌 체크
+	if (checkCollide(cube))
+	{
+		// 그다음은 점프하는거 처리
+		jump();
+
+		// 마지막은 이동하기
+		moving();
+	}
+
 	updateVBO();
+}
+
+bool Robot::checkCollide(std::vector<Cube*>& cube)
+{
+	// 구현 안함
+	
+	return true;
 }
 
 void Robot::shakeArm()
@@ -278,6 +289,7 @@ void Robot::moving()
 	if (moveDir != glm::vec3(0.0f, 0.0f, 0.0f))
 	{
 		shakeLeg(true);
+		shakeArm();
 	}
 }
 void Robot::jump()
