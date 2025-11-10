@@ -15,9 +15,10 @@ public:
 	void setMoving(const glm::vec3 v) { moveDir = v; }
 	const float getSpeed() const { return moveSpeed; }
 
-	void increaseMoveSpeed() { if (moveSpeed <= 0.05f) moveSpeed += 0.01f; }
-	void decraseMoveSpeed() { if (moveSpeed >= 0.02f) moveSpeed -= 0.01f; }
+	void increaseMoveSpeed() { if (moveSpeed <= 0.005f) moveSpeed += 0.002f; }
+	void decreaseMoveSpeed() { if (moveSpeed >= 0.002f) moveSpeed -= 0.001f; }
 	void move();
+	void move(glm::vec3 v);
 
 	void update();
 	void shakeArm();
@@ -31,6 +32,6 @@ private:
 	std::vector<unsigned int> index;
 
 	glm::vec3 moveDir = glm::vec3(0.0f,0.0f,0.0f);
-	float moveSpeed = 0.01f;
+	float moveSpeed = 0.003f;
 	float shakeSpeed = 0.01f;
 };

@@ -93,6 +93,8 @@ Robot::Robot()
 	}
 
 	initBuffer();
+
+	move(glm::vec3(0.0f, -0.8f, 0.0f));
 }
 
 
@@ -101,6 +103,16 @@ void Robot::move()
 	for (auto& i : vertices)
 	{
 		i.pos += moveDir;
+	}
+
+	updateVBO();
+}
+
+void Robot::move(glm::vec3 v)
+{
+	for (auto& i : vertices)
+	{
+		i.pos += v;
 	}
 
 	updateVBO();

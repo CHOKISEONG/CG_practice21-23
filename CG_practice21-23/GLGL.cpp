@@ -111,21 +111,23 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	// 상하좌우이동
 	case'w':
-		robot->setMoving(glm::vec3(0.0f, 0.01f, 0.0f));
+		robot->setMoving(glm::vec3(0.0f, 0.0f, -robot->getSpeed()));
 		break;
 	case'a':
-		robot->setMoving(glm::vec3(0.0f, 0.01f, 0.0f));
+		robot->setMoving(glm::vec3(-robot->getSpeed(), 0.0f, 0.0f));
 		break;
 	case's':
-		robot->setMoving(glm::vec3(0.0f, 0.01f, 0.0f));
+		robot->setMoving(glm::vec3(0.0f, 0.0f, robot->getSpeed()));
 		break;
 	case'd':
-		robot->setMoving(glm::vec3(0.0f, 0.01f, 0.0f));
+		robot->setMoving(glm::vec3(robot->getSpeed(), 0.0f, 0.0f));
 		break;
 	// 속도 증감
 	case'+':
+		robot->increaseMoveSpeed();
 		break;
 	case'-':
+		robot->decreaseMoveSpeed();
 		break;
 	// 점프
 	case'j':
@@ -163,12 +165,16 @@ void GLGL::KeyboardUp(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case'w':
+		robot->setMoving(glm::vec3(0.0f, 0.0f, 0.0f));
 		break;
 	case'a':
+		robot->setMoving(glm::vec3(0.0f, 0.0f, 0.0f));
 		break;
 	case's':
+		robot->setMoving(glm::vec3(0.0f, 0.0f, 0.0f));
 		break;
 	case'd':
+		robot->setMoving(glm::vec3(0.0f, 0.0f, 0.0f));
 		break;
 	}
 }
