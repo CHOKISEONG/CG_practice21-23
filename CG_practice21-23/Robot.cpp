@@ -97,17 +97,6 @@ Robot::Robot()
 	move(glm::vec3(0.0f, -0.8f, 0.0f));
 }
 
-
-void Robot::move()
-{
-	for (auto& i : vertices)
-	{
-		i.pos += moveDir;
-	}
-
-	updateVBO();
-}
-
 void Robot::move(glm::vec3 v)
 {
 	for (auto& i : vertices)
@@ -128,9 +117,14 @@ void Robot::update()
 	// 팔 흔들기 먼저
 	shakeArm();
 
+	// 그다음은 점프하는거 처리
+	jump();
 
 	// 마지막은 이동
-	move();
+	for (auto& i : vertices)
+	{
+		i.pos += moveDir;
+	}
 
 	updateVBO();
 }
@@ -198,6 +192,23 @@ void Robot::shakeArm()
 	
 
 	angleAmount += shakeSpeed;
+}
+
+void Robot::jump()
+{
+	// 땅에 있으면 리턴
+	if (onGround) return;
+
+	move(glm::vec3(0.0f, jumpSpeed, 0.0f));
+	jumpSpeed += gravity;
+
+	// 점프 처리 후 땅에 있으면 땅에 있는 상태로 전환
+	if (vertices[9].pos.y <= -1.0f)
+	{
+		jumpSpeed = 0.05f;
+		move(glm::vec3(0.0f, -vertices[9].pos.y - 1.0f, 0.0f));
+		onGround = true;
+	}
 }
 
 void Robot::initBuffer()

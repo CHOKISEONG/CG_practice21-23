@@ -131,6 +131,10 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	// 점프
 	case'j':
+		if (robot->isOnGround())
+		{
+			robot->jumpStart();
+		}
 		break;
 	// 초기화
 	case'i':
