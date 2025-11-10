@@ -121,23 +121,8 @@ void Robot::update()
 	jump();
 
 	// 마지막은 이동하기
-	// 1. tmp를 먼저 이동시켜보고
-	std::vector<Vertex> tmp = vertices;
-	for (auto& i : tmp)
-	{
-		i.pos += moveDir;
-	}
-	// 2. 벽이랑 충돌 안하는 이동일 때만 원본인 vertices를 이동하게 함
-	if (tmp[26].pos.x >= -1.0f && tmp[32].pos.x <= 1.0f
-		&& tmp[0].pos.z <= 1.0f && tmp[4].pos.z >= -1.0f)
-	{
-		for (auto& i : vertices)
-		{
-			i.pos += moveDir;
-		}
-	}
+	moving();
 	
-
 	updateVBO();
 }
 
@@ -206,15 +191,8 @@ void Robot::shakeArm()
 	shakeAmount += shakeSpeed;
 }
 
-void Robot::jump()
+void Robot::shakeLeg(bool isOpposite)
 {
-	static float jumpAmount = 0.0f;
-	// 땅에 있으면 리턴
-	if (onGround) return;
-
-	move(glm::vec3(0.0f, jumpSpeed, 0.0f));
-	jumpSpeed += gravity;
-
 	if (jumpAmount >= 0.5f)
 	{
 		legSpeed = -legSpeed;
@@ -226,6 +204,10 @@ void Robot::jump()
 	for (int i{ 8 }; i < 24; i += 8)
 	{
 		float rotateSpeed = legSpeed;
+		if (isOpposite && i == 8)
+		{
+			rotateSpeed = -rotateSpeed;
+		}
 
 		glm::vec3 A = vertices[i].pos;
 		glm::vec3 B = vertices[i + 3].pos;
@@ -274,6 +256,37 @@ void Robot::jump()
 
 
 	jumpAmount += legSpeed;
+}
+
+void Robot::moving()
+{
+	// 1. tmp를 먼저 이동시켜보고
+	std::vector<Vertex> tmp = vertices;
+	for (auto& i : tmp)
+	{
+		i.pos += moveDir;
+	}
+	// 2. 벽이랑 충돌 안하는 이동일 때만 원본인 vertices를 이동하게 함
+	if (tmp[26].pos.x >= -1.0f && tmp[32].pos.x <= 1.0f
+		&& tmp[0].pos.z <= 1.0f && tmp[4].pos.z >= -1.0f)
+	{
+		for (auto& i : vertices)
+		{
+			i.pos += moveDir;
+		}
+	}
+	if (moveDir != glm::vec3(0.0f, 0.0f, 0.0f))
+	{
+		shakeLeg(true);
+	}
+}
+void Robot::jump()
+{
+	// 땅에 있으면 리턴
+	if (onGround) return;
+
+	move(glm::vec3(0.0f, jumpSpeed, 0.0f));
+	jumpSpeed += gravity;
 
 	// 점프 처리 후 땅에 있으면 땅에 있는 상태로 전환
 	if (vertices[9].pos.y <= -1.0f)

@@ -22,6 +22,10 @@ public:
 
 	void update();
 	void shakeArm();
+	void shakeLeg(bool isOpposite = false);
+
+	// move함수는 인자값만큼 이동, moving함수는 이동키 처리하는 거 
+	void moving();
 	void jump();
 	void jumpStart() { onGround = false; }
 
@@ -54,4 +58,5 @@ private:
 	// 점프하기 위한 중력과 점프속도
 	const float gravity = -0.0005f; 
 	float jumpSpeed = 0.03f;
+	float jumpAmount = 0.0f;
 };
