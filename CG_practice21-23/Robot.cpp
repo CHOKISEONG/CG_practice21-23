@@ -205,7 +205,7 @@ void Robot::jump()
 	// 점프 처리 후 땅에 있으면 땅에 있는 상태로 전환
 	if (vertices[9].pos.y <= -1.0f)
 	{
-		jumpSpeed = 0.05f;
+		jumpSpeed = 0.03f;
 		move(glm::vec3(0.0f, -vertices[9].pos.y - 1.0f, 0.0f));
 		onGround = true;
 	}

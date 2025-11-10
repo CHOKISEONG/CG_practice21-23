@@ -49,6 +49,6 @@ private:
 	bool onGround = true;
 
 	// 점프하기 위한 중력과 점프속도
-	const float gravity = -0.002f; 
-	float jumpSpeed = 0.05f;
+	const float gravity = -0.0005f; 
+	float jumpSpeed = 0.03f;
 };
