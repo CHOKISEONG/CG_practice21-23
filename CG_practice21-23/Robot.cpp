@@ -143,12 +143,12 @@ void Robot::update()
 
 void Robot::shakeArm()
 {
-	static float angleAmount = 0.0f;
-	if (angleAmount >= 0.5f)
+	static float shakeAmount = 0.0f;
+	if (shakeAmount >= 0.5f)
 	{
 		shakeSpeed = -shakeSpeed;
 	}
-	else if (angleAmount <= -0.5f)
+	else if (shakeAmount <= -0.5f)
 	{
 		shakeSpeed = -shakeSpeed;
 	}
@@ -203,16 +203,77 @@ void Robot::shakeArm()
 	}
 	
 
-	angleAmount += shakeSpeed;
+	shakeAmount += shakeSpeed;
 }
 
 void Robot::jump()
 {
+	static float jumpAmount = 0.0f;
 	// 땅에 있으면 리턴
 	if (onGround) return;
 
 	move(glm::vec3(0.0f, jumpSpeed, 0.0f));
 	jumpSpeed += gravity;
+
+	if (jumpAmount >= 0.5f)
+	{
+		legSpeed = -legSpeed;
+	}
+	else if (jumpAmount <= -0.5f)
+	{
+		legSpeed = -legSpeed;
+	}
+	for (int i{ 8 }; i < 24; i += 8)
+	{
+		float rotateSpeed = legSpeed;
+
+		glm::vec3 A = vertices[i].pos;
+		glm::vec3 B = vertices[i + 3].pos;
+		glm::vec3 axis = glm::normalize(B - A);
+
+		glm::vec4 pos(vertices[i + 1].pos, 1.0f);
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, A);
+		model = glm::rotate(model, rotateSpeed, axis);
+		model = glm::translate(model, -A);
+		pos = model * pos;
+
+		vertices[i + 1].pos = glm::vec3(pos);
+
+		pos = glm::vec4(vertices[i + 2].pos, 1.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, A);
+		model = glm::rotate(model, rotateSpeed, axis);
+		model = glm::translate(model, -A);
+		pos = model * pos;
+
+		vertices[i + 2].pos = glm::vec3(pos);
+
+		A = vertices[i + 4].pos;
+		B = vertices[i + 7].pos;
+		axis = glm::normalize(B - A);
+
+		pos = glm::vec4(vertices[i + 5].pos, 1.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, A);
+		model = glm::rotate(model, rotateSpeed, axis);
+		model = glm::translate(model, -A);
+		pos = model * pos;
+
+		vertices[i + 5].pos = glm::vec3(pos);
+
+		pos = glm::vec4(vertices[i + 6].pos, 1.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, A);
+		model = glm::rotate(model, rotateSpeed, axis);
+		model = glm::translate(model, -A);
+		pos = model * pos;
+
+		vertices[i + 6].pos = glm::vec3(pos);
+	}
+
+
+	jumpAmount += legSpeed;
 
 	// 점프 처리 후 땅에 있으면 땅에 있는 상태로 전환
 	if (vertices[9].pos.y <= -1.0f)

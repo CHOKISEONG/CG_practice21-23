@@ -45,6 +45,9 @@ private:
 	// 팔 흔드는 속도
 	float shakeSpeed = 0.01f;
 
+	// 점프할 때 다리 움직이는 속도
+	float legSpeed = 0.05f;
+
 	// 땅에 있는지 확인 용 ( 현재 땅은 y축으로 -1.0f 임 )
 	bool onGround = true;
 
