@@ -10,7 +10,7 @@ Robot::Robot()
 	// Áö¶ö³µ´Âµ¥ ÀÏ´Ü ÀÌ ¹æ¹ýÀ¸·Î
 	vertices =
 	{
-		// ¸öÅë
+		// ¸öÅë (0~7)
 		{ {  length,  length, length },  {1.0f, 0.0f, 0.0f} },
 		{ {  length, -length, length },  {1.0f, 0.0f, 0.0f} },
 		{ { -length, -length, length },  {1.0f, 0.0f, 0.0f} },
@@ -20,7 +20,7 @@ Robot::Robot()
 		{ { -length, -length, -length }, {1.0f, 0.0f, 0.0f} },
 		{ { -length,  length, -length }, {1.0f, 0.0f, 0.0f} },
 
-		// ¿ÞÂÊ ´Ù¸®
+		// ¿ÞÂÊ ´Ù¸® (8~15)
 		{ { -oneQuarterLength	, -length		, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
 		{ { -oneQuarterLength	, -length * 2	, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
 		{ { -threeQuarterLength	, -length * 2	, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
@@ -30,7 +30,7 @@ Robot::Robot()
 		{ { -threeQuarterLength	, -length * 2	, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
 		{ { -threeQuarterLength	, -length		, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
 
-		// ¿À¸¥ÂÊ ´Ù¸®
+		// ¿À¸¥ÂÊ ´Ù¸® (16~23)
 		{ { threeQuarterLength	, -length		, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
 		{ { threeQuarterLength	, -length * 2	, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
 		{ { oneQuarterLength	, -length * 2	, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
@@ -40,7 +40,7 @@ Robot::Robot()
 		{ { oneQuarterLength	, -length * 2	, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
 		{ { oneQuarterLength	, -length 		, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
 
-		// ¿ÞÂÊ ÆÈ
+		// ¿ÞÂÊ ÆÈ (24~31)
 		{ { -length				, halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
 		{ { -length				, -halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
 		{ { -length - halfLength, -halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
@@ -50,7 +50,7 @@ Robot::Robot()
 		{ { -length - halfLength, -halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
 		{ { -length - halfLength, halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
 
-		// ¿À¸¥ÂÊ ÆÈ
+		// ¿À¸¥ÂÊ ÆÈ (32~39)
 		{ { length + halfLength	,  halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
 		{ { length + halfLength	, -halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
 		{ { length				, -halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
@@ -60,7 +60,7 @@ Robot::Robot()
 		{ { length				, -halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
 		{ { length				,  halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
 
-		// ¾ó±¼
+		// ¾ó±¼ (40~47)
 		{ {  halfLength, length * 2	, halfLength },  {1.0f, 1.0f, 0.0f} },
 		{ {  halfLength, length		, halfLength },  {1.0f, 1.0f, 0.0f} },
 		{ { -halfLength, length		, halfLength },  {1.0f, 1.0f, 0.0f} },
@@ -70,7 +70,7 @@ Robot::Robot()
 		{ { -halfLength, length		, -halfLength }, {1.0f, 1.0f, 0.0f} },
 		{ { -halfLength, length * 2	, -halfLength }, {1.0f, 1.0f, 0.0f} },
 
-		// ÄÚ
+		// ÄÚ (48~55)
 		{ {  oneQuarterLength, length + threeQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
 		{ {  oneQuarterLength, length + oneQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
 		{ { -oneQuarterLength, length + oneQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
@@ -96,14 +96,96 @@ Robot::Robot()
 }
 
 
-void Robot::move(glm::vec3 v)
+void Robot::move()
 {
 	for (auto& i : vertices)
 	{
-		i.pos += v;
+		i.pos += moveDir;
 	}
 
 	updateVBO();
+}
+
+void Robot::update()
+{
+	// 0 - ¸öÅë 
+	// 8,16 - ´Ù¸® 
+	// 24,32 - ÆÈ
+	// 40,48 - ¾ó±¼,ÄÚ
+
+	// ÆÈ Èçµé±â ¸ÕÀú
+	shakeArm();
+
+
+	// ¸¶Áö¸·Àº ÀÌµ¿
+	move();
+
+	updateVBO();
+}
+
+void Robot::shakeArm()
+{
+	static float angleAmount = 0.0f;
+	if (angleAmount >= 0.5f)
+	{
+		shakeSpeed = -shakeSpeed;
+	}
+	else if (angleAmount <= -0.5f)
+	{
+		shakeSpeed = -shakeSpeed;
+	}
+
+	for (int i{ 24 }; i < 40; i += 8)
+	{
+		float rotateSpeed = (i == 24) ? shakeSpeed : -shakeSpeed;
+
+		glm::vec3 A = vertices[i].pos;
+		glm::vec3 B = vertices[i + 3].pos;
+		glm::vec3 axis = glm::normalize(B - A);
+
+		glm::vec4 pos(vertices[i + 1].pos, 1.0f);
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, A);
+		model = glm::rotate(model, rotateSpeed, axis);
+		model = glm::translate(model, -A);
+		pos = model * pos;
+
+		vertices[i + 1].pos = glm::vec3(pos);
+
+		pos = glm::vec4(vertices[i + 2].pos, 1.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, A);
+		model = glm::rotate(model, rotateSpeed, axis);
+		model = glm::translate(model, -A);
+		pos = model * pos;
+
+		vertices[i + 2].pos = glm::vec3(pos);
+
+		A = vertices[i + 4].pos;
+		B = vertices[i + 7].pos;
+		axis = glm::normalize(B - A);
+
+		pos = glm::vec4(vertices[i + 5].pos, 1.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, A);
+		model = glm::rotate(model, rotateSpeed, axis);
+		model = glm::translate(model, -A);
+		pos = model * pos;
+
+		vertices[i + 5].pos = glm::vec3(pos);
+
+		pos = glm::vec4(vertices[i + 6].pos, 1.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, A);
+		model = glm::rotate(model, rotateSpeed, axis);
+		model = glm::translate(model, -A);
+		pos = model * pos;
+
+		vertices[i + 6].pos = glm::vec3(pos);
+	}
+	
+
+	angleAmount += shakeSpeed;
 }
 
 void Robot::initBuffer()
@@ -135,6 +217,11 @@ void Robot::updateVBO()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+}
+
+void Robot::goBackToOriginal()
+{
+	vertices = orgVertices;
 }
 
 void Robot::Draw(GLuint shaderProgram) {

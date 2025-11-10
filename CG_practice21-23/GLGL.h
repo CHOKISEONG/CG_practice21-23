@@ -13,8 +13,8 @@ public:
 	static char* filetobuf(const char* file);
 	static void Draw();
 	static void ReShape(int w, int h);
-	static void Motion(int x, int y);
-	static void PassiveMotion(int x, int y);
+	//static void Motion(int x, int y);
+	//static void PassiveMotion(int x, int y);
 	static void Idle();
 	//static void Mouse(int button, int state, int x, int y);
 	static void Keyboard(unsigned char key, int x, int y);

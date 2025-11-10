@@ -95,6 +95,7 @@ GLvoid GLGL::Idle()
 	cube->baseOpenAnimation();
 	for (auto& sc : smallCube)
 		sc->handlePhysics(cube);
+	robot->update();
 	cam->update();
 
 	glutPostRedisplay();
@@ -110,12 +111,16 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	// 상하좌우이동
 	case'w':
+		robot->setMoving(glm::vec3(0.0f, 0.01f, 0.0f));
 		break;
 	case'a':
+		robot->setMoving(glm::vec3(0.0f, 0.01f, 0.0f));
 		break;
 	case's':
+		robot->setMoving(glm::vec3(0.0f, 0.01f, 0.0f));
 		break;
 	case'd':
+		robot->setMoving(glm::vec3(0.0f, 0.01f, 0.0f));
 		break;
 	// 속도 증감
 	case'+':
@@ -127,6 +132,7 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	// 초기화
 	case'i':
+		robot->goBackToOriginal();
 		break;
 	case 'z':
 		cam->move(0.0f, 0.0f, 1.0f);
