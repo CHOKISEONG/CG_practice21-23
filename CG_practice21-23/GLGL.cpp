@@ -12,14 +12,51 @@ GLuint shaderProgramID;
 // 카메라
 Camera* cam = nullptr;
 
+// 빛
+struct Light
+{
+	Cube* lightBox;
+	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	bool lightButton = true;
+	void turnOn() { color = glm::vec3(1.0f); lightButton = true;}
+	void turnOff() { color = glm::vec3(0.1f); lightButton = false; }
+
+	void move(glm::vec3 v)
+	{
+		pos += v;
+		lightBox->move(v);
+	}
+
+	void revolution(glm::vec3 v, float rad)
+	{
+		lightBox->revolution(v, rad);
+
+		glm::vec4 p(pos, 1.0f);
+		glm::mat4 rotMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rad), v);
+		p = rotMatrix * p;
+		pos.x = p.x;
+		pos.y = p.y;
+		pos.z = p.z;
+	}
+};
+Light light;
+
 // 그릴 도형들
 Cube* cube = nullptr;
+
+int isRotation = 0;
+int isRevolution = 0;
 
 void make_objects()
 {
 	cam = new Camera();
 
 	cube = new Cube(25);
+
+	light.lightBox = new Cube(0.1f);
+	light.move(glm::vec3(5.0f, 0.0f, 0.0f));
 }
 
 GLvoid GLGL::ReShape(int w, int h)
@@ -59,32 +96,44 @@ GLvoid GLGL::Draw()
 
 	cube->Draw(shaderProgramID);
 
+	light.lightBox->Draw(shaderProgramID);
+
 	// 조명의 위치
 	unsigned int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos");
-	glUniform3f(lightPosLocation, 0.0, 0.0, 5.0);
-
-	static float tmp = 0.0f;
-	tmp += 0.001f;
+	glUniform3f(lightPosLocation, light.pos.x, light.pos.y, light.pos.z);
 
 	// 조명의 색깔 (흰색으로 함)
 	int lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor");
-	glUniform3f(lightColorLocation, tmp, tmp, tmp);
+	glUniform3f(lightColorLocation, light.color.x, light.color.y, light.color.z);
 	
-
 	// 카메라 위치
 	unsigned int viewPosLocation = glGetUniformLocation(shaderProgramID, "viewPos");
 	glm::vec3 camPos = cam->getPos();
 	glUniform3f(viewPosLocation, camPos.x, camPos.y, camPos.z);
-
-
-	
 
 	glutSwapBuffers();
 }
 GLvoid GLGL::Idle()
 {
 	cam->update();
+	
+	if (isRevolution == 1)
+	{
+		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
+	}
+	else if (isRevolution == -1)
+	{
+		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
+	}
 
+	if (isRotation == 1)
+	{
+		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
+	}
+	else if (isRotation == -1)
+	{
+		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
+	}
 	glutPostRedisplay();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
@@ -96,18 +145,28 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case'm':
 		// 조명 켜기/끄기
+		if (light.lightButton == false)
+			light.turnOn();
+		else
+			light.turnOff();
 		break;
 	case'y':
 		// 객체를 y축에 대하여 회전(제자리에서 자전)
+		if (!isRotation) isRotation = 1;
+		else isRotation = -isRotation;
 		break;
 	case'r':
 		// 조명을 객체의 중심 y축에 대하여 양/음 뱡향으로 공전
+		if (!isRevolution) isRevolution = 1;
+		else isRevolution = -isRevolution;
 		break;
 	case'z':
 		// 조명을 객체에 가깝게 이동
+		light.move(glm::vec3(-light.pos.x / 10, -light.pos.y / 10, -light.pos.z / 10));
 		break;
 	case'Z':
 		// 조명을 객체에 멀게 이동
+		light.move(glm::vec3(light.pos.x / 10, light.pos.y / 10, light.pos.z / 10));
 		break;
 	case'q':
 		exit(0);

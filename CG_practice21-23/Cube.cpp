@@ -20,7 +20,7 @@ Cube::Cube(int practiceNum)
 			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
 			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
 		};
-		orgVertices = vertices;
+
 		index =
 		{
 			// ¿À¸¥ÂÊ¸é
@@ -34,8 +34,6 @@ Cube::Cube(int practiceNum)
 			// µÞ¸é
 			4, 5, 6, 4, 6, 7,
 		};
-
-		bottomPos.y = -length;
 	}
 	else if (practiceNum == 25)
 	{
@@ -75,7 +73,7 @@ Cube::Cube(int practiceNum)
 			{ { -length,  length, -length }, {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} }
 
 		};
-		orgVertices = vertices;
+
 		index =
 		{
 			
@@ -95,46 +93,69 @@ Cube::Cube(int practiceNum)
 			17, 18, 22, 17, 22, 21
 
 		};
-
-		bottomPos.y = -length;
 	}
 
 	initBuffer();
 }
 
-Cube::Cube(float zPos, float rad)
+Cube::Cube(float rad)
 {
-	
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution<float> zeroToOne(0.0f, 1.0f);
-	const float color = zeroToOne(gen);
+	const float color = 1.0f;
 
+	const float length = rad;
 	vertices =
 	{
-		{ {  rad,  rad, rad }, {color, color, color} },
-		{ {  rad, -rad, rad }, {color, color, color} },
-		{ { -rad, -rad, rad }, {color, color, color} },
-		{ { -rad,  rad, rad }, {color, color, color} },
-		{ {  rad,  rad, -rad },	{color, color, color} },
-		{ {  rad, -rad, -rad },	{color, color, color} },
-		{ { -rad, -rad, -rad },	{color, color, color} },
-		{ { -rad,  rad, -rad },	{color, color, color} },
+		// ¾Õ,µÚ
+		{ {  length,  length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
+		{ {  length, -length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
+		{ { -length, -length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
+		{ { -length,  length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
+		{ {  length,  length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
+		{ {  length, -length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
+		{ { -length, -length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
+		{ { -length,  length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
+
+		// ÁÂ,¿ì
+		{ {  length,  length, length },  {color, color, color}, { 1.0f, 0.0f, 0.0f} },
+		{ {  length, -length, length },  {color, color, color}, { 1.0f, 0.0f, 0.0f} },
+		{ { -length, -length, length },  {color, color, color}, {-1.0f, 0.0f, 0.0f} },
+		{ { -length,  length, length },  {color, color, color}, {-1.0f, 0.0f, 0.0f} },
+		{ {  length,  length, -length }, {color, color, color}, { 1.0f, 0.0f, 0.0f} },
+		{ {  length, -length, -length }, {color, color, color}, { 1.0f, 0.0f, 0.0f} },
+		{ { -length, -length, -length }, {color, color, color}, {-1.0f, 0.0f, 0.0f} },
+		{ { -length,  length, -length }, {color, color, color}, {-1.0f, 0.0f, 0.0f} },
+
+		// »ó,ÇÏ
+		{ {  length,  length, length },  {color, color, color}, {0.0f,  1.0f, 0.0f} },
+		{ {  length, -length, length },  {color, color, color}, {0.0f, -1.0f, 0.0f} },
+		{ { -length, -length, length },  {color, color, color}, {0.0f, -1.0f, 0.0f} },
+		{ { -length,  length, length },  {color, color, color}, {0.0f,  1.0f, 0.0f} },
+		{ {  length,  length, -length }, {color, color, color}, {0.0f,  1.0f, 0.0f} },
+		{ {  length, -length, -length }, {color, color, color}, {0.0f, -1.0f, 0.0f} },
+		{ { -length, -length, -length }, {color, color, color}, {0.0f, -1.0f, 0.0f} },
+		{ { -length,  length, -length }, {color, color, color}, {0.0f,  1.0f, 0.0f} }
+
 	};
-	orgVertices = vertices;
+
 	index =
 	{
-		0, 5, 1, 0, 4, 5,
-		3, 2, 6, 3, 6, 7,
-		0, 3, 7, 0, 7, 4,
-		1, 6, 2, 1, 5, 6,
-		4, 6, 5, 4, 7, 6,
-		0, 1, 2, 0, 2, 3
-	};
-	bottomPos.y = -rad;
 
-	isThisHavePhysics = true;
-	move(glm::vec3(0.0f, -1.0f + rad, zPos));
+		// ¾Õ¸é
+		0, 3, 1, 1, 3, 2,
+		// µÞ¸é
+		4, 5, 6, 4, 6, 7,
+
+		// ¿ÞÂÊ¸é
+		11, 14, 10, 11, 15, 14,
+		// ¿À¸¥ÂÊ¸é
+		8, 9, 13, 8, 13, 12,
+
+		// À­¸é
+		16, 23, 19, 16, 20, 23,
+		// ¾Æ·§¸é
+		17, 18, 22, 17, 22, 21
+
+	};
 
 	initBuffer();
 }
@@ -176,7 +197,6 @@ void Cube::initBuffer()
 	// index ¿¬°áÇÏ±â
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW);
-	glBindVertexArray(0);
 }
 
 void Cube::updateVBO()
@@ -186,6 +206,8 @@ void Cube::updateVBO()
 }
 
 void Cube::Draw(GLuint shaderProgram) {
+	updateVBO();
+
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
 
@@ -194,8 +216,6 @@ void Cube::Draw(GLuint shaderProgram) {
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
-
-	glBindVertexArray(0);
 }
 
 void Cube::move(glm::vec3 v)
@@ -204,37 +224,40 @@ void Cube::move(glm::vec3 v)
 	{
 		i.pos += v;
 	}
-	bottomPos += v;
-
-	updateVBO();
 }
 
-void Cube::rotate(float dx, float dy)
+void Cube::rotate(glm::vec3 v, float rad)
 {
-	const float rad = (dx > 0) ? -0.1f : 0.1f;
-	if (rotateAmount >= 60.0f && rad > 0.0f) return;
-	if (rotateAmount <= -60.0f && rad < 0.0f) return;
-
 	for (int i{}; i < vertices.size(); ++i)
 	{
 		glm::vec4 pos(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z, 1.0f);
 		glm::mat4 rotMatrix = glm::mat4(1.0f);
-		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), glm::vec3(0.0f, 0.0f, 1.0f));
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
+		pos = rotMatrix * pos;
+		vertices[i].pos.x = pos.x;
+		vertices[i].pos.y = pos.y;
+		vertices[i].pos.z = pos.z;
+
+		pos = glm::vec4(vertices[i].normal.x, vertices[i].normal.y, vertices[i].normal.z, 1.0f);
+		rotMatrix = glm::mat4(1.0f);
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
+		pos = rotMatrix * pos;
+		vertices[i].normal.x = pos.x;
+		vertices[i].normal.y = pos.y;
+		vertices[i].normal.z = pos.z;
+	}
+}
+
+void Cube::revolution(glm::vec3 v, float rad)
+{
+	for (int i{}; i < vertices.size(); ++i)
+	{
+		glm::vec4 pos(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z, 1.0f);
+		glm::mat4 rotMatrix = glm::mat4(1.0f);
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
 		pos = rotMatrix * pos;
 		vertices[i].pos.x = pos.x;
 		vertices[i].pos.y = pos.y;
 		vertices[i].pos.z = pos.z;
 	}
-
-	glm::vec4 pos(bottomPos.x, bottomPos.y, bottomPos.z, 1.0f);
-	glm::mat4 rotMatrix = glm::mat4(1.0f);
-	rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), glm::vec3(0.0f, 0.0f, 1.0f));
-	pos = rotMatrix * pos;
-	bottomPos.x = pos.x;
-	bottomPos.y = pos.y;
-	bottomPos.z = pos.z;
-
-	rotateAmount += rad;
-
-	updateVBO();
 }
