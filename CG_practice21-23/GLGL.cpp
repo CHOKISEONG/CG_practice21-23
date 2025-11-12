@@ -55,18 +55,29 @@ GLvoid GLGL::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
 
+	cam->settingCamera(shaderProgramID);
+
+	cube->Draw(shaderProgramID);
+
+	// 조명의 위치
 	unsigned int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos");
 	glUniform3f(lightPosLocation, 0.0, 0.0, 5.0);
+
+	static float tmp = 0.0f;
+	tmp += 0.001f;
+
+	// 조명의 색깔 (흰색으로 함)
 	int lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor");
-	glUniform3f(lightColorLocation, 1.0, 1.0, 1.0);
+	glUniform3f(lightColorLocation, tmp, tmp, tmp);
+	
+
+	// 카메라 위치
 	unsigned int viewPosLocation = glGetUniformLocation(shaderProgramID, "viewPos");
 	glm::vec3 camPos = cam->getPos();
 	glUniform3f(viewPosLocation, camPos.x, camPos.y, camPos.z);
 
 
-	cam->settingCamera(shaderProgramID);
-
-	cube->Draw(shaderProgramID);
+	
 
 	glutSwapBuffers();
 }
