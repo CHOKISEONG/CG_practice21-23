@@ -37,6 +37,41 @@ Cube::Cube(int practiceNum)
 
 		bottomPos.y = -length;
 	}
+	else if (practiceNum == 25)
+	{
+		float length = 1.0f;
+
+		// 정사각형 테스트
+		vertices =
+		{
+			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
+			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
+			{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
+			{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
+			{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+		};
+		orgVertices = vertices;
+		index =
+		{
+			// 오른쪽면
+			0, 1, 5, 0, 5, 4,
+			// 왼쪽면
+			3, 6, 2, 3, 7, 6,
+			// 윗면
+			0, 7, 3, 0, 4, 7,
+			// 아랫면
+			1, 2, 6, 1, 6, 5,
+			// 뒷면
+			4, 5, 6, 4, 6, 7,
+			// 앞면
+			0, 3, 1, 1, 3, 2
+		};
+
+		bottomPos.y = -length;
+	}
 
 	initBuffer();
 }

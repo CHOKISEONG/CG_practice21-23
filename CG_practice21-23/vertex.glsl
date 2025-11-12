@@ -1,7 +1,6 @@
 #version 330 core
 
 layout (location = 0) in vec3 in_position;
-layout (location = 1) in vec3 in_color;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -11,7 +10,5 @@ out vec3 out_color;
 
 void main() 
 {
-	gl_Position =  projection * view * model * vec4(in_position.x, in_position.y, in_position.z, 1.0); 
-
-	out_color = in_color;
+	gl_Position =  projection * view * model * vec4(in_position, 1.0); 
 }
