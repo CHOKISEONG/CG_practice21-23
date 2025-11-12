@@ -142,6 +142,17 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	{
 	case'n':
 		// À°¸éÃ¼ / »ç°¢»Ô ±×¸®±â
+		if (cube->getType() == Cube::Type::cube)
+		{
+			cube->setType(Cube::Type::squarePyramid);
+			cube->changePolygon();
+		}
+		else if (cube->getType() == Cube::Type::squarePyramid)
+		{
+			cube->setType(Cube::Type::cube);
+			cube->changePolygon();
+		}
+		
 		break;
 	case'm':
 		// Á¶¸í ÄÑ±â/²ô±â

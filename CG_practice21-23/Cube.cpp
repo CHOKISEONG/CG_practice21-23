@@ -260,4 +260,125 @@ void Cube::revolution(glm::vec3 v, float rad)
 		vertices[i].pos.y = pos.y;
 		vertices[i].pos.z = pos.z;
 	}
+	
+}
+
+void Cube::changePolygon()
+{
+	if (type == Type::cube)
+	{
+		const float color = 1.0f;
+		const float length = 1.0f;
+		vertices =
+		{
+			// ¾Õ,µÚ
+			{ {  length,  length, length },  vertices[0].color, {0.0f, 0.0f, 1.0f} },
+			{ {  length, -length, length },  vertices[1].color, {0.0f, 0.0f, 1.0f} },
+			{ { -length, -length, length },  vertices[2].color, {0.0f, 0.0f, 1.0f} },
+			{ { -length,  length, length },  vertices[3].color, {0.0f, 0.0f, 1.0f} },
+			{ {  length,  length, -length }, vertices[4].color, {0.0f, 0.0f, -1.0f} },
+			{ {  length, -length, -length }, vertices[5].color, {0.0f, 0.0f, -1.0f} },
+			{ { -length, -length, -length }, vertices[6].color, {0.0f, 0.0f, -1.0f} },
+			{ { -length,  length, -length }, vertices[7].color, {0.0f, 0.0f, -1.0f} },
+
+			// ÁÂ,¿ì
+			{ {  length,  length, length },  vertices[8].color, { 1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, length },  vertices[9].color, { 1.0f, 0.0f, 0.0f} },
+			{ { -length, -length, length },  vertices[10].color, {-1.0f, 0.0f, 0.0f} },
+			{ { -length,  length, length },  vertices[11].color, {-1.0f, 0.0f, 0.0f} },
+			{ {  length,  length, -length }, vertices[12].color, { 1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, -length }, vertices[13].color, { 1.0f, 0.0f, 0.0f} },
+			{ { -length, -length, -length }, vertices[14].color, {-1.0f, 0.0f, 0.0f} },
+			{ { -length,  length, -length }, vertices[15].color, {-1.0f, 0.0f, 0.0f} },
+
+			// »ó,ÇÏ
+			{ {  length,  length, length },  vertices[16].color, {0.0f,  1.0f, 0.0f} },
+			{ {  length, -length, length },  vertices[17].color, {0.0f, -1.0f, 0.0f} },
+			{ { -length, -length, length },  vertices[18].color, {0.0f, -1.0f, 0.0f} },
+			{ { -length,  length, length },  vertices[19].color, {0.0f,  1.0f, 0.0f} },
+			{ {  length,  length, -length }, vertices[20].color, {0.0f,  1.0f, 0.0f} },
+			{ {  length, -length, -length }, vertices[21].color, {0.0f, -1.0f, 0.0f} },
+			{ { -length, -length, -length }, vertices[22].color, {0.0f, -1.0f, 0.0f} },
+			{ { -length,  length, -length }, vertices[23].color, {0.0f,  1.0f, 0.0f} }
+
+		};
+
+		index =
+		{
+
+			// ¾Õ¸é
+			0, 3, 1, 1, 3, 2,
+			// µÞ¸é
+			4, 5, 6, 4, 6, 7,
+
+			// ¿ÞÂÊ¸é
+			11, 14, 10, 11, 15, 14,
+			// ¿À¸¥ÂÊ¸é
+			8, 9, 13, 8, 13, 12,
+
+			// À­¸é
+			16, 23, 19, 16, 20, 23,
+			// ¾Æ·§¸é
+			17, 18, 22, 17, 22, 21
+
+		};
+	}
+	else if (type == Type::squarePyramid)
+	{
+		const float color = 1.0f;
+		const float length = 1.0f;
+		vertices =
+		{
+			// ¾Õ,µÚ
+			{ {  0.0f,  length, 0.0f },		 vertices[0].color, {0.0f, 0.0f, 1.0f} },
+			{ {  length, -length, length },  vertices[1].color, {0.0f, 0.0f, 1.0f} },
+			{ { -length, -length, length },  vertices[2].color, {0.0f, 0.0f, 1.0f} },
+			{ { -0.0f,  length, 0.0f },		 vertices[3].color, {0.0f, 0.0f, 1.0f} },
+			{ {  0.0f,  length, -0.0f },	 vertices[4].color, {0.0f, 0.0f, -1.0f} },
+			{ {  length, -length, -length }, vertices[5].color, {0.0f, 0.0f, -1.0f} },
+			{ { -length, -length, -length }, vertices[6].color, {0.0f, 0.0f, -1.0f} },
+			{ { -0.0f,  length, -0.0f },	 vertices[7].color, {0.0f, 0.0f, -1.0f} },
+			
+			// ÁÂ,¿ì
+			{ {  0.0f,  length, 0.0f },		 vertices[8].color, { 1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, length },  vertices[9].color, { 1.0f, 0.0f, 0.0f} },
+			{ { -length, -length, length },  vertices[10].color, {-1.0f, 0.0f, 0.0f} },
+			{ { -0.0f,  length, 0.0f },		 vertices[11].color, {-1.0f, 0.0f, 0.0f} },
+			{ {  0.0f,  length, -0.0f },	 vertices[12].color, { 1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, -length }, vertices[13].color, { 1.0f, 0.0f, 0.0f} },
+			{ { -length, -length, -length }, vertices[14].color, {-1.0f, 0.0f, 0.0f} },
+			{ { -0.0f,  length, -0.0f },	 vertices[15].color, {-1.0f, 0.0f, 0.0f} },
+
+			// »ó,ÇÏ
+			{ {  0.0f,  length, 0.0f },		 vertices[16].color, {0.0f,  1.0f, 0.0f} },
+			{ {  length, -length, length },  vertices[17].color, {0.0f, -1.0f, 0.0f} },
+			{ { -length, -length, length },  vertices[18].color, {0.0f, -1.0f, 0.0f} },
+			{ { -0.0f,  length, 0.0f },		 vertices[19].color, {0.0f,  1.0f, 0.0f} },
+			{ {  0.0f,  length, -0.0f },	 vertices[20].color, {0.0f,  1.0f, 0.0f} },
+			{ {  length, -length, -length }, vertices[21].color, {0.0f, -1.0f, 0.0f} },
+			{ { -length, -length, -length }, vertices[22].color, {0.0f, -1.0f, 0.0f} },
+			{ { -0.0f,  length, -0.0f },	 vertices[23].color, {0.0f,  1.0f, 0.0f} }
+
+		};
+
+		index =
+		{
+
+			// ¾Õ¸é
+			0, 3, 1, 1, 3, 2,
+			// µÞ¸é
+			4, 5, 6, 4, 6, 7,
+
+			// ¿ÞÂÊ¸é
+			11, 14, 10, 11, 15, 14,
+			// ¿À¸¥ÂÊ¸é
+			8, 9, 13, 8, 13, 12,
+
+			// À­¸é
+			16, 23, 19, 16, 20, 23,
+			// ¾Æ·§¸é
+			17, 18, 22, 17, 22, 21
+
+		};
+	}
 }
