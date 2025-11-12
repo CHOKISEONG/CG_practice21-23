@@ -16,11 +16,13 @@ private:
 	float zNear = 0.1f;		// 가까운 클리핑 평면까지의 거리
 	float zFar = 100.0f;	// 먼	 클리핑 평면까지의 거리
 
-	bool isRotating = false;
+	bool isRotating = true;
 	bool isRotateSelf = false;
 	float rotateSpeed = 0.5f;
 public:
 	void settingCamera(GLuint shaderProgram);
+
+	const glm::vec3 getPos() const { return pos; }
 
 	void update();
 	void changeWidthHeight(float w, float h) { width = w, height = h; }

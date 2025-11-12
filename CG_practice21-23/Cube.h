@@ -6,6 +6,7 @@ struct Vertex
 {
 	glm::vec3 pos;
 	glm::vec3 color;
+	glm::vec3 normal;
 };
 
 class Cube
@@ -25,15 +26,6 @@ public:
 
 	void move(glm::vec3 v);
 	void rotate(float dx = 0.0f, float dy = 0.0f);
-
-	// 물리 다루기 연습
-	void handlePhysics(Cube* c);
-
-	void adaptC(Cube* c);
-
-	void baseOpen();
-	bool getBaseOpened() { return isBaseOpened; }
-	void baseOpenAnimation();
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 

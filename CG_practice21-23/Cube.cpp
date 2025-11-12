@@ -44,30 +44,56 @@ Cube::Cube(int practiceNum)
 		// 정사각형 테스트
 		vertices =
 		{
-			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
-			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
-			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
-			{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
-			{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
+			// 앞,뒤
+			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f} },
+			{ {  length, -length, length }, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f} },
+			{ { -length, -length, length }, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f} },
+			{ { -length,  length, length }, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f} },
+			{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f}, {0.0f, 0.0f, -1.0f} },
+			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f}, {0.0f, 0.0f, -1.0f} },
+			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f}, {0.0f, 0.0f, -1.0f} },
+			{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f}, {0.0f, 0.0f, -1.0f} },
+
+			// 좌,우
+			{ {  length,  length, length },  {0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, length },  {0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f, 0.0f} },
+			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f} },
+			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f} },
+			{ {  length,  length, -length }, {0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f, 0.0f} },
+			{ {  length, -length, -length }, {0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f, 0.0f} },
+			{ { -length, -length, -length }, {0.0f, 0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f} },
+			{ { -length,  length, -length }, {0.0f, 0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f} },
+
+			// 상,하
+			{ {  length,  length, length },  {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} },
+			{ {  length, -length, length },  {0.7f, 0.7f, 0.7f}, {0.0f, -1.0f, 0.0f} },
+			{ { -length, -length, length },  {0.7f, 0.7f, 0.7f}, {0.0f, -1.0f, 0.0f} },
+			{ { -length,  length, length },  {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} },
+			{ {  length,  length, -length }, {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} },
+			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f}, {0.0f, -1.0f, 0.0f} },
+			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f}, {0.0f, -1.0f, 0.0f} },
+			{ { -length,  length, -length }, {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} }
+
 		};
 		orgVertices = vertices;
 		index =
 		{
-			// 오른쪽면
-			0, 1, 5, 0, 5, 4,
-			// 왼쪽면
-			3, 6, 2, 3, 7, 6,
-			// 윗면
-			0, 7, 3, 0, 4, 7,
-			// 아랫면
-			1, 2, 6, 1, 6, 5,
+			
+			// 앞면
+			0, 3, 1, 1, 3, 2,
 			// 뒷면
 			4, 5, 6, 4, 6, 7,
-			// 앞면
-			0, 3, 1, 1, 3, 2
+			
+			// 왼쪽면
+			11, 14, 10, 11, 15, 14,
+			// 오른쪽면
+			8, 9, 13, 8, 13, 12,
+
+			// 윗면
+			16, 23, 19, 16, 20, 23,
+			// 아랫면
+			17, 18, 22, 17, 22, 21
+
 		};
 
 		bottomPos.y = -length;
@@ -133,15 +159,19 @@ void Cube::initBuffer()
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex),vertices.data(),GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
 	// 위치 (location = 0)
-	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex, pos));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
 	glEnableVertexAttribArray(0);
 
 	// 색상 (location = 1)
-	glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex, color));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
 	glEnableVertexAttribArray(1);
+
+	// 노멀벡터 (location = 2)
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	glEnableVertexAttribArray(2);
 
 	// index 연결하기
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -206,126 +236,5 @@ void Cube::rotate(float dx, float dy)
 
 	rotateAmount += rad;
 
-	updateVBO();
-}
-
-void Cube::adaptC(Cube* c)
-{
-	glm::vec2 a(c->vertices[1].pos.x, c->vertices[1].pos.y);
-	glm::vec2 b(c->vertices[2].pos.x, c->vertices[2].pos.y);
-
-	glm::vec2 point1(vertices[1].pos.x, vertices[1].pos.y);
-	glm::vec2 point2(vertices[2].pos.x, vertices[2].pos.y);
-
-	glm::vec2 ab = b - a;
-	glm::vec2 abNorm = glm::normalize(ab);
-	glm::vec2 normal(-abNorm.y, abNorm.x);
-
-	float dist1 = glm::dot(point1 - a, normal);
-	float dist2 = glm::dot(point2 - a, normal);
-
-	float avgDist = (dist1 + dist2) / 2.0f;
-	const float threshold = 1e-3f;
-
-	if (fabs(avgDist) > threshold)
-		move(glm::vec3(-normal.x * avgDist, -normal.y * avgDist, 0.0f));
-}
-
-void Cube::baseOpen()
-{
-	isBaseOpened = true;
-
-	index =
-	{
-		// 오른쪽면
-		0, 1, 5, 0, 5, 4,
-		// 왼쪽면
-		3, 6, 2, 3, 7, 6,
-		// 윗면
-		0, 7, 3, 0, 4, 7,
-		// 아랫면
-		8, 9, 6, 8, 6, 5,
-		// 뒷면
-		4, 5, 6, 4, 6, 7,
-	};
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW);
-	glBindVertexArray(0);
-}
-
-void Cube::baseOpenAnimation()
-{
-	if (!isBaseOpened) return;
-	static float angleAmount = 0.0f;
-	if (angleAmount <= -1.5f) return;
-
-	glm::vec3 A = vertices[5].pos; 
-	glm::vec3 B = vertices[6].pos; 
-	glm::vec3 axis = glm::normalize(B - A); 
-	constexpr float angle = glm::radians(-1.0f); 
-
-	glm::vec4 pos(vertices[8].pos, 1.0f);
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, A);         
-	model = glm::rotate(model, angle, axis);  
-	model = glm::translate(model, -A);        
-	pos = model * pos;
-
-	vertices[8].pos = glm::vec3(pos);
-
-	pos = glm::vec4(vertices[9].pos, 1.0f);
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, A);
-	model = glm::rotate(model, angle, axis);
-	model = glm::translate(model, -A);
-	pos = model * pos;
-
-	vertices[9].pos = glm::vec3(pos);
-
-	angleAmount += angle;
-	updateVBO();
-}
-
-void Cube::handlePhysics(Cube* c)
-{
-	if (!isThisHavePhysics) return;
-
-	if (c->isBaseOpened)
-	{
-		move(glm::vec3(0.0f, -0.01f, 0.0f));
-		updateVBO();
-		return;
-	}
-
-	adaptC(c);
-
-	glm::vec2 a(c->vertices[1].pos.x, c->vertices[1].pos.y);
-	glm::vec2 b(c->vertices[2].pos.x, c->vertices[2].pos.y);
-	glm::vec2 ab = b - a;
-	glm::vec2 abNorm = glm::normalize(ab);
-
-	glm::vec2 gravityVec(0.0f, -0.02f);
-	float slideAmount = glm::dot(gravityVec, abNorm);
-
-	glm::vec2 moveVec = abNorm * slideAmount;
-
-	glm::vec2 p1(vertices[1].pos.x, vertices[1].pos.y);
-	glm::vec2 p2(vertices[2].pos.x, vertices[2].pos.y);
-
-	glm::vec2 p1Next = p1 + moveVec;
-	glm::vec2 p2Next = p2 + moveVec;
-
-	float ab2 = glm::dot(ab, ab);
-	float t1 = glm::dot(p1Next - a, ab) / ab2;
-	float t2 = glm::dot(p2Next - a, ab) / ab2;
-
-	if (t1 >= 0.0f && t1 <= 1.0f && t2 >= 0.0f && t2 <= 1.0f)
-	{
-		move(glm::vec3(moveVec.x, moveVec.y, 0.0f));
-	}
-	
 	updateVBO();
 }

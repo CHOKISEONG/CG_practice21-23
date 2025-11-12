@@ -54,6 +54,16 @@ GLvoid GLGL::Draw()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
+
+	unsigned int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos");
+	glUniform3f(lightPosLocation, 0.0, 0.0, 5.0);
+	int lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor");
+	glUniform3f(lightColorLocation, 1.0, 1.0, 1.0);
+	unsigned int viewPosLocation = glGetUniformLocation(shaderProgramID, "viewPos");
+	glm::vec3 camPos = cam->getPos();
+	glUniform3f(viewPosLocation, camPos.x, camPos.y, camPos.z);
+
+
 	cam->settingCamera(shaderProgramID);
 
 	cube->Draw(shaderProgramID);
