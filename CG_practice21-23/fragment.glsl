@@ -3,6 +3,7 @@
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 viewPos;
+uniform vec3 obj_color;
 
 in vec3 FragPos;
 in vec3 objectColor;
@@ -26,7 +27,7 @@ void main ()
 	specularLight = pow(specularLight, shininess);
 	vec3 specular = specularLight * lightColor;
 
-	vec3 result = (ambient + diffuse + specular) * objectColor;
+	vec3 result = (ambient + diffuse + specular)  * obj_color;
 
 	Fragcolor = vec4(result, 1.0);
 }

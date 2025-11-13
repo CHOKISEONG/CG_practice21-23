@@ -46,7 +46,7 @@ Light light;
 
 // 그릴 도형들
 Cube* cube = nullptr;
-Sphere* sphere = nullptr;
+std::vector<Sphere*> sphere;
 
 int isRotation = 0;
 int isRevolution = 0;
@@ -56,11 +56,25 @@ void make_objects()
 	cam = new Camera();
 
 	cube = new Cube(25);
-	sphere = new Sphere(3.0f);
+	sphere.push_back(new Sphere(1.5f));
+
+	// 중심 구를 기준으로 공전하는 행성 3개
+	sphere.push_back(new Sphere(0.3f));
+	sphere.push_back(new Sphere(0.1f));
+	sphere.push_back(new Sphere(0.2f));
+	sphere[1]->move(5.0f, 0.0f);
+	sphere[2]->move(-3.0f, -3.0f);
+	sphere[3]->move(3.5f, -3.5f);
+	sphere[1]->setAxis();
+	sphere[2]->setAxis();
+	sphere[3]->setAxis();
+	sphere[1]->makeChildren();
+	sphere[2]->makeChildren();
+	sphere[3]->makeChildren();
 
 
 	light.lightBox = new Cube(0.1f);
-	light.move(glm::vec3(5.0f, 0.0f, 0.0f));
+	light.move(glm::vec3(0.0f, 0.0f, 4.0f));
 }
 
 GLvoid GLGL::ReShape(int w, int h)
@@ -98,8 +112,11 @@ GLvoid GLGL::Draw()
 
 	cam->settingCamera(shaderProgramID);
 
-	cube->Draw(shaderProgramID);
-	sphere->draw(shaderProgramID);
+	//cube->Draw(shaderProgramID);
+	for (int i{}; i < sphere.size(); ++i)
+	{
+		sphere[i]->draw(shaderProgramID);
+	}
 
 	light.lightBox->Draw(shaderProgramID);
 
@@ -121,7 +138,12 @@ GLvoid GLGL::Draw()
 GLvoid GLGL::Idle()
 {
 	cam->update();
-	
+
+	for (auto& o : sphere)
+	{
+		o->revolution();
+	}
+
 	if (isRevolution == 1)
 	{
 		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
@@ -145,19 +167,10 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case'n':
-		// 육면체 / 사각뿔 그리기
-		if (cube->getType() == Cube::Type::cube)
-		{
-			cube->setType(Cube::Type::squarePyramid);
-			cube->changePolygon();
-		}
-		else if (cube->getType() == Cube::Type::squarePyramid)
-		{
-			cube->setType(Cube::Type::cube);
-			cube->changePolygon();
-		}
-		
+	case'c':
+		light.color.x = urd(gen);
+		light.color.y = urd(gen);
+		light.color.z = urd(gen);
 		break;
 	case'm':
 		// 조명 켜기/끄기
@@ -166,23 +179,11 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		else
 			light.turnOff();
 		break;
-	case'y':
-		// 객체를 y축에 대하여 회전(제자리에서 자전)
-		if (!isRotation) isRotation = 1;
-		else isRotation = -isRotation;
-		break;
 	case'r':
-		// 조명을 객체의 중심 y축에 대하여 양/음 뱡향으로 공전
-		if (!isRevolution) isRevolution = 1;
-		else isRevolution = -isRevolution;
+		isRevolution = 1;
 		break;
-	case'z':
-		// 조명을 객체에 가깝게 이동
-		light.move(glm::vec3(-light.pos.x / 10, -light.pos.y / 10, -light.pos.z / 10));
-		break;
-	case'Z':
-		// 조명을 객체에 멀게 이동
-		light.move(glm::vec3(light.pos.x / 10, light.pos.y / 10, light.pos.z / 10));
+	case'R':
+		isRevolution = -1;
 		break;
 	case'q':
 		exit(0);
