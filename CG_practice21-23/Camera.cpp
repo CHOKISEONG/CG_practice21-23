@@ -27,32 +27,16 @@ void Camera::update()
 
 }
 
-void Camera::rotate(float theta, bool rotateX)
+void Camera::rotate(float theta, glm::vec3 axis)
 {
-	float rad = glm::radians(theta);
-
-	glm::vec3 axis;
-	if (rotateX)
-		axis = glm::vec3(1.0f, 0.0f, 0.0f);
-	else
-		axis = glm::vec3(0.0f, 1.0f, 0.0f);
-
 	glm::vec3 look = direction - pos;
-	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), rad, axis);
+	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(theta), axis);
 	look = glm::vec3(rotation * glm::vec4(look, 1.0f));
 	direction = pos + look;
 }
 
-void Camera::rotateFromView(float theta, bool rotateX)
+void Camera::rotateFromView(float theta, glm::vec3 axis)
 {
-	float rad = glm::radians(theta);
-
-	glm::vec3 axis;
-	if (rotateX)
-		axis = glm::vec3(1.0f, 0.0f, 0.0f);
-	else
-		axis = glm::vec3(0.0f, 1.0f, 0.0f);
-
-	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), rad, axis);
+	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(theta), axis);
 	pos = glm::vec3(rotation * glm::vec4(pos, 1.0f));
 }
