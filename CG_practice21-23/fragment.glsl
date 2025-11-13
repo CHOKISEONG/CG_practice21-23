@@ -5,6 +5,9 @@ uniform vec3 lightColor;
 uniform vec3 viewPos;
 uniform vec3 obj_color;
 
+// uniform으로 하고 싶을 때 - obj_color
+// vbo에서 받아서 하고 싶을 때 - objectColor
+
 in vec3 FragPos;
 in vec3 objectColor;
 in vec3 normal;

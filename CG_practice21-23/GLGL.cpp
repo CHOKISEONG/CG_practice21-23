@@ -59,9 +59,9 @@ void make_objects()
 	sphere.push_back(new Sphere(1.5f));
 
 	// 중심 구를 기준으로 공전하는 행성 3개
-	sphere.push_back(new Sphere(0.3f));
-	sphere.push_back(new Sphere(0.1f));
-	sphere.push_back(new Sphere(0.2f));
+	sphere.push_back(new Sphere(0.5f));
+	sphere.push_back(new Sphere(0.5f));
+	sphere.push_back(new Sphere(0.5f));
 	sphere[1]->move(5.0f, 0.0f);
 	sphere[2]->move(-3.0f, -3.0f);
 	sphere[3]->move(3.5f, -3.5f);
