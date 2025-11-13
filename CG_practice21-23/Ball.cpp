@@ -4,15 +4,12 @@ Ball::Ball(GLdouble rad, float x, float y, float z)
 	: radius(rad), pos(glm::vec3(x, y, z))
 {
 	obj = gluNewQuadric();
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution<float> zeroToOne(0.0f,1.0f);
-	moveDir.x = zeroToOne(gen) - 0.5f;
-	moveDir.y = zeroToOne(gen) - 0.5f;
+	moveDir.x = urd(gen) - 0.5f;
+	moveDir.y = urd(gen) - 0.5f;
 
-	colors[0] = zeroToOne(gen);
-	colors[1] = zeroToOne(gen);
-	colors[2] = zeroToOne(gen);
+	colors[0] = urd(gen);
+	colors[1] = urd(gen);
+	colors[2] = urd(gen);
 }
 
 Ball::~Ball()

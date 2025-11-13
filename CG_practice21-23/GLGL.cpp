@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Ball.h"
+#include "Sphere.h"
 
 // 셰이더, 마우스 위치
 GLGL* GLGL::my = nullptr;
@@ -45,6 +46,7 @@ Light light;
 
 // 그릴 도형들
 Cube* cube = nullptr;
+Sphere* sphere = nullptr;
 
 int isRotation = 0;
 int isRevolution = 0;
@@ -54,6 +56,8 @@ void make_objects()
 	cam = new Camera();
 
 	cube = new Cube(25);
+	sphere = new Sphere(3.0f);
+
 
 	light.lightBox = new Cube(0.1f);
 	light.move(glm::vec3(5.0f, 0.0f, 0.0f));
@@ -95,6 +99,7 @@ GLvoid GLGL::Draw()
 	cam->settingCamera(shaderProgramID);
 
 	cube->Draw(shaderProgramID);
+	sphere->draw(shaderProgramID);
 
 	light.lightBox->Draw(shaderProgramID);
 
