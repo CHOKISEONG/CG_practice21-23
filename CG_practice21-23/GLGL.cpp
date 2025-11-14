@@ -16,11 +16,12 @@ Camera* cam = nullptr;
 Light* light; 
 Mountain* mt = nullptr; 
 
+int mtX, mtY;
 void make_objects()
 {
 	cam = new Camera();
 
-	mt = new Mountain(5.0f, 10, 10);
+	mt = new Mountain(5.0f, mtX, mtY);
 
 	light = new Light(glm::vec3(0.0f, 5.0f, 0.0f));
 }
@@ -74,6 +75,8 @@ GLvoid GLGL::ReShape(int w, int h)
 }
 void GLGL::run(int argc, char** argv)
 {
+	std::cout << "가로와 세로의 개수를 입력해주세요.\n";
+	std::cin >> mtX >> mtY;
 	my = this;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
