@@ -123,6 +123,22 @@ void Cube::updateHeight()
 	vertices[23].pos.y =  height;
 }
 
+void Cube::changeHeight(const float amount)
+{
+	if (height + amount < 0.0f)
+	{
+		height = 0.0f;
+	}
+	else if (height + amount > maxHeight)
+	{
+		height = maxHeight;
+	}
+	else
+	{
+		height += amount;
+	}
+}
+
 void Cube::Draw(GLuint shaderProgram) {
 	updateVBO();
 
