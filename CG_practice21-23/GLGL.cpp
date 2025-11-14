@@ -3,7 +3,7 @@
 #include "GLGL.h"
 #include "Camera.h"
 #include "Cube.h"
-#include "Ball.h"
+#include "Character.h"
 #include "Rect.h"
 #include "Mountain.h"
 #include "Light.h"
@@ -22,7 +22,14 @@ Mountain* mt = nullptr;
 bool isMountainIsMaze = false;
 
 // 움직일 객체
-Ball* ball;
+Character* character = nullptr;
+
+// 상하좌우 키 감지용
+// 0-상
+// 1-하
+// 2-좌
+// 3-우
+bool move_state[4];
 
 int mtX, mtY;
 void make_objects()
@@ -39,6 +46,53 @@ void make_objects()
 void FixedUpdate(int nothing)
 {
 	mt->update();
+	if (character != nullptr)
+	{
+		if (move_state[2])
+		{
+			if (move_state[0])
+			{
+				character->setMoving(glm::vec3(-0.01f, 0.0f, -0.01f));
+			}
+			else if (move_state[1])
+			{
+				character->setMoving(glm::vec3(-0.01f, 0.0f, 0.01f));
+			}
+			else
+			{
+				character->setMoving(glm::vec3(-0.015f, 0.0f, 0.0f));
+			}
+		}
+		else if (move_state[3])
+		{
+			if (move_state[0])
+			{
+				character->setMoving(glm::vec3(0.01f, 0.0f, -0.01f));
+			}
+			else if (move_state[1])
+			{
+				character->setMoving(glm::vec3(0.01f, 0.0f, 0.01f));
+			}
+			else
+			{
+				character->setMoving(glm::vec3(0.015f, 0.0f, 0.0f));
+			}
+		}
+		else if (move_state[0])
+		{
+			character->setMoving(glm::vec3(0.0f, 0.0f, -0.015f));
+		}
+		else if (move_state[1])
+		{
+			character->setMoving(glm::vec3(0.0f, 0.0f, 0.015f));
+		}
+		else
+		{
+			character->setMoving(glm::vec3(0.0f, 0.0f, 0.0f));
+		}
+
+		character->update(mt->getTrees());
+	}
 	cam->rotateFromView(camRotateSpeed);
 
 	glutTimerFunc(10, FixedUpdate, NULL);
@@ -56,14 +110,21 @@ GLvoid GLGL::Draw()
 
 	light->applyLight(shaderProgramID);
 	mt->draw(shaderProgramID);
-
-
+	if (character != nullptr)
+	{
+		character->Draw(shaderProgramID);
+	}
+	
 	// 미니맵
 	glViewport(my->width - 400, my->height - 300, 400, 300);
 	minimapCam->settingCamera(shaderProgramID);
 
 	light->applyLight(shaderProgramID);
 	mt->draw(shaderProgramID);
+	if (character != nullptr)
+	{
+		character->Draw(shaderProgramID);
+	}
 
 	glutSwapBuffers();
 }
@@ -123,7 +184,7 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case's':
 		// 미로에서 객체가 나타남
-		
+		character = new Character();
 		break;
 	case'+':
 		// 육면체 위/아래 움직이는 속도 증가
@@ -155,18 +216,41 @@ GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 	switch (key)
 	{
 	case GLUT_KEY_UP:
+		move_state[0] = true;
 		break;
 	case GLUT_KEY_DOWN:
+		move_state[1] = true;
 		break;
 	case GLUT_KEY_LEFT:
+		move_state[2] = true;
 		break;
 	case GLUT_KEY_RIGHT:
+		move_state[3] = true;
 		break;
 	default:
 		break;
 	}
 }
-
+void GLGL::SpecialKeyboardUp(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		move_state[0] = false;
+		break;
+	case GLUT_KEY_DOWN:
+		move_state[1] = false;
+		break;
+	case GLUT_KEY_LEFT:
+		move_state[2] = false;
+		break;
+	case GLUT_KEY_RIGHT:
+		move_state[3] = false;
+		break;
+	default:
+		break;
+	}
+}
 
 GLvoid GLGL::ReShape(int w, int h)
 {
@@ -177,7 +261,7 @@ GLvoid GLGL::ReShape(int w, int h)
 void GLGL::run(int argc, char** argv)
 {
 	std::cout << "가로와 세로의 개수를 입력해주세요.\n";
-	std::cout << "제한 : 5 ~ 50\n";
+	std::cout << "제한 : 5 ~ 25\n";
 	std::cin >> mtX >> mtY;
 
 	my = this;
@@ -209,6 +293,7 @@ void GLGL::run(int argc, char** argv)
 	glutReshapeFunc(GLGL::ReShape);
 	glutKeyboardFunc(GLGL::Keyboard);
 	glutSpecialFunc(GLGL::SpecialKeyboard);
+	glutSpecialUpFunc(GLGL::SpecialKeyboardUp);
 	glutTimerFunc(10, FixedUpdate, NULL);
 	
 	glutMainLoop();

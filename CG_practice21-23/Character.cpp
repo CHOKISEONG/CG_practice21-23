@@ -94,7 +94,7 @@ Character::Character()
 
 	initBuffer();
 
-	move(glm::vec3(0.0f, -0.8f, 0.0f));
+	move(glm::vec3(0.0f, 0.5f, 5.0f));
 }
 
 void Character::move(glm::vec3 v)
@@ -107,7 +107,7 @@ void Character::move(glm::vec3 v)
 	updateVBO();
 }
 
-void Character::update(std::vector<Cube*>& cube)
+void Character::update(const std::vector<Cube*>& cube)
 {
 	// 0 - 몸통 
 	// 8,16 - 다리 
@@ -130,7 +130,7 @@ void Character::update(std::vector<Cube*>& cube)
 	updateVBO();
 }
 
-bool Character::checkCollide(std::vector<Cube*>& cube)
+bool Character::checkCollide(const std::vector<Cube*>& cube)
 {
 	// 구현 안함
 
@@ -277,14 +277,9 @@ void Character::moving()
 	{
 		i.pos += moveDir;
 	}
-	// 2. 벽이랑 충돌 안하는 이동일 때만 원본인 vertices를 이동하게 함
-	if (tmp[26].pos.x >= -1.0f && tmp[32].pos.x <= 1.0f
-		&& tmp[0].pos.z <= 1.0f && tmp[4].pos.z >= -1.0f)
+	for (auto& i : vertices)
 	{
-		for (auto& i : vertices)
-		{
-			i.pos += moveDir;
-		}
+		i.pos += moveDir;
 	}
 	if (moveDir != glm::vec3(0.0f, 0.0f, 0.0f))
 	{

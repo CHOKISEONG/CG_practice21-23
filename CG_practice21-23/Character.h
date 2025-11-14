@@ -20,8 +20,8 @@ public:
 	void decreaseMoveSpeed() { if (moveSpeed >= 0.002f) moveSpeed -= 0.001f; }
 	void move(glm::vec3 v);
 
-	void update(std::vector<Cube*>& cube);
-	bool checkCollide(std::vector<Cube*>& cube);
+	void update(const std::vector<Cube*>& cube);
+	bool checkCollide(const std::vector<Cube*>& cube);
 	void shakeArm();
 	void shakeLeg(bool isOpposite = false);
 

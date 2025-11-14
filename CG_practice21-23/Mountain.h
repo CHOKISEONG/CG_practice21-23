@@ -12,6 +12,8 @@ public:
 	void update();
 	void draw(GLuint shaderProgram);
 
+	std::vector<Cube*> getTrees() { return trees; }
+
 	void stop() { isTreeMove = false; }
 	void resume() { isTreeMove = true; }
 	void changeSpeed(float amount);
