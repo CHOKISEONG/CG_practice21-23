@@ -50,35 +50,14 @@ void make_objects()
 	light.move(glm::vec3(0.0f, 10.0f, 0.0f));
 }
 
-GLvoid GLGL::ReShape(int w, int h)
+void FixedUpdate(int nothing)
 {
-	my->width = w;
-	my->height = h;
-	glViewport(0, 0, my->width, my->height);
+	mt->update();
+	glutTimerFunc(10, FixedUpdate, NULL);
 }
-//GLvoid GLGL::PassiveMotion(int x, int y)
-//{
-//	crx = (2.0f * x - my->width) / my->width;
-//	cry = -(2.0f * y - my->height) / my->height;
-//
-//	float dx = crx - pvx;
-//	float dy = cry - pvy;
-//
-//	pvx = crx;
-//	pvy = cry;
-//}
-//GLvoid GLGL::Motion(int x, int y)
-//{
-//	crx = (2.0f * x - my->width) / my->width;
-//	cry = -(2.0f * y - my->height) / my->height;
-//
-//	pvx = crx;
-//	pvy = cry;
-//
-//	glutPostRedisplay();
-//}
 GLvoid GLGL::Draw()
 {
+	glutPostRedisplay();
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
@@ -93,7 +72,7 @@ GLvoid GLGL::Draw()
 	unsigned int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos");
 	glUniform3f(lightPosLocation, light.pos.x, light.pos.y, light.pos.z);
 
-	// Á¶¸íÀÇ »ö±ò (Èò»öÀ¸·Î ÇÔ)
+	// Á¶¸íÀÇ »ö±ò
 	int lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor");
 	glUniform3f(lightColorLocation, light.color.x, light.color.y, light.color.z);
 	
@@ -103,11 +82,6 @@ GLvoid GLGL::Draw()
 	glUniform3f(viewPosLocation, camPos.x, camPos.y, camPos.z);
 
 	glutSwapBuffers();
-}
-GLvoid GLGL::Idle()
-{
-	mt->update();
-	glutPostRedisplay();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
@@ -127,19 +101,15 @@ GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 	default:
 		break;
 	}
-
-	glutPostRedisplay();
 }
-//GLvoid GLGL::Mouse(int button, int state, int x, int y)
-//{
-//	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-//	{
-//		std::cout << "¹Ù´ÚÀÌ ¿­¸°´Ù.\n";
-//
-//		cube->baseOpen();
-//	}
-//}
 
+
+GLvoid GLGL::ReShape(int w, int h)
+{
+	my->width = w;
+	my->height = h;
+	glViewport(0, 0, my->width, my->height);
+}
 void GLGL::run(int argc, char** argv)
 {
 	my = this;
@@ -158,6 +128,8 @@ void GLGL::run(int argc, char** argv)
 	else
 		std::cout << "GLEW Initialized\n";
 
+	glutFullScreen();
+
 	make_shaderProgram();
 	
 	make_objects();
@@ -167,12 +139,10 @@ void GLGL::run(int argc, char** argv)
 
 	glutDisplayFunc(GLGL::Draw);
 	glutReshapeFunc(GLGL::ReShape);
-	//glutMouseFunc(GLGL::Mouse);
-	//glutMotionFunc(GLGL::Motion);
-	//glutPassiveMotionFunc(GLGL::PassiveMotion);
 	glutKeyboardFunc(GLGL::Keyboard);
-	//glutSpecialFunc(GLGL::SpecialKeyboard);
-	glutIdleFunc(GLGL::Idle);
+	glutSpecialFunc(GLGL::SpecialKeyboard);
+	glutTimerFunc(10, FixedUpdate, NULL);
+	
 	glutMainLoop();
 }
 void GLGL::make_shaderProgram()
