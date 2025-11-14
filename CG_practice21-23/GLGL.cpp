@@ -19,7 +19,7 @@ Camera* cam = nullptr;
 struct Light
 {
 	Cube* lightBox;
-	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 pos = glm::vec3(0.0f, 10.0f, 0.0f);
 	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	bool lightButton = true;
@@ -59,7 +59,7 @@ void make_objects()
 	mt = new Mountain(5.0f, 5, 5);
 
 	light.lightBox = new Cube(0.1f);
-	light.move(glm::vec3(0.0f, 0.0f, 4.0f));
+	light.move(glm::vec3(0.0f, 10.0f, 0.0f));
 }
 
 GLvoid GLGL::ReShape(int w, int h)

@@ -12,7 +12,7 @@ Rect::Rect(const float rad, const glm::vec3 color)
 
 	index =
 	{
-		0, 1, 3, 1, 2, 3,
+		0, 3, 1, 1, 3, 2
 	};
 
 	initBuffer();
