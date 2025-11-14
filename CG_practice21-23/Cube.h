@@ -23,6 +23,7 @@ private:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;
 
-	float height = 0.0f;
+	float minHeight = urd(gen) / 2;
 	float maxHeight = urd(gen) * 3.0f;
+	float height = minHeight;
 };

@@ -13,13 +13,16 @@ GLGL* GLGL::my = nullptr;
 GLuint shaderProgramID;
 
 Camera* cam = nullptr;
-Light* light; 
+Camera* minimapCam = nullptr;
+Light* light = nullptr; 
 Mountain* mt = nullptr; 
 
 int mtX, mtY;
 void make_objects()
 {
 	cam = new Camera();
+	minimapCam = new Camera();
+	minimapCam->move(0.0f, 5.0f, -9.0f);
 
 	mt = new Mountain(5.0f, mtX, mtY);
 
@@ -38,10 +41,18 @@ GLvoid GLGL::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
 
+	// 원래 카메라
+	glViewport(0, 0, my->width, my->height);
 	cam->settingCamera(shaderProgramID);
 
 	light->applyLight(shaderProgramID);
+	mt->draw(shaderProgramID);
 
+	// 미니맵
+	glViewport(my->width - 400, my->height - 300, 400, 300);
+	minimapCam->settingCamera(shaderProgramID);
+
+	light->applyLight(shaderProgramID);
 	mt->draw(shaderProgramID);
 
 	glutSwapBuffers();
@@ -76,7 +87,9 @@ GLvoid GLGL::ReShape(int w, int h)
 void GLGL::run(int argc, char** argv)
 {
 	std::cout << "가로와 세로의 개수를 입력해주세요.\n";
+	std::cout << "제한 : ~50\n";
 	std::cin >> mtX >> mtY;
+
 	my = this;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
