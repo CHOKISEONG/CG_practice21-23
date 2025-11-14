@@ -157,6 +157,17 @@ void Cube::changeColor(glm::vec3 color)
 	}
 }
 
+bool Cube::checkCollide(glm::vec3 p)
+{
+	if (p.x > vertices[2].pos.x && p.x < vertices[0].pos.x
+		&& p.z > vertices[4].pos.z && p.z < vertices[0].pos.z)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void Cube::Draw(GLuint shaderProgram) {
 	updateVBO();
 

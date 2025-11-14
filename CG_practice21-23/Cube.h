@@ -21,6 +21,9 @@ public:
 	void changeHeight(float _height) { height = _height; }
 	void changeSpeed(float amount);
 	void changeColor(glm::vec3 color);
+
+	// p가 큐브 안에 있는지 검사
+	bool checkCollide(glm::vec3 p);
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 

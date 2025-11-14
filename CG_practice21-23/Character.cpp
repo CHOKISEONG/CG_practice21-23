@@ -112,7 +112,7 @@ void Character::update(const std::vector<Cube*>& cube)
 	shakeArm();
 
 	// 큐브랑 충돌 체크
-	if (checkCollide(cube))
+	if (!checkCollide(cube))
 	{
 		// 그다음은 점프하는거 처리
 		jump();
@@ -126,9 +126,17 @@ void Character::update(const std::vector<Cube*>& cube)
 
 bool Character::checkCollide(const std::vector<Cube*>& cube)
 {
-	// 구현 안함
+	glm::vec3 targetPos = pos + moveDir;
+	for (const auto& c : cube)
+	{
+		if (c->checkCollide(targetPos))
+		{
+			std::cout << "충돌\n";
+			return true;
+		}
+	}
 
-	return true;
+	return false;
 }
 
 void Character::shakeArm()

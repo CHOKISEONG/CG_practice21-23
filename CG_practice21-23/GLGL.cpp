@@ -219,9 +219,8 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		cam->toThirdPerson();
 		camRotateSpeed = 0.0f;
 		break;
-	case'c':
-		// 모든 값 초기화
-		
+	case'j':
+		character->jumpStart();
 		break;
 	case'q':
 		exit(0);
