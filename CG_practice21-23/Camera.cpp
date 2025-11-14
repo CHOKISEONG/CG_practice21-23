@@ -15,18 +15,6 @@ void Camera::settingCamera(GLuint shaderProgram)
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 }
 
-void Camera::update()
-{
-	if (isRotating)
-	{
-		if (isRotateSelf)
-			rotate(rotateSpeed, false);
-		else
-			rotateFromView(rotateSpeed, false);
-	}
-
-}
-
 void Camera::rotate(float theta, glm::vec3 axis)
 {
 	glm::vec3 look = direction - pos;
