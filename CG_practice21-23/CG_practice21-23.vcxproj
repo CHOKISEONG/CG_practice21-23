@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GLGL.cpp" />
     <ClCompile Include="header.cpp" />

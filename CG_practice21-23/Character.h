@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 #include "header.h"
 #include "Cube.h"
 
