@@ -10,9 +10,11 @@ void Camera::settingCamera(GLuint shaderProgram)
 
 	unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
 	unsigned int projLoc = glGetUniformLocation(shaderProgram, "projection");
-
+	unsigned int viewPosLocation = glGetUniformLocation(shaderProgram, "viewPos");
+	
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	glUniform3f(viewPosLocation, pos.x, pos.y, pos.z);
 }
 
 void Camera::rotate(float theta, glm::vec3 axis)

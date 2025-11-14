@@ -6,39 +6,15 @@
 #include "Ball.h"
 #include "Rect.h"
 #include "Mountain.h"
-#include "Sphere.h"
+#include "Light.h"
 
-// 셰이더, 마우스 위치
+// 셰이더
 GLGL* GLGL::my = nullptr;
 GLuint shaderProgramID;
 
-// 카메라
 Camera* cam = nullptr;
-
-// 빛
-struct Light
-{
-	Cube* lightBox;
-	glm::vec3 pos = glm::vec3(0.0f, 10.0f, 0.0f);
-	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
-
-	bool lightButton = true;
-	void turnOn() { color = glm::vec3(1.0f); lightButton = true;}
-	void turnOff() { color = glm::vec3(0.1f); lightButton = false; }
-
-	void move(glm::vec3 v)
-	{
-		pos += v;
-		lightBox->move(v);
-	}
-};
-Light light;
-
-// 그릴 도형들
-Mountain* mt = nullptr;
-
-int isRotation = 0;
-int isRevolution = 0;
+Light* light; 
+Mountain* mt = nullptr; 
 
 void make_objects()
 {
@@ -46,8 +22,7 @@ void make_objects()
 
 	mt = new Mountain(5.0f, 5, 5);
 
-	light.lightBox = new Cube(0.1f, 0.1f);
-	light.move(glm::vec3(0.0f, 10.0f, 0.0f));
+	light = new Light(glm::vec3(-5.0f, 5.0f, 0.0f));
 }
 
 void FixedUpdate(int nothing)
@@ -64,22 +39,9 @@ GLvoid GLGL::Draw()
 
 	cam->settingCamera(shaderProgramID);
 
-	light.lightBox->Draw(shaderProgramID);
+	light->applyLight(shaderProgramID);
 
 	mt->draw(shaderProgramID);
-
-	// 조명의 위치
-	unsigned int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos");
-	glUniform3f(lightPosLocation, light.pos.x, light.pos.y, light.pos.z);
-
-	// 조명의 색깔
-	int lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor");
-	glUniform3f(lightColorLocation, light.color.x, light.color.y, light.color.z);
-	
-	// 카메라 위치
-	unsigned int viewPosLocation = glGetUniformLocation(shaderProgramID, "viewPos");
-	glm::vec3 camPos = cam->getPos();
-	glUniform3f(viewPosLocation, camPos.x, camPos.y, camPos.z);
 
 	glutSwapBuffers();
 }

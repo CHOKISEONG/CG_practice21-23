@@ -147,6 +147,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GLGL.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Mountain.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Sphere.h" />
