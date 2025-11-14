@@ -2,6 +2,7 @@
 #pragma once
 
 #include "header.h"
+#include "Character.h"
 
 class Camera
 {
@@ -17,8 +18,12 @@ private:
 	float zFar = 100.0f;	// 먼	 클리핑 평면까지의 거리
 
 	std::string viewType{ "perspective" };
+
+	std::string camType{ "none" };
 public:
 	void settingCamera(GLuint shaderProgram);
+
+	void update(Character* character);
 
 	const glm::vec3 getPos() const { return pos; }
 
@@ -31,4 +36,7 @@ public:
 	// rotateX가 true면 x축회전, false면 y축회전으로 함
 	void rotate(float theta, glm::vec3 axis = glm::vec3(0.0f,1.0f,0.0f));
 	void rotateFromView(float theta, glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f));
+
+	void toFirstPerson() { camType = std::string("firstPerson"); };
+	void toThirdPerson() { camType = std::string("thirdPerson"); };
 };

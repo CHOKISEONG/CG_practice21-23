@@ -26,6 +26,23 @@ void Camera::settingCamera(GLuint shaderProgram)
 	glUniform3f(viewPosLocation, pos.x, pos.y, pos.z);
 }
 
+void Camera::update(Character* character)
+{
+	if (camType == std::string("firstPerson"))
+	{
+		pos = character->getPos() + glm::vec3(0.0f,0.3f,0.0f);
+		if (character->getDir() != glm::vec3(0.0f, 0.0f, 0.0f))
+		{
+			direction = character->getPos() + character->getDir() + glm::vec3(0.0f, 0.3f, 0.0f);
+		}
+		
+	}
+	else if (camType == std::string("thirdPerson"))
+	{
+
+	}
+}
+
 void Camera::rotate(float theta, glm::vec3 axis)
 {
 	glm::vec3 look = direction - pos;

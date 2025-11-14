@@ -16,6 +16,8 @@ public:
 	void setMoving(const glm::vec3 v) { moveDir = v; }
 	void setAngle(float theta) { angle = theta; }
 	const float getSpeed() const { return moveSpeed; }
+	const glm::vec3 getPos() { return pos; }
+	const glm::vec3 getDir() { return moveDir; }
 
 	void increaseMoveSpeed() { if (moveSpeed <= 0.005f) moveSpeed += 0.002f; }
 	void decreaseMoveSpeed() { if (moveSpeed >= 0.002f) moveSpeed -= 0.001f; }

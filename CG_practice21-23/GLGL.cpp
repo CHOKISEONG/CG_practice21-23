@@ -103,6 +103,10 @@ void FixedUpdate(int nothing)
 		character->update(mt->getTrees());
 		light->move(moveDir);
 	}
+	if (character != nullptr)
+	{
+		cam->update(character);
+	}
 	cam->rotateFromView(camRotateSpeed);
 
 	glutTimerFunc(10, FixedUpdate, NULL);
@@ -115,7 +119,7 @@ GLvoid GLGL::Draw()
 	glUseProgram(shaderProgramID);
 
 	// 원래 카메라
-	glViewport(0, 0, my->width, my->height);
+	glViewport(0, 0, my->width - 400, my->height - 300);
 	cam->settingCamera(shaderProgramID);
 
 	light->applyLight(shaderProgramID);
@@ -207,9 +211,13 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case'1':
 		// 카메라 1인칭
+		cam->toFirstPerson();
+		camRotateSpeed = 0.0f;
 		break;
 	case'3':
 		// 카메라 3인칭
+		cam->toThirdPerson();
+		camRotateSpeed = 0.0f;
 		break;
 	case'c':
 		// 모든 값 초기화

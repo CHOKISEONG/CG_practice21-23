@@ -21,64 +21,64 @@ Character::Character(glm::vec3 v)
 		{ { -length,  length, -length }, {1.0f, 0.0f, 0.0f} },
 
 		// ¿ÞÂÊ ´Ù¸® (8~15)
-		{ { -oneQuarterLength	, -length		, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
-		{ { -oneQuarterLength	, -length * 2	, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
-		{ { -threeQuarterLength	, -length * 2	, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
-		{ { -threeQuarterLength	, -length		, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
-		{ { -oneQuarterLength	, -length		, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
-		{ { -oneQuarterLength	, -length * 2	, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
-		{ { -threeQuarterLength	, -length * 2	, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
-		{ { -threeQuarterLength	, -length		, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
+		{ { -oneQuarterLength	, length , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
+		{ { -oneQuarterLength	, 0.0f	 , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
+		{ { -threeQuarterLength	, 0.0f	 , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
+		{ { -threeQuarterLength	, length , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
+		{ { -oneQuarterLength	, length , -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
+		{ { -oneQuarterLength	, 0.0f	 , -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
+		{ { -threeQuarterLength	, 0.0f	 , -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
+		{ { -threeQuarterLength	, length , -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
 
 		// ¿À¸¥ÂÊ ´Ù¸® (16~23)
-		{ { threeQuarterLength	, -length		, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
-		{ { threeQuarterLength	, -length * 2	, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
-		{ { oneQuarterLength	, -length * 2	, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
-		{ { oneQuarterLength	, -length		, oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
-		{ { threeQuarterLength	, -length 		, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
-		{ { threeQuarterLength	, -length * 2	, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
-		{ { oneQuarterLength	, -length * 2	, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
-		{ { oneQuarterLength	, -length 		, -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
+		{ { threeQuarterLength	, length , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
+		{ { threeQuarterLength	, 0.0f	 , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
+		{ { oneQuarterLength	, 0.0f	 , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
+		{ { oneQuarterLength	, length , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
+		{ { threeQuarterLength	, length , -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
+		{ { threeQuarterLength	, 0.0f	 , -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
+		{ { oneQuarterLength	, 0.0f	 , -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
+		{ { oneQuarterLength	, length , -oneQuarterLength }, {0.0f, 1.0f, 0.0f} },
 
 		// ¿ÞÂÊ ÆÈ (24~31)
-		{ { -length				, halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
-		{ { -length				, -halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
-		{ { -length - halfLength, -halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
-		{ { -length - halfLength, halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
-		{ { -length				, halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
-		{ { -length				, -halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
-		{ { -length - halfLength, -halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
-		{ { -length - halfLength, halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
+		{ { -length				, 2 * length + halfLength , oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
+		{ { -length				, 2 * length - halfLength , oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
+		{ { -length - halfLength, 2 * length - halfLength , oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
+		{ { -length - halfLength, 2 * length + halfLength , oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
+		{ { -length				, 2 * length + halfLength , -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
+		{ { -length				, 2 * length - halfLength , -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
+		{ { -length - halfLength, 2 * length - halfLength , -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
+		{ { -length - halfLength, 2 * length + halfLength , -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
 
 		// ¿À¸¥ÂÊ ÆÈ (32~39)
-		{ { length + halfLength	,  halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
-		{ { length + halfLength	, -halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
-		{ { length				, -halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
-		{ { length				,  halfLength	, oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
-		{ { length + halfLength	,  halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
-		{ { length + halfLength	, -halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
-		{ { length				, -halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
-		{ { length				,  halfLength	, -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
+		{ { length + halfLength	, 2 * length + halfLength , oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
+		{ { length + halfLength	, 2 * length - halfLength , oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
+		{ { length				, 2 * length - halfLength , oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
+		{ { length				, 2 * length + halfLength , oneQuarterLength },  {0.0f, 0.0f, 1.0f} },
+		{ { length + halfLength	, 2 * length + halfLength , -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
+		{ { length + halfLength	, 2 * length - halfLength , -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
+		{ { length				, 2 * length - halfLength , -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
+		{ { length				, 2 * length + halfLength , -oneQuarterLength }, {0.0f, 0.0f, 1.0f} },
 
 		// ¾ó±¼ (40~47)
-		{ {  halfLength, length * 2	, halfLength },  {1.0f, 1.0f, 0.0f} },
-		{ {  halfLength, length		, halfLength },  {1.0f, 1.0f, 0.0f} },
-		{ { -halfLength, length		, halfLength },  {1.0f, 1.0f, 0.0f} },
-		{ { -halfLength, length * 2	, halfLength },  {1.0f, 1.0f, 0.0f} },
-		{ {  halfLength, length * 2	, -halfLength }, {1.0f, 1.0f, 0.0f} },
-		{ {  halfLength, length		, -halfLength }, {1.0f, 1.0f, 0.0f} },
-		{ { -halfLength, length		, -halfLength }, {1.0f, 1.0f, 0.0f} },
-		{ { -halfLength, length * 2	, -halfLength }, {1.0f, 1.0f, 0.0f} },
+		{ {  halfLength, 4 * length	, halfLength },  {1.0f, 1.0f, 0.0f} },
+		{ {  halfLength, 3 * length , halfLength },  {1.0f, 1.0f, 0.0f} },
+		{ { -halfLength, 3 * length , halfLength },  {1.0f, 1.0f, 0.0f} },
+		{ { -halfLength, 4 * length	, halfLength },  {1.0f, 1.0f, 0.0f} },
+		{ {  halfLength, 4 * length	, -halfLength }, {1.0f, 1.0f, 0.0f} },
+		{ {  halfLength, 3 * length , -halfLength }, {1.0f, 1.0f, 0.0f} },
+		{ { -halfLength, 3 * length , -halfLength }, {1.0f, 1.0f, 0.0f} },
+		{ { -halfLength, 4 * length	, -halfLength }, {1.0f, 1.0f, 0.0f} },
 
 		// ÄÚ (48~55)
-		{ {  oneQuarterLength, length + threeQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
-		{ {  oneQuarterLength, length + oneQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
-		{ { -oneQuarterLength, length + oneQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
-		{ { -oneQuarterLength, length + threeQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
-		{ {  oneQuarterLength, length + threeQuarterLength	, halfLength + 0.001f },{0.0f, 1.0f, 1.0f} },
-		{ {  oneQuarterLength, length + oneQuarterLength	, halfLength + 0.001f },{0.0f, 1.0f, 1.0f} },
-		{ { -oneQuarterLength, length + oneQuarterLength	, halfLength + 0.001f },{0.0f, 1.0f, 1.0f} },
-		{ { -oneQuarterLength, length + threeQuarterLength	, halfLength + 0.001f },{0.0f, 1.0f, 1.0f} }
+		{ {  oneQuarterLength, 3*length + threeQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
+		{ {  oneQuarterLength, 3*length + oneQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
+		{ { -oneQuarterLength, 3*length + oneQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
+		{ { -oneQuarterLength, 3*length + threeQuarterLength	, halfLength * 3 },		{0.0f, 1.0f, 1.0f} },
+		{ {  oneQuarterLength, 3*length + threeQuarterLength	, halfLength + 0.001f },{0.0f, 1.0f, 1.0f} },
+		{ {  oneQuarterLength, 3*length + oneQuarterLength	, halfLength + 0.001f },{0.0f, 1.0f, 1.0f} },
+		{ { -oneQuarterLength, 3*length + oneQuarterLength	, halfLength + 0.001f },{0.0f, 1.0f, 1.0f} },
+		{ { -oneQuarterLength, 3*length + threeQuarterLength	, halfLength + 0.001f },{0.0f, 1.0f, 1.0f} }
 	};
 	orgVertices = vertices;
 	index.reserve(260); // »ìÂ¦ ³Ë³ËÇÏ°Ô ÀâÀ½
@@ -334,6 +334,6 @@ void Character::Draw(GLuint shaderProgram) {
 	GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-	glDrawElements(GL_LINES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
