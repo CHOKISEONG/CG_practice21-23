@@ -16,6 +16,7 @@
 extern std::random_device rd;
 extern std::mt19937 gen;
 extern std::uniform_real_distribution<float> urd;
+extern std::uniform_int_distribution<int> uid;
 
 struct Vertex
 {

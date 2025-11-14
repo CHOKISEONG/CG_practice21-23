@@ -1,7 +1,9 @@
 #include "Mountain.h"
 
-Mountain::Mountain(float length, int row, int col)
+Mountain::Mountain(float length, int _row, int _col)
 {
+	row = _row;
+	col = _col;
 	base = new Rect(length, glm::vec3(0.2f,0.1f,0.03f));
 	
 	int treeIdx = 0;
@@ -18,6 +20,28 @@ Mountain::Mountain(float length, int row, int col)
 	}
 }
 
+void Mountain::changeToMaze()
+{
+	drawBase = true;
+
+	// 일단 중간 길 뚫어서 풀 수 있는 미로를 만들고
+	int max = (row > col) ? row : col;
+	trees.erase(trees.end() - (col * row) / 2);
+	for (int i{}; i < max; ++i)
+	{
+		trees.erase(trees.end() - (col * row) / 2);
+		trees.erase(trees.end() - (col * row) / 2 + max);
+	}
+	// 나머지 중에 랜덤으로 좀 지움
+	if (max > 10)
+	{
+		for (int i{}; i < static_cast<int>(trees.size()) / 2; ++i)
+		{
+			trees.erase(trees.begin() + uid(gen) % trees.size());
+		}
+	}
+}
+
 void Mountain::update()
 {
 	if (isTreeMove)
@@ -30,6 +54,7 @@ void Mountain::update()
 	}
 	
 }
+
 
 void Mountain::draw(GLuint shaderProgram)
 {

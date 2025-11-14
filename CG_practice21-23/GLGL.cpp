@@ -19,6 +19,7 @@ Camera* minimapCam = nullptr;
 
 Light* light = nullptr; 
 Mountain* mt = nullptr; 
+bool isMountainIsMaze = false;
 
 int mtX, mtY;
 void make_objects()
@@ -106,6 +107,11 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case'r':
 		// 미로 제작
+		if (!isMountainIsMaze)
+		{
+			mt->changeToMaze();
+			isMountainIsMaze = true;
+		}
 		break;
 	case'v':
 		// 육면체들 움직임이 멈추고 낮은 높이로 변함
@@ -165,7 +171,7 @@ GLvoid GLGL::ReShape(int w, int h)
 void GLGL::run(int argc, char** argv)
 {
 	std::cout << "가로와 세로의 개수를 입력해주세요.\n";
-	std::cout << "제한 : ~50\n";
+	std::cout << "제한 : 5 ~ 50\n";
 	std::cin >> mtX >> mtY;
 
 	my = this;
