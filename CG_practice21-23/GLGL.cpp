@@ -57,6 +57,7 @@ GLvoid GLGL::Draw()
 	light->applyLight(shaderProgramID);
 	mt->draw(shaderProgramID);
 
+
 	// 미니맵
 	glViewport(my->width - 400, my->height - 300, 400, 300);
 	minimapCam->settingCamera(shaderProgramID);
@@ -112,7 +113,6 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		// 미로 제작
 		if (!isMountainIsMaze)
 		{
-			ball = new Ball();
 			mt->changeToMaze();
 			isMountainIsMaze = true;
 		}
@@ -123,6 +123,7 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case's':
 		// 미로에서 객체가 나타남
+		
 		break;
 	case'+':
 		// 육면체 위/아래 움직이는 속도 증가
