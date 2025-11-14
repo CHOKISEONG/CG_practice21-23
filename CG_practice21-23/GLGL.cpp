@@ -75,9 +75,11 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case'm':
 		// 육면체들의 위/아래로 움직인다.
+		mt->resume();
 		break;
 	case'M':
 		// 육면체들이 움직이는거 멈춤
+		mt->stop();
 		break;
 	case'y':
 		// 카메라가 y축 기준 양의 방향 회전

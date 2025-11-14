@@ -11,6 +11,9 @@ public:
 
 	void update();
 	void draw(GLuint shaderProgram);
+
+	void stop() { isTreeMove = false; }
+	void resume() { isTreeMove = true; }
 private:
 	Rect* base;
 	std::vector<Cube*> trees;
