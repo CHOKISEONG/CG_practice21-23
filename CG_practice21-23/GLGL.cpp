@@ -20,9 +20,9 @@ void make_objects()
 {
 	cam = new Camera();
 
-	mt = new Mountain(5.0f, 5, 5);
+	mt = new Mountain(5.0f, 10, 10);
 
-	light = new Light(glm::vec3(-5.0f, 5.0f, 0.0f));
+	light = new Light(glm::vec3(0.0f, 5.0f, 0.0f));
 }
 
 void FixedUpdate(int nothing)

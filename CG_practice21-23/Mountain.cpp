@@ -6,9 +6,9 @@ Mountain::Mountain(float length, int row, int col)
 	
 	int treeIdx = 0;
 	const float radius = length / row;
-	for (float i{-length}; i < float(row); i += 2 * length / row)
+	for (float i{-length}; i < length; i += 2 * length / row)
 	{
-		for (float j{ -length}; j < float(col); j += 2 * length / col)
+		for (float j{ -length}; j < length; j += 2 * length / col)
 		{
 			trees.push_back(new Cube(length / row, length / col, glm::vec3(urd(gen),urd(gen),urd(gen))));
 			trees[treeIdx++]->move(glm::vec3(i + length / row, 0.0f, j + length / col));
