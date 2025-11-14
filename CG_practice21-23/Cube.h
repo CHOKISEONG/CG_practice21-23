@@ -13,7 +13,7 @@ public:
 	void updateVBO();
 
 	void updateHeight();
-	void changeHeight(const float amount);
+	void changeHeight();
 	void Draw(GLuint shaderProgram);
 
 	void move(glm::vec3 v);
@@ -25,5 +25,6 @@ private:
 
 	float minHeight = urd(gen) / 2;
 	float maxHeight = urd(gen) * 3.0f;
-	float height = 0.0f;
+	float height = minHeight;
+	float speed = urd(gen) / 100;
 };

@@ -20,11 +20,15 @@ Mountain::Mountain(float length, int row, int col)
 
 void Mountain::update()
 {
-	for (auto& tree : trees)
+	if (isTreeMove)
 	{
-		tree->changeHeight(urd(gen) / 100);
-		tree->updateHeight();
+		for (auto& tree : trees)
+		{
+			tree->changeHeight();
+			tree->updateHeight();
+		}
 	}
+	
 }
 
 void Mountain::draw(GLuint shaderProgram)

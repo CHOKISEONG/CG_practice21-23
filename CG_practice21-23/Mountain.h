@@ -14,4 +14,6 @@ public:
 private:
 	Rect* base;
 	std::vector<Cube*> trees;
+
+	bool isTreeMove = true;
 };

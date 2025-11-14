@@ -123,19 +123,21 @@ void Cube::updateHeight()
 	vertices[23].pos.y =  height;
 }
 
-void Cube::changeHeight(const float amount)
+void Cube::changeHeight()
 {
-	if (amount < 0.0f && height + amount < minHeight)
+	if (speed < 0.0f && height + speed < minHeight)
 	{
 		height = 0.0f;
+		speed = -speed;
 	}
-	else if (height + amount > maxHeight)
+	else if (height + speed > maxHeight)
 	{
 		height = maxHeight;
+		speed = -speed;
 	}
 	else
 	{
-		height += amount;
+		height += speed;
 	}
 }
 
