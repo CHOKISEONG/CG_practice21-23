@@ -21,6 +21,9 @@ Light* light = nullptr;
 Mountain* mt = nullptr; 
 bool isMountainIsMaze = false;
 
+// 움직일 객체
+Ball* ball;
+
 int mtX, mtY;
 void make_objects()
 {
@@ -109,12 +112,14 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		// 미로 제작
 		if (!isMountainIsMaze)
 		{
+			ball = new Ball();
 			mt->changeToMaze();
 			isMountainIsMaze = true;
 		}
 		break;
 	case'v':
 		// 육면체들 움직임이 멈추고 낮은 높이로 변함
+		mt->unityTreeSize();
 		break;
 	case's':
 		// 미로에서 객체가 나타남

@@ -17,6 +17,7 @@ public:
 	void changeSpeed(float amount);
 
 	void changeToMaze();
+	void unityTreeSize();
 private:
 	Rect* base;
 	std::vector<Cube*> trees;

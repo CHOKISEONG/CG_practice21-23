@@ -149,6 +149,14 @@ void Cube::changeSpeed(float amount)
 	}
 }
 
+void Cube::changeColor(glm::vec3 color)
+{
+	for (auto& v : vertices)
+	{
+		v.color = color;
+	}
+}
+
 void Cube::Draw(GLuint shaderProgram) {
 	updateVBO();
 

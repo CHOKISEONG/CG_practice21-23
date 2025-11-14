@@ -42,6 +42,17 @@ void Mountain::changeToMaze()
 	}
 }
 
+void Mountain::unityTreeSize()
+{
+	for (auto& tree : trees)
+	{
+		tree->changeHeight(0.2f + urd(gen) * 0.1f);
+		tree->updateHeight();
+		tree->changeColor(glm::vec3(0.0f, 0.5f + urd(gen) * 0.5f, 0.0f));
+	}
+	isTreeMove = false;
+}
+
 void Mountain::update()
 {
 	if (isTreeMove)
@@ -54,7 +65,6 @@ void Mountain::update()
 	}
 	
 }
-
 
 void Mountain::draw(GLuint shaderProgram)
 {
