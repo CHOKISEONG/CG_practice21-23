@@ -108,7 +108,7 @@ void FixedUpdate(int nothing)
 		cam->update(character);
 	}
 	cam->rotateFromView(camRotateSpeed);
-
+	
 	glutTimerFunc(10, FixedUpdate, NULL);
 }
 GLvoid GLGL::Draw()
@@ -119,7 +119,7 @@ GLvoid GLGL::Draw()
 	glUseProgram(shaderProgramID);
 
 	// 원래 카메라
-	glViewport(0, 0, my->width - 400, my->height - 300);
+	glViewport(0, 0, my->width - 400, my->height);
 	cam->settingCamera(shaderProgramID);
 
 	light->applyLight(shaderProgramID);
@@ -221,6 +221,7 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case'c':
 		// 모든 값 초기화
+		
 		break;
 	case'q':
 		exit(0);
@@ -283,6 +284,22 @@ void GLGL::run(int argc, char** argv)
 	std::cout << "제한 : 5 ~ 25\n";
 	std::cin >> mtX >> mtY;
 
+	std::cout << " o/p: 투영을 선택한다 (직각 투영 / 원근 투영) " <<
+		"\n z / Z: 원근 투영 시 z축으로 이동할 수있게한다. " <<
+		"\n m / M : 육면체들이 위 아래로움직인다 / 멈춘다. " <<
+		"\n 움직이는속도와높이의최대값은다양하다.최대 / 최소높이는본인이정한다. " <<
+		"\n y / Y : 카메라가 바닥의 y축을 기준으로 양 / 음방향으로회전한다. " <<
+		"\n r : 미로를 제작한다. " <<
+		"\n 가로와세로를나눈등분에서미로가만들어지면그해당칸의육면체는사라지고미로가생긴다. " <<
+		"\n v : 육면체들 움직임이 멈추고낮은높이로변한다. " <<
+		"\n 미로에서움직이는객체확인할수있다.다시누르면움직임다시시작된다. " <<
+		"\n s : 미로에서 객체가 나타난다. " <<
+		"\n → / ← / ↑ / ↓ : 객체를 미로에서 앞 / 뒤 / 좌 / 우 이동. " <<
+		"\n + / -: 육면체 이동하는 속도 증가 / 감소 " <<
+		"\n 1 / 3 : 카메라 시점 1인칭 / 3인칭 변환 " <<
+		"\n 1인칭시점(객체시점) / 3인칭시점(쿼터뷰시점) " <<
+		"\n c : 모든 값 초기화 " <<
+		"\n q : 프로그램 종료";
 	my = this;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);

@@ -31,7 +31,11 @@ public:
 	const std::string getViewType() const { return viewType; }
 
 	void changeWidthHeight(float w, float h) { width = w, height = h; }
-	void move(float x, float y, float z = 0.0f) { pos.x += x; pos.y += y; pos.z += z; }
+	void move(float x, float y, float z = 0.0f) 
+	{ 
+		pos.x += x; pos.y += y; pos.z += z; 
+		direction.x += x; direction.y += y; direction.z += z;
+	}
 
 	// rotateX가 true면 x축회전, false면 y축회전으로 함
 	void rotate(float theta, glm::vec3 axis = glm::vec3(0.0f,1.0f,0.0f));
