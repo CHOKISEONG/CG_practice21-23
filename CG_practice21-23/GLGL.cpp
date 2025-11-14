@@ -58,7 +58,7 @@ void FixedUpdate(int nothing)
 			}
 			else if (move_state[1])
 			{
-				moveDir = glm::vec3(-0.015f, 0.0f, 0.0f);
+				moveDir = glm::vec3(-0.01f, 0.0f, 0.01f);
 				character->setAngle(-45.0f);
 			}
 			else

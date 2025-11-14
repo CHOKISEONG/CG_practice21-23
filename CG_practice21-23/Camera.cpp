@@ -28,18 +28,23 @@ void Camera::settingCamera(GLuint shaderProgram)
 
 void Camera::update(Character* character)
 {
+	glm::vec3 dir = character->getDir();
+
 	if (camType == std::string("firstPerson"))
 	{
-		pos = character->getPos() + glm::vec3(0.0f,0.3f,0.0f);
-		if (character->getDir() != glm::vec3(0.0f, 0.0f, 0.0f))
+		if (dir != glm::vec3(0.0f, 0.0f, 0.0f))
 		{
-			direction = character->getPos() + character->getDir() + glm::vec3(0.0f, 0.3f, 0.0f);
+			pos = character->getPos()  + glm::vec3(0.0f, 0.3f, 0.0f);
+			direction = character->getPos() + dir + glm::vec3(0.0f, 0.3f, 0.0f);
 		}
-		
 	}
 	else if (camType == std::string("thirdPerson"))
 	{
-
+		if (dir != glm::vec3(0.0f, 0.0f, 0.0f))
+		{
+			pos = character->getPos() + glm::vec3(0.0f, 3.0f, 3.0f);
+			direction = character->getPos();
+		}
 	}
 }
 
