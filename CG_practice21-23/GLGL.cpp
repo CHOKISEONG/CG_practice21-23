@@ -47,8 +47,7 @@ struct Light
 Light light;
 
 // 그릴 도형들
-Cube* cube = nullptr;
-std::vector<Sphere*> sphere;
+Mountain* mt = nullptr;
 
 int isRotation = 0;
 int isRevolution = 0;
@@ -57,23 +56,7 @@ void make_objects()
 {
 	cam = new Camera();
 
-	cube = new Cube(25);
-	sphere.push_back(new Sphere(1.5f));
-
-	// 중심 구를 기준으로 공전하는 행성 3개
-	sphere.push_back(new Sphere(0.5f));
-	sphere.push_back(new Sphere(0.5f));
-	sphere.push_back(new Sphere(0.5f));
-	sphere[1]->move(5.0f, 0.0f);
-	sphere[2]->move(-3.0f, -3.0f);
-	sphere[3]->move(3.5f, -3.5f);
-	sphere[1]->setAxis();
-	sphere[2]->setAxis();
-	sphere[3]->setAxis();
-	sphere[1]->makeChildren();
-	sphere[2]->makeChildren();
-	sphere[3]->makeChildren();
-
+	mt = new Mountain(5.0f, 5, 5);
 
 	light.lightBox = new Cube(0.1f);
 	light.move(glm::vec3(0.0f, 0.0f, 4.0f));
@@ -114,13 +97,9 @@ GLvoid GLGL::Draw()
 
 	cam->settingCamera(shaderProgramID);
 
-	//cube->Draw(shaderProgramID);
-	for (int i{}; i < sphere.size(); ++i)
-	{
-		sphere[i]->draw(shaderProgramID);
-	}
-
 	light.lightBox->Draw(shaderProgramID);
+
+	mt->draw(shaderProgramID);
 
 	// 조명의 위치
 	unsigned int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos");
@@ -139,52 +118,12 @@ GLvoid GLGL::Draw()
 }
 GLvoid GLGL::Idle()
 {
-	for (auto& o : sphere)
-	{
-		o->revolution();
-	}
-
-	if (isRevolution == 1)
-	{
-		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
-	}
-	else if (isRevolution == -1)
-	{
-		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
-	}
-
-	if (isRotation == 1)
-	{
-		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
-	}
-	else if (isRotation == -1)
-	{
-		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
-	}
 	glutPostRedisplay();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case'c':
-		light.color.x = urd(gen);
-		light.color.y = urd(gen);
-		light.color.z = urd(gen);
-		break;
-	case'm':
-		// 조명 켜기/끄기
-		if (light.lightButton == false)
-			light.turnOn();
-		else
-			light.turnOff();
-		break;
-	case'r':
-		isRevolution = 1;
-		break;
-	case'R':
-		isRevolution = -1;
-		break;
 	case'q':
 		exit(0);
 		break;
