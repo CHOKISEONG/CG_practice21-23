@@ -11,14 +11,14 @@ Character::Character(glm::vec3 v)
 	vertices =
 	{
 		// ¸öÅë (0~7)
-		{ {  length,  length, length },  {1.0f, 0.0f, 0.0f} },
-		{ {  length, -length, length },  {1.0f, 0.0f, 0.0f} },
-		{ { -length, -length, length },  {1.0f, 0.0f, 0.0f} },
-		{ { -length,  length, length },  {1.0f, 0.0f, 0.0f} },
-		{ {  length,  length, -length }, {1.0f, 0.0f, 0.0f} },
-		{ {  length, -length, -length }, {1.0f, 0.0f, 0.0f} },
-		{ { -length, -length, -length }, {1.0f, 0.0f, 0.0f} },
-		{ { -length,  length, -length }, {1.0f, 0.0f, 0.0f} },
+		{ {  length, 2 * length + halfLength , length },  {1.0f, 0.0f, 0.0f} },
+		{ {  length, 2 * length - halfLength, length },  {1.0f, 0.0f, 0.0f} },
+		{ { -length, 2 * length - halfLength, length },  {1.0f, 0.0f, 0.0f} },
+		{ { -length, 2 * length + halfLength , length },  {1.0f, 0.0f, 0.0f} },
+		{ {  length, 2 * length + halfLength , -length }, {1.0f, 0.0f, 0.0f} },
+		{ {  length, 2 * length - halfLength, -length }, {1.0f, 0.0f, 0.0f} },
+		{ { -length, 2 * length - halfLength, -length }, {1.0f, 0.0f, 0.0f} },
+		{ { -length, 2 * length + halfLength , -length }, {1.0f, 0.0f, 0.0f} },
 
 		// ¿ÞÂÊ ´Ù¸® (8~15)
 		{ { -oneQuarterLength	, length , oneQuarterLength },  {0.0f, 1.0f, 0.0f} },
@@ -334,6 +334,9 @@ void Character::Draw(GLuint shaderProgram) {
 	GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
+	glDisable(GL_CULL_FACE);
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
+	glEnable(GL_CULL_FACE);
+
 	glBindVertexArray(0);
 }
