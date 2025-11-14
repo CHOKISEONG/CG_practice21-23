@@ -16,3 +16,10 @@
 extern std::random_device rd;
 extern std::mt19937 gen;
 extern std::uniform_real_distribution<float> urd;
+
+struct Vertex
+{
+	glm::vec3 pos;
+	glm::vec3 color;
+	glm::vec3 normal;
+};

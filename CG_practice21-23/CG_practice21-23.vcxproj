@@ -133,6 +133,8 @@
     <ClCompile Include="GLGL.cpp" />
     <ClCompile Include="header.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mountain.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +147,8 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GLGL.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="Mountain.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Sphere.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

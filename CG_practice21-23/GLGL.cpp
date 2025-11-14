@@ -4,6 +4,8 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Ball.h"
+#include "Rect.h"
+#include "Mountain.h"
 #include "Sphere.h"
 
 // 셰이더, 마우스 위치

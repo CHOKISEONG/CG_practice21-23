@@ -2,13 +2,6 @@
 
 #include "header.h"
 
-struct Vertex
-{
-	glm::vec3 pos;
-	glm::vec3 color;
-	glm::vec3 normal;
-};
-
 class Cube
 {
 public:
