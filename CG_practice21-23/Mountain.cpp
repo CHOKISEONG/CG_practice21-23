@@ -39,3 +39,11 @@ void Mountain::draw(GLuint shaderProgram)
 		tree->Draw(shaderProgram);
 	}
 }
+
+void Mountain::changeSpeed(float amount)
+{
+	for (auto& tree : trees)
+	{
+		tree->changeSpeed(amount);
+	}
+}

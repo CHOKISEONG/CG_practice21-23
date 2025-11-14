@@ -12,11 +12,12 @@ public:
 	void initBuffer();
 	void updateVBO();
 
-	void updateHeight();
-	void changeHeight();
+	void move(glm::vec3 v);
 	void Draw(GLuint shaderProgram);
 
-	void move(glm::vec3 v);
+	void updateHeight();
+	void changeHeight();
+	void changeSpeed(float amount);
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 

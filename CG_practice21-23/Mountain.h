@@ -14,6 +14,8 @@ public:
 
 	void stop() { isTreeMove = false; }
 	void resume() { isTreeMove = true; }
+	void changeSpeed(float amount);
+
 private:
 	Rect* base;
 	std::vector<Cube*> trees;

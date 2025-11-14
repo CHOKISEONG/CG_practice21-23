@@ -98,9 +98,11 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case'+':
 		// 육면체 위/아래 움직이는 속도 증가
+		mt->changeSpeed(0.01f);
 		break;
 	case'-':
 		// 육면체 위/아래 움직이는 속도 감소
+		mt->changeSpeed(-0.01f);
 		break;
 	case'1':
 		// 카메라 1인칭
