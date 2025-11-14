@@ -1,42 +1,40 @@
 #include "Cube.h"
 #include "Mountain.h"
 
-Cube::Cube(float rad)
+Cube::Cube(float rad, glm::vec3 color)
 {
-	const float color = 1.0f;
-
 	const float length = rad;
 	vertices =
 	{
 		// 앞,뒤
-		{ {  length,  length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
-		{ {  length, -length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
-		{ { -length, -length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
-		{ { -length,  length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
-		{ {  length,  length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
-		{ {  length, -length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
-		{ { -length, -length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
-		{ { -length,  length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
+		{ {  length,  length, length }, color, {0.0f, 0.0f, 1.0f} },
+		{ {  length, -length, length }, color, {0.0f, 0.0f, 1.0f} },
+		{ { -length, -length, length }, color, {0.0f, 0.0f, 1.0f} },
+		{ { -length,  length, length }, color, {0.0f, 0.0f, 1.0f} },
+		{ {  length,  length, -length }, color, {0.0f, 0.0f, -1.0f} },
+		{ {  length, -length, -length }, color, {0.0f, 0.0f, -1.0f} },
+		{ { -length, -length, -length }, color, {0.0f, 0.0f, -1.0f} },
+		{ { -length,  length, -length }, color, {0.0f, 0.0f, -1.0f} },
 
 		// 좌,우
-		{ {  length,  length, length },  {color, color, color}, { 1.0f, 0.0f, 0.0f} },
-		{ {  length, -length, length },  {color, color, color}, { 1.0f, 0.0f, 0.0f} },
-		{ { -length, -length, length },  {color, color, color}, {-1.0f, 0.0f, 0.0f} },
-		{ { -length,  length, length },  {color, color, color}, {-1.0f, 0.0f, 0.0f} },
-		{ {  length,  length, -length }, {color, color, color}, { 1.0f, 0.0f, 0.0f} },
-		{ {  length, -length, -length }, {color, color, color}, { 1.0f, 0.0f, 0.0f} },
-		{ { -length, -length, -length }, {color, color, color}, {-1.0f, 0.0f, 0.0f} },
-		{ { -length,  length, -length }, {color, color, color}, {-1.0f, 0.0f, 0.0f} },
+		{ {  length,  length, length },  color, { 1.0f, 0.0f, 0.0f} },
+		{ {  length, -length, length },  color, { 1.0f, 0.0f, 0.0f} },
+		{ { -length, -length, length },  color, {-1.0f, 0.0f, 0.0f} },
+		{ { -length,  length, length },  color, {-1.0f, 0.0f, 0.0f} },
+		{ {  length,  length, -length }, color, { 1.0f, 0.0f, 0.0f} },
+		{ {  length, -length, -length }, color, { 1.0f, 0.0f, 0.0f} },
+		{ { -length, -length, -length }, color, {-1.0f, 0.0f, 0.0f} },
+		{ { -length,  length, -length }, color, {-1.0f, 0.0f, 0.0f} },
 
 		// 상,하
-		{ {  length,  length, length },  {color, color, color}, {0.0f,  1.0f, 0.0f} },
-		{ {  length, -length, length },  {color, color, color}, {0.0f, -1.0f, 0.0f} },
-		{ { -length, -length, length },  {color, color, color}, {0.0f, -1.0f, 0.0f} },
-		{ { -length,  length, length },  {color, color, color}, {0.0f,  1.0f, 0.0f} },
-		{ {  length,  length, -length }, {color, color, color}, {0.0f,  1.0f, 0.0f} },
-		{ {  length, -length, -length }, {color, color, color}, {0.0f, -1.0f, 0.0f} },
-		{ { -length, -length, -length }, {color, color, color}, {0.0f, -1.0f, 0.0f} },
-		{ { -length,  length, -length }, {color, color, color}, {0.0f,  1.0f, 0.0f} }
+		{ {  length,  length, length },  color, {0.0f,  1.0f, 0.0f} },
+		{ {  length, -length, length },  color, {0.0f, -1.0f, 0.0f} },
+		{ { -length, -length, length },  color, {0.0f, -1.0f, 0.0f} },
+		{ { -length,  length, length },  color, {0.0f,  1.0f, 0.0f} },
+		{ {  length,  length, -length }, color, {0.0f,  1.0f, 0.0f} },
+		{ {  length, -length, -length }, color, {0.0f, -1.0f, 0.0f} },
+		{ { -length, -length, -length }, color, {0.0f, -1.0f, 0.0f} },
+		{ { -length,  length, -length }, color, {0.0f,  1.0f, 0.0f} }
 
 	};
 

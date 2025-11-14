@@ -6,7 +6,7 @@ class Cube
 {
 public:
 	// rad 길이의 큐브 생성을 위한 생성자
-	Cube(float rad);
+	Cube(float rad, glm::vec3 color = glm::vec3(1.0f,1.0f,1.0f));
 
 	const std::vector<glm::vec3> getPos();
 

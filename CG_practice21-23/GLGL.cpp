@@ -31,18 +31,6 @@ struct Light
 		pos += v;
 		lightBox->move(v);
 	}
-
-	void revolution(glm::vec3 v, float rad)
-	{
-		lightBox->revolution(v, rad);
-
-		glm::vec4 p(pos, 1.0f);
-		glm::mat4 rotMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rad), v);
-		p = rotMatrix * p;
-		pos.x = p.x;
-		pos.y = p.y;
-		pos.z = p.z;
-	}
 };
 Light light;
 
