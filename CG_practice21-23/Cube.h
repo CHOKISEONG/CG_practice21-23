@@ -5,13 +5,15 @@
 class Cube
 {
 public:
-	// rad 길이의 큐브 생성을 위한 생성자
-	Cube(float rad, glm::vec3 color = glm::vec3(1.0f,1.0f,1.0f));
+	Cube(float width, float height, glm::vec3 color = glm::vec3(1.0f,1.0f,1.0f));
 
 	const std::vector<glm::vec3> getPos();
 
 	void initBuffer();
 	void updateVBO();
+
+	void updateHeight();
+	void changeHeight(const float amount) { height += amount; };
 	void Draw(GLuint shaderProgram);
 
 	void move(glm::vec3 v);
@@ -20,4 +22,6 @@ private:
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;
+
+	float height = 0.0f;
 };
