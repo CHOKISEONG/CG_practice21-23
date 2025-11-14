@@ -5,13 +5,15 @@ Mountain::Mountain(float length, int row, int col)
 	base = new Rect(length, glm::vec3(0.2f,0.1f,0.03f));
 	
 	int treeIdx = 0;
-	const float radius = length / row;
-	for (float i{-length}; i < length; i += 2 * length / row)
+	const float width = length / row;
+	const float height = length / col;
+
+	for (float i{-length}; i < length; i += 2 * width)
 	{
-		for (float j{ -length}; j < length; j += 2 * length / col)
+		for (float j{ -length}; j < length; j += 2 * height)
 		{
-			trees.push_back(new Cube(length / row, length / col, glm::vec3(urd(gen),urd(gen),urd(gen))));
-			trees[treeIdx++]->move(glm::vec3(i + length / row, 0.0f, j + length / col));
+			trees.push_back(new Cube(width, height, glm::vec3(urd(gen),urd(gen),urd(gen))));
+			trees[treeIdx++]->move(glm::vec3(i + width, 0.0f, j + height));
 		}
 	}
 }
