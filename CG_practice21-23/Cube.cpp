@@ -6,34 +6,34 @@ Cube::Cube(float width, float height, glm::vec3 color)
 	vertices =
 	{
 		// 앞,뒤
-		{ {  width,  0.0f, height }, color, {0.0f, 1.0f, 0.0f} },
-		{ {  width, -0.0f, height }, color, {0.0f, 1.0f, 0.0f} },
-		{ { -width, -0.0f, height }, color, {0.0f, 1.0f, 0.0f} },
-		{ { -width,  0.0f, height }, color, {0.0f, 1.0f, 0.0f} },
-		{ {  width,  0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ {  width, -0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ { -width, -0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ { -width,  0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, height }, color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, height }, color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, height }, color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, height }, color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
 
 		// 좌,우
-		{ {  width,  0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
-		{ {  width, -0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
-		{ { -width, -0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
-		{ { -width,  0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
-		{ {  width,  0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ {  width, -0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ { -width, -0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ { -width,  0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
 
 		// 상,하
-		{ {  width,  0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
-		{ {  width, -0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
-		{ { -width, -0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
-		{ { -width,  0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
-		{ {  width,  0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ {  width, -0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ { -width, -0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
-		{ { -width,  0.0f, -height }, color, {0.0f, 1.0f, 0.0f} }
+		{ {  width, 0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, height },  color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ {  width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} },
+		{ { -width, 0.0f, -height }, color, {0.0f, 1.0f, 0.0f} }
 
 	};
 
@@ -108,30 +108,18 @@ void Cube::updateVBO()
 void Cube::updateHeight()
 {
 	vertices[0].pos.y =  height;
-	vertices[1].pos.y = -height;
-	vertices[2].pos.y = -height;
 	vertices[3].pos.y =  height;
 	vertices[4].pos.y =  height;
-	vertices[5].pos.y = -height;
-	vertices[6].pos.y = -height;
 	vertices[7].pos.y =  height;
 
 	vertices[8].pos.y =  height;
-	vertices[9].pos.y = -height;
-	vertices[10].pos.y = -height;
 	vertices[11].pos.y =  height;
 	vertices[12].pos.y =  height;
-	vertices[13].pos.y = -height;
-	vertices[14].pos.y = -height;
 	vertices[15].pos.y =  height;
 
 	vertices[16].pos.y =  height;
-	vertices[17].pos.y = -height;
-	vertices[18].pos.y = -height;
 	vertices[19].pos.y =  height;
 	vertices[20].pos.y =  height;
-	vertices[21].pos.y = -height;
-	vertices[22].pos.y = -height;
 	vertices[23].pos.y =  height;
 }
 

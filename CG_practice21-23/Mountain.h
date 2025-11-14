@@ -9,6 +9,7 @@ class Mountain
 public:
 	Mountain(float length = 5.0f, int row = 5, int col = 5);
 
+	void update();
 	void draw(GLuint shaderProgram);
 private:
 	Rect* base;

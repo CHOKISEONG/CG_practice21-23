@@ -46,7 +46,7 @@ void make_objects()
 
 	mt = new Mountain(5.0f, 5, 5);
 
-	light.lightBox = new Cube(0.1f);
+	light.lightBox = new Cube(0.1f, 0.1f);
 	light.move(glm::vec3(0.0f, 10.0f, 0.0f));
 }
 
@@ -106,6 +106,7 @@ GLvoid GLGL::Draw()
 }
 GLvoid GLGL::Idle()
 {
+	mt->update();
 	glutPostRedisplay();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
