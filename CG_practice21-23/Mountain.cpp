@@ -7,7 +7,7 @@ Mountain::Mountain(float length, int row, int col)
 	{
 		for (float j{ -length}; j < float(row); j += 2 * length / row)
 		{
-			std::cout << i << ", " << j << "\n";
+			trees.push_back(new Cube(length / row));
 		}
 	}
 }
@@ -15,4 +15,8 @@ Mountain::Mountain(float length, int row, int col)
 void Mountain::draw(GLuint shaderProgram)
 {
 	base->Draw(shaderProgram);
+	for (const auto& tree : trees)
+	{
+		tree->Draw(shaderProgram);
+	}
 }
