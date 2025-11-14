@@ -61,6 +61,54 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
+	case'o':
+		// 직각 투영
+		break;
+	case'p':
+		// 원근 투영
+		break;
+	case'z':
+		// (원근 투영때만) z축 이동
+		break;
+	case'Z':
+		// (원근 투영때만) z축 이동
+		break;
+	case'm':
+		// 육면체들의 위/아래로 움직인다.
+		break;
+	case'M':
+		// 육면체들이 움직이는거 멈춤
+		break;
+	case'y':
+		// 카메라가 y축 기준 양의 방향 회전
+		break;
+	case'Y':
+		// 카메라가 y축 기준 음의 방향 회전
+		break;
+	case'r':
+		// 미로 제작
+		break;
+	case'v':
+		// 육면체들 움직임이 멈추고 낮은 높이로 변함
+		break;
+	case's':
+		// 미로에서 객체가 나타남
+		break;
+	case'+':
+		// 육면체 위/아래 움직이는 속도 증가
+		break;
+	case'-':
+		// 육면체 위/아래 움직이는 속도 감소
+		break;
+	case'1':
+		// 카메라 1인칭
+		break;
+	case'3':
+		// 카메라 3인칭
+		break;
+	case'c':
+		// 모든 값 초기화
+		break;
 	case'q':
 		exit(0);
 		break;
@@ -70,8 +118,17 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 }
 GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 {
+	// 객체 이동
 	switch (key)
 	{
+	case GLUT_KEY_UP:
+		break;
+	case GLUT_KEY_DOWN:
+		break;
+	case GLUT_KEY_LEFT:
+		break;
+	case GLUT_KEY_RIGHT:
+		break;
 	default:
 		break;
 	}

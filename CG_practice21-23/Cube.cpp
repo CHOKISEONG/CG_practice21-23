@@ -125,7 +125,7 @@ void Cube::updateHeight()
 
 void Cube::changeHeight(const float amount)
 {
-	if (height + amount < 0.0f)
+	if (amount < 0.0f && height + amount < minHeight)
 	{
 		height = 0.0f;
 	}

@@ -25,5 +25,5 @@ private:
 
 	float minHeight = urd(gen) / 2;
 	float maxHeight = urd(gen) * 3.0f;
-	float height = minHeight;
+	float height = 0.0f;
 };
