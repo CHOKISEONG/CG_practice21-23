@@ -13,7 +13,10 @@ GLGL* GLGL::my = nullptr;
 GLuint shaderProgramID;
 
 Camera* cam = nullptr;
+float camRotateSpeed = 0.0f;
+
 Camera* minimapCam = nullptr;
+
 Light* light = nullptr; 
 Mountain* mt = nullptr; 
 
@@ -32,6 +35,8 @@ void make_objects()
 void FixedUpdate(int nothing)
 {
 	mt->update();
+	cam->rotateFromView(camRotateSpeed);
+
 	glutTimerFunc(10, FixedUpdate, NULL);
 }
 GLvoid GLGL::Draw()
@@ -83,9 +88,11 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case'y':
 		// 카메라가 y축 기준 양의 방향 회전
+		camRotateSpeed = 0.2f;
 		break;
 	case'Y':
 		// 카메라가 y축 기준 음의 방향 회전
+		camRotateSpeed = -0.2f;
 		break;
 	case'r':
 		// 미로 제작

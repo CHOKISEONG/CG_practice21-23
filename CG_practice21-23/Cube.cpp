@@ -140,6 +140,7 @@ void Cube::changeHeight()
 		height += speed;
 	}
 }
+
 void Cube::changeSpeed(float amount)
 {
 	if (speed + amount > 0.0f && speed + amount < 1.0f)
