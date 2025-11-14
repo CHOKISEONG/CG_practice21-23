@@ -137,8 +137,6 @@ GLvoid GLGL::Draw()
 }
 GLvoid GLGL::Idle()
 {
-	cam->update();
-
 	for (auto& o : sphere)
 	{
 		o->revolution();
