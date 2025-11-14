@@ -21,4 +21,5 @@ private:
 	std::vector<Cube*> trees;
 
 	bool isTreeMove = true;
+	bool drawBase = false;
 };

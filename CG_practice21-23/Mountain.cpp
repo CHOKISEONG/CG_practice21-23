@@ -33,7 +33,11 @@ void Mountain::update()
 
 void Mountain::draw(GLuint shaderProgram)
 {
-	base->Draw(shaderProgram);
+	if (drawBase)
+	{
+		base->Draw(shaderProgram);
+	}
+		
 	for (const auto& tree : trees)
 	{
 		tree->Draw(shaderProgram);

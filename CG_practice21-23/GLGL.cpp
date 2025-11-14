@@ -68,15 +68,25 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	{
 	case'o':
 		// 직각 투영
+		cam->setViewType(std::string("ortho"));
 		break;
 	case'p':
 		// 원근 투영
+		cam->setViewType(std::string("perspective"));
 		break;
 	case'z':
 		// (원근 투영때만) z축 이동
+		if (cam->getViewType() == std::string("perspective"))
+		{
+			cam->move(0.0f, 0.0f, -0.5f);
+		}
 		break;
 	case'Z':
 		// (원근 투영때만) z축 이동
+		if (cam->getViewType() == std::string("perspective"))
+		{
+			cam->move(0.0f, 0.0f, 0.5f);
+		}
 		break;
 	case'm':
 		// 육면체들의 위/아래로 움직인다.

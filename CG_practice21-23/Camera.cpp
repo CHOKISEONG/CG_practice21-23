@@ -5,15 +5,24 @@ void Camera::settingCamera(GLuint shaderProgram)
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::lookAt(pos, direction, up);
 
-	glm::mat4 projection = glm::mat4(1.0f);
-	projection = glm::perspective(fovy, width / height, zNear, zFar);
-
 	unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
-	unsigned int projLoc = glGetUniformLocation(shaderProgram, "projection");
-	unsigned int viewPosLocation = glGetUniformLocation(shaderProgram, "viewPos");
-	
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+	glm::mat4 projection = glm::mat4(1.0f);
+
+	if (viewType == "perspective")
+	{
+		projection = glm::perspective(fovy, width / height, zNear, zFar);
+	}
+	else if (viewType == "ortho")
+	{
+		projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -100.0f, 100.0f);
+	}
+
+	unsigned int projLoc = glGetUniformLocation(shaderProgram, "projection");
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+	unsigned int viewPosLocation = glGetUniformLocation(shaderProgram, "viewPos");
 	glUniform3f(viewPosLocation, pos.x, pos.y, pos.z);
 }
 
