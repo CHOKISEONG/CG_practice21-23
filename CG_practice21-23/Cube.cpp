@@ -177,3 +177,16 @@ void Cube::move(glm::vec3 v)
 		i.pos += v;
 	}
 }
+
+void Cube::teleport(glm::vec3 v)
+{
+	glm::vec3 center(0.0f);
+	for (const auto& vert : vertices)
+		center += vert.pos;
+	center /= static_cast<float>(vertices.size());
+
+	glm::vec3 offset = v - center;
+
+	for (auto& vert : vertices)
+		vert.pos += offset;
+}

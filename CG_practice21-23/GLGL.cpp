@@ -30,13 +30,14 @@ Character* character = nullptr;
 // 2-좌
 // 3-우
 bool move_state[4];
+glm::vec3 moveDir;
 
 int mtX, mtY;
 void make_objects()
 {
 	cam = new Camera();
 	minimapCam = new Camera();
-	minimapCam->move(0.0f, 5.0f, -9.0f);
+	minimapCam->move(0.0f, 0.0f, -9.0f);
 
 	mt = new Mountain(5.0f, mtX, mtY);
 
@@ -52,46 +53,47 @@ void FixedUpdate(int nothing)
 		{
 			if (move_state[0])
 			{
-				character->setMoving(glm::vec3(-0.01f, 0.0f, -0.01f));
+				moveDir = glm::vec3(-0.01f, 0.0f, -0.01f);
 			}
 			else if (move_state[1])
 			{
-				character->setMoving(glm::vec3(-0.01f, 0.0f, 0.01f));
+				moveDir = glm::vec3(-0.015f, 0.0f, 0.0f);
 			}
 			else
 			{
-				character->setMoving(glm::vec3(-0.015f, 0.0f, 0.0f));
+				moveDir = glm::vec3(-0.015f, 0.0f, 0.0f);
 			}
 		}
 		else if (move_state[3])
 		{
 			if (move_state[0])
 			{
-				character->setMoving(glm::vec3(0.01f, 0.0f, -0.01f));
+				moveDir = glm::vec3(0.01f, 0.0f, -0.01f);
 			}
 			else if (move_state[1])
 			{
-				character->setMoving(glm::vec3(0.01f, 0.0f, 0.01f));
+				moveDir = glm::vec3(0.01f, 0.0f, 0.01f);
 			}
 			else
 			{
-				character->setMoving(glm::vec3(0.015f, 0.0f, 0.0f));
+				moveDir = glm::vec3(0.015f, 0.0f, 0.0f);
 			}
 		}
 		else if (move_state[0])
 		{
-			character->setMoving(glm::vec3(0.0f, 0.0f, -0.015f));
+			moveDir = glm::vec3(0.0f, 0.0f, -0.015f);
 		}
 		else if (move_state[1])
 		{
-			character->setMoving(glm::vec3(0.0f, 0.0f, 0.015f));
+			moveDir = glm::vec3(0.0f, 0.0f, 0.015f);
 		}
 		else
 		{
-			character->setMoving(glm::vec3(0.0f, 0.0f, 0.0f));
+			moveDir = glm::vec3(0.0f, 0.0f, 0.0f);
 		}
-
+		character->setMoving(moveDir);
 		character->update(mt->getTrees());
+		light->move(moveDir);
 	}
 	cam->rotateFromView(camRotateSpeed);
 
@@ -185,6 +187,7 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	case's':
 		// 미로에서 객체가 나타남
 		character = new Character();
+		light->teleport(glm::vec3(0.0f, 0.5f, 5.0f));
 		break;
 	case'+':
 		// 육면체 위/아래 움직이는 속도 증가

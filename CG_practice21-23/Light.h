@@ -27,6 +27,11 @@ public:
 		pos += v;
 		lightBox->move(v);
 	}
+	void teleport(glm::vec3 v)
+	{
+		pos = v;
+		lightBox->teleport(v);
+	}
 
 	void applyLight(GLuint shaderProgram)
 	{

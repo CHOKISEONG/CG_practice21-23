@@ -13,6 +13,7 @@ public:
 	void updateVBO();
 
 	void move(glm::vec3 v);
+	void teleport(glm::vec3 v);
 	void Draw(GLuint shaderProgram);
 
 	void updateHeight();
