@@ -54,14 +54,17 @@ void FixedUpdate(int nothing)
 			if (move_state[0])
 			{
 				moveDir = glm::vec3(-0.01f, 0.0f, -0.01f);
+				character->setAngle(-135.0f);
 			}
 			else if (move_state[1])
 			{
 				moveDir = glm::vec3(-0.015f, 0.0f, 0.0f);
+				character->setAngle(-45.0f);
 			}
 			else
 			{
 				moveDir = glm::vec3(-0.015f, 0.0f, 0.0f);
+				character->setAngle(-90.0f);
 			}
 		}
 		else if (move_state[3])
@@ -69,23 +72,28 @@ void FixedUpdate(int nothing)
 			if (move_state[0])
 			{
 				moveDir = glm::vec3(0.01f, 0.0f, -0.01f);
+				character->setAngle(135.0f);
 			}
 			else if (move_state[1])
 			{
 				moveDir = glm::vec3(0.01f, 0.0f, 0.01f);
+				character->setAngle(45.0f);
 			}
 			else
 			{
 				moveDir = glm::vec3(0.015f, 0.0f, 0.0f);
+				character->setAngle(90.0f);
 			}
 		}
 		else if (move_state[0])
 		{
 			moveDir = glm::vec3(0.0f, 0.0f, -0.015f);
+			character->setAngle(180.0f);
 		}
 		else if (move_state[1])
 		{
 			moveDir = glm::vec3(0.0f, 0.0f, 0.015f);
+			character->setAngle(0.0f);
 		}
 		else
 		{
@@ -283,7 +291,7 @@ void GLGL::run(int argc, char** argv)
 	else
 		std::cout << "GLEW Initialized\n";
 
-	glutFullScreen();
+	//glutFullScreen();
 
 	make_shaderProgram();
 	

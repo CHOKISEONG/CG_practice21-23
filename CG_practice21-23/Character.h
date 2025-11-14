@@ -6,7 +6,7 @@
 class Character
 {
 public:
-	Character();
+	Character(glm::vec3 v = glm::vec3(0.0f, 0.0f, 5.0f));
 	void initBuffer();
 	void updateVBO();
 
@@ -14,6 +14,7 @@ public:
 
 	bool isOnGround() { return onGround; }
 	void setMoving(const glm::vec3 v) { moveDir = v; }
+	void setAngle(float theta) { angle = theta; }
 	const float getSpeed() const { return moveSpeed; }
 
 	void increaseMoveSpeed() { if (moveSpeed <= 0.005f) moveSpeed += 0.002f; }
@@ -38,11 +39,14 @@ private:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;
 
-	// 중심 좌표 ( 얘를 기준으로 회전하게 구현함)
-	glm::vec3 centralPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	// 중심 좌표
+	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	// 이동할 방향 (벡터 아니고 속도 포함임)
 	glm::vec3 moveDir = glm::vec3(0.0f, 0.0f, 0.0f);
+	
+	// 이동할 방향으로 그릴 때 회전시킬 용도
+	float angle = 0.0f;
 
 	// 이동 속도
 	float moveSpeed = 0.003f;

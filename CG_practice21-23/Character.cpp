@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character()
+Character::Character(glm::vec3 v)
 {
 	const float length = 0.1f;
 	const float threeQuarterLength = 0.075f;
@@ -91,20 +91,14 @@ Character::Character()
 		index.push_back(i + 4); index.push_back(i + 5); index.push_back(i + 6); index.push_back(i + 4); index.push_back(i + 6); index.push_back(i + 7);
 		index.push_back(i + 0); index.push_back(i + 1); index.push_back(i + 2); index.push_back(i + 0); index.push_back(i + 2); index.push_back(i + 3);
 	}
-
+	move(v);
 	initBuffer();
-
-	move(glm::vec3(0.0f, 0.5f, 5.0f));
 }
 
 void Character::move(glm::vec3 v)
 {
-	for (auto& i : vertices)
-	{
-		i.pos += v;
-	}
-
-	updateVBO();
+	pos += v;
+    updateVBO();
 }
 
 void Character::update(const std::vector<Cube*>& cube)
@@ -271,21 +265,11 @@ void Character::shakeLeg(bool isOpposite)
 
 void Character::moving()
 {
-	// 1. tmp를 먼저 이동시켜보고
-	std::vector<Vertex> tmp = vertices;
-	for (auto& i : tmp)
-	{
-		i.pos += moveDir;
-	}
-	for (auto& i : vertices)
-	{
-		i.pos += moveDir;
-	}
-	if (moveDir != glm::vec3(0.0f, 0.0f, 0.0f))
-	{
-		shakeLeg(true);
-		shakeArm();
-	}
+	if (moveDir == glm::vec3(0.0f)) return;
+
+	move(moveDir);
+	shakeLeg(true);
+	shakeArm();
 }
 void Character::jump()
 {
@@ -296,10 +280,10 @@ void Character::jump()
 	jumpSpeed += gravity;
 
 	// 점프 처리 후 땅에 있으면 땅에 있는 상태로 전환
-	if (vertices[9].pos.y <= -1.0f)
+	if (vertices[9].pos.y <= 0.0f)
 	{
 		jumpSpeed = 0.03f;
-		move(glm::vec3(0.0f, -vertices[9].pos.y - 1.0f, 0.0f));
+		move(glm::vec3(0.0f, -vertices[9].pos.y, 0.0f));
 		onGround = true;
 	}
 }
@@ -344,11 +328,12 @@ void Character::Draw(GLuint shaderProgram) {
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
 
-	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 model(1.0f);
+	model = glm::translate(model, pos);  // ← 이동
+	model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0)); // ← 회전
 	GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 	glDrawElements(GL_LINES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
-
 	glBindVertexArray(0);
 }
