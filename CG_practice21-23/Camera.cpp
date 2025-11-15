@@ -34,8 +34,8 @@ void Camera::update(Character* character)
 	{
 		if (dir != glm::vec3(0.0f, 0.0f, 0.0f))
 		{
-			pos = character->getPos()  + glm::vec3(0.0f, 0.3f, 0.0f);
-			direction = character->getPos() + dir + glm::vec3(0.0f, 0.3f, 0.0f);
+			pos = character->getPos()  + glm::vec3(0.0f, 0.4f, 0.0f);
+			direction = character->getPos() + dir + glm::vec3(0.0f, 0.4f, 0.0f);
 		}
 	}
 	else if (camType == std::string("thirdPerson"))
