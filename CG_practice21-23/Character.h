@@ -32,7 +32,13 @@ public:
 	// move함수는 인자값만큼 이동, moving함수는 이동키 처리하는 거 
 	void moving();
 	void jump();
-	void jumpStart() { jumpSpeed = 0.03f; onGround = false; floor = 0.0f; move(glm::vec3(0.0f, 0.03f, 0.0f)); }
+	void jumpStart() 
+	{ 
+		jumpSpeed = 0.03f; 
+		onGround = false; 
+		floor = 0.0f; 
+		move(glm::vec3(0.0f, 0.03f, 0.0f)); 
+	}
 
 	void Draw(GLuint shaderProgram);
 private:

@@ -110,7 +110,6 @@ bool Character::checkCollide(const std::vector<Cube*>& cube)
 			jumpStart();
 			return false;
 		}
-		
 	}
 	return false;
 }
@@ -291,6 +290,8 @@ void Character::update(const std::vector<Cube*>& cube)
 
 	if (canMove)
 	{
+		if (targetPos.x > -5.0f && targetPos.x < 5.0f
+			&& targetPos.z > -5.0f && targetPos.z < 5.0f)
 		moving();
 	}
 	updateVBO();

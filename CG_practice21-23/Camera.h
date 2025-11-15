@@ -34,7 +34,6 @@ public:
 	void move(float x, float y, float z = 0.0f) 
 	{ 
 		pos.x += x; pos.y += y; pos.z += z; 
-		direction.x += x; direction.y += y; direction.z += z;
 	}
 
 	// rotateX가 true면 x축회전, false면 y축회전으로 함
