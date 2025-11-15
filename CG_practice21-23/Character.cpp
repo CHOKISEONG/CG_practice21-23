@@ -7,7 +7,6 @@ Character::Character(glm::vec3 v)
 	const float halfLength = 0.05f;
 	const float oneQuarterLength = 0.025f;
 
-	// 지랄났는데 일단 이 방법으로
 	vertices =
 	{
 		// 몸통 (0~7)
@@ -101,42 +100,42 @@ void Character::move(glm::vec3 v)
     updateVBO();
 }
 
-void Character::update(const std::vector<Cube*>& cube)
-{
-	// 0 - 몸통 
-	// 8,16 - 다리 
-	// 24,32 - 팔
-	// 40,48 - 얼굴,코
-
-	// 팔 흔들기 먼저
-	shakeArm();
-
-	// 큐브랑 충돌 체크
-	if (!checkCollide(cube))
-	{
-		// 그다음은 점프하는거 처리
-		jump();
-
-		// 마지막은 이동하기
-		moving();
-	}
-
-	updateVBO();
-}
-
 bool Character::checkCollide(const std::vector<Cube*>& cube)
 {
 	glm::vec3 targetPos = pos + moveDir;
 	for (const auto& c : cube)
 	{
-		if (c->checkCollide(targetPos))
+		if (c->checkCollide(pos))
 		{
-			std::cout << "충돌\n";
-			return true;
+			std::cout << "현재 위치가 충돌\n";
+			jumpSpeed = 0.03f;
+			onGround = true;
+			canMove = true;
+			if (pos.y + c->getSpeed() >= 0.0f)
+			{
+				move(glm::vec3(0.0f, c->getSpeed(), 0.0f));
+			}
+		}
+		
+	}
+	std::cout << "충돌없음\n";
+	return false;
+}
+
+void Character::checkFloor(const std::vector<Cube*>& cube)
+{
+	for (const auto& c : cube)
+	{
+		if (c->checkCollide(pos))
+		{
+			floor = c->getHeight();
 		}
 	}
 
-	return false;
+	if (floor <= 0.0f)
+	{
+		floor = 0.0f;
+	}
 }
 
 void Character::shakeArm()
@@ -271,9 +270,47 @@ void Character::shakeLeg(bool isOpposite)
 	jumpAmount += legSpeed;
 }
 
+void Character::update(const std::vector<Cube*>& cube)
+{
+	// 0 - 몸통 
+	// 8,16 - 다리 
+	// 24,32 - 팔
+	// 40,48 - 얼굴,코
+	checkFloor(cube);
+	canMove = true;
+	// 팔 흔들기 먼저
+	shakeArm();
+	
+	glm::vec3 targetPos = pos + moveDir;
+	for (const auto& c : cube)
+	{
+		if (c->checkCollide(targetPos))
+		{
+			canMove = false;
+		}
+	}
+	// 큐브랑 충돌 체크
+	if (!checkCollide(cube))
+	{
+		// 그다음은 점프랑 이동
+		jump();
+	}
+
+	if (canMove)
+	{
+		moving();
+	}
+	updateVBO();
+}
+
 void Character::moving()
 {
 	if (moveDir == glm::vec3(0.0f)) return;
+	
+	if (pos.y > floor)
+	{
+		move(glm::vec3(0.0f, -0.001f, 0.0f));
+	}
 
 	move(moveDir);
 	shakeLeg(true);
@@ -284,14 +321,14 @@ void Character::jump()
 	// 땅에 있으면 리턴
 	if (onGround) return;
 
+	std::cout << "점프중\n";
 	move(glm::vec3(0.0f, jumpSpeed, 0.0f));
 	jumpSpeed += gravity;
 
 	// 점프 처리 후 땅에 있으면 땅에 있는 상태로 전환
-	if (vertices[9].pos.y <= 0.0f)
+	if (pos.y < floor)
 	{
 		jumpSpeed = 0.03f;
-		move(glm::vec3(0.0f, -vertices[9].pos.y, 0.0f));
 		onGround = true;
 	}
 }

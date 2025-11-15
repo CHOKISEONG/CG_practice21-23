@@ -20,10 +20,13 @@ public:
 	void changeHeight();
 	void changeHeight(float _height) { height = _height; }
 	void changeSpeed(float amount);
+	const float getSpeed() const { return speed; }
+	const float getHeight() const { return height; }
 	void changeColor(glm::vec3 color);
 
 	// p가 큐브 안에 있는지 검사
 	bool checkCollide(glm::vec3 p);
+	bool checkOnCube(glm::vec3 p);
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 

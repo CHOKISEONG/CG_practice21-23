@@ -25,13 +25,14 @@ public:
 
 	void update(const std::vector<Cube*>& cube);
 	bool checkCollide(const std::vector<Cube*>& cube);
+	void checkFloor(const std::vector<Cube*>& cube);
 	void shakeArm();
 	void shakeLeg(bool isOpposite = false);
 
 	// move함수는 인자값만큼 이동, moving함수는 이동키 처리하는 거 
 	void moving();
 	void jump();
-	void jumpStart() { onGround = false; }
+	void jumpStart() { onGround = false; floor = 0.0f; move(glm::vec3(0.0f, 0.03f, 0.0f)); }
 
 	void Draw(GLuint shaderProgram);
 private:
@@ -59,11 +60,13 @@ private:
 	// 점프할 때 다리 움직이는 속도
 	float legSpeed = 0.05f;
 
-	// 땅에 있는지 확인 용 ( 현재 땅은 y축으로 -1.0f 임 )
+	// 땅에 있는지 확인 용
 	bool onGround = true;
 
 	// 점프하기 위한 중력과 점프속도
 	const float gravity = -0.0005f;
 	float jumpSpeed = 0.03f;
 	float jumpAmount = 0.0f;
+	float floor = 0.0f;
+	bool canMove = true;
 };
