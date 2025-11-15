@@ -107,18 +107,11 @@ bool Character::checkCollide(const std::vector<Cube*>& cube)
 	{
 		if (c->checkCollide(pos))
 		{
-			std::cout << "현재 위치가 충돌\n";
-			jumpSpeed = 0.03f;
-			onGround = true;
-			canMove = true;
-			if (pos.y + c->getSpeed() >= 0.0f)
-			{
-				move(glm::vec3(0.0f, c->getSpeed(), 0.0f));
-			}
+			jumpStart();
+			return false;
 		}
 		
 	}
-	std::cout << "충돌없음\n";
 	return false;
 }
 
@@ -321,7 +314,6 @@ void Character::jump()
 	// 땅에 있으면 리턴
 	if (onGround) return;
 
-	std::cout << "점프중\n";
 	move(glm::vec3(0.0f, jumpSpeed, 0.0f));
 	jumpSpeed += gravity;
 
