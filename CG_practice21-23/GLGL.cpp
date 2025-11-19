@@ -37,6 +37,7 @@ void make_objects()
 	minimapCam->move(0.0f, 0.0f, -9.0f);
 
 	mt = new Mountain(5.0f, mtX, mtY);
+	isMountainIsMaze = false;
 
 	light = new Light(glm::vec3(0.0f, 5.0f, 0.0f));
 }
@@ -216,6 +217,13 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	case'j':
 		character->jumpStart();
 		break;
+	case'c':
+		// 모든 값 초기화
+		make_objects();
+		// 일단 이렇게 함
+		delete character;
+		character = new Character();
+		break;
 	case'q':
 		exit(0);
 		break;
@@ -291,6 +299,7 @@ void GLGL::run(int argc, char** argv)
 		"\n + / -: 육면체 이동하는 속도 증가 / 감소 " <<
 		"\n 1 / 3 : 카메라 시점 1인칭 / 3인칭 변환 " <<
 		"\n 1인칭시점(객체시점) / 3인칭시점(쿼터뷰시점) " <<
+		"\n j : 점프하기 " <<
 		"\n c : 모든 값 초기화 " <<
 		"\n q : 프로그램 종료";
 	my = this;
