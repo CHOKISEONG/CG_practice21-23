@@ -4,7 +4,7 @@ Mountain::Mountain(float length, int _row, int _col)
 {
 	row = _row;
 	col = _col;
-	base = new Rect(length, glm::vec3(0.2f,0.1f,0.03f));
+	base = new Rect(length, glm::vec3(1.0f,1.0f,1.0f));
 	
 	int treeIdx = 0;
 	const float width = length / row;
@@ -46,9 +46,8 @@ void Mountain::unityTreeSize()
 {
 	for (auto& tree : trees)
 	{
-		tree->changeHeight(0.2f + urd(gen) * 0.1f);
+		tree->changeHeight(0.3f);
 		tree->updateHeight();
-		tree->changeColor(glm::vec3(0.0f, 0.5f + urd(gen) * 0.5f, 0.0f));
 	}
 	isTreeMove = false;
 }

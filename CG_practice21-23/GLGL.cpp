@@ -16,8 +16,8 @@ Camera* cam = nullptr;
 
 Camera* minimapCam = nullptr;
 
-Light* light = nullptr; 
-Mountain* mt = nullptr; 
+Light* light = nullptr;
+Mountain* mt = nullptr;
 bool isMountainIsMaze = false;
 
 Character* character = nullptr;
@@ -30,12 +30,18 @@ Character* character = nullptr;
 bool move_state[4];
 glm::vec3 moveDir;
 
+/*
+미니맵 직각투영으로 하기
+원래 카메라를 전체화면으로 띄우고 그 위에 미니맵을 겹쳐서 출력하기. 지금은 화면을 나눠서 출력하고 있음.
+*/
+
 int mtX, mtY;
 void make_objects()
 {
 	cam = new Camera();
 	minimapCam = new Camera();
 	minimapCam->move(0.0f, 0.0f, -9.0f);
+	minimapCam->setViewType(std::string("ortho"));
 
 	mt = new Mountain(5.0f, mtX, mtY);
 	isMountainIsMaze = false;
