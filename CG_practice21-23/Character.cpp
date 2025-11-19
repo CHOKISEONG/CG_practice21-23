@@ -137,18 +137,20 @@ void Character::checkFloor(const std::vector<Cube*>& cube)
 void Character::shakeArm()
 {
 	static float shakeAmount = 0.0f;
-	if (shakeAmount >= 0.5f)
+	if (shakeAmount >= 1.0f)
 	{
 		shakeSpeed = -shakeSpeed;
 	}
-	else if (shakeAmount <= -0.5f)
+	else if (shakeAmount <= -1.0f)
 	{
 		shakeSpeed = -shakeSpeed;
 	}
+	
 
 	for (int i{ 24 }; i < 40; i += 8)
 	{
 		float rotateSpeed = (i == 24) ? shakeSpeed : -shakeSpeed;
+		if (!onGround) rotateSpeed *= 3;
 
 		glm::vec3 A = vertices[i].pos;
 		glm::vec3 B = vertices[i + 3].pos;
@@ -298,6 +300,7 @@ void Character::update(const std::vector<Cube*>& cube)
 			&& targetPos.z > -5.0f && targetPos.z < 5.0f)
 		moving();
 	}
+
 	updateVBO();
 }
 
@@ -366,7 +369,7 @@ void Character::goBackToOriginal()
 	vertices = orgVertices;
 }
 
-void Character::Draw(GLuint shaderProgram) {
+void Character::Draw(GLuint shaderProgram, DrawType drawType) {
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
 
@@ -377,7 +380,7 @@ void Character::Draw(GLuint shaderProgram) {
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 	glDisable(GL_CULL_FACE);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
+	glDrawElements(GLenum(drawType), static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
 	glEnable(GL_CULL_FACE);
 
 	light->teleport(pos);

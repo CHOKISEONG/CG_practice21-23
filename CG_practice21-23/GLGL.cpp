@@ -21,6 +21,8 @@ Mountain* mt = nullptr;
 bool isMountainIsMaze = false;
 
 Character* character = nullptr;
+std::vector<Character*> shadows;
+int shadowsTimer = 0;
 
 glm::vec3 moveDir;
 
@@ -38,10 +40,10 @@ void make_objects()
 	light = new Light(glm::vec3(0.0f, 5.0f, 0.0f));
 }
 
-GLvoid FixedUpdate(int nothing)
+void FixedUpdate(int nothing)
 {
 	mt->update();
-	if (character != nullptr)
+	if (character)
 	{
 		if (keyState.arrows[Arrows::Left])
 		{
@@ -96,10 +98,9 @@ GLvoid FixedUpdate(int nothing)
 
 		character->setMoving(moveDir);
 		character->update(mt->getTrees());
-	}
-	if (character)
-	{
 		cam->update(character);
+
+		
 	}
 
 	if (keyState.alphabets[Alphabets::y])
@@ -132,6 +133,10 @@ GLvoid GLGL::Draw()
 	if (character)
 	{
 		character->Draw(shaderProgramID);
+		for (const auto& shadow : shadows)
+		{
+			shadow->Draw(shaderProgramID, Character::DrawType::STRIP);
+		}
 	}
 	mt->draw(shaderProgramID);
 	
@@ -288,6 +293,37 @@ GLvoid GLGL::ReShape(int w, int h)
 	my->height = h;
 	glViewport(0, 0, my->width, my->height);
 }
+void makeShadows(int nothing)
+{
+	if (character)
+	{
+		if (!character->isOnGround())
+		{
+			shadows.push_back(new Character(*character));
+			if (shadows.size() > 20)
+			{
+				shadows.erase(shadows.begin());
+			}
+
+			for (auto& shadow : shadows)
+			{
+				shadow->setAngle(shadow->getAngle() + 0.1f);
+			}
+		}
+		else
+		{
+			if (shadows.size() > 0)
+			{
+				shadows.erase(shadows.begin());
+			}
+			shadowsTimer = 30;
+		}
+
+		shadowsTimer += 10;
+	}
+
+	glutTimerFunc(shadowsTimer, makeShadows, NULL);
+}
 void GLGL::run(int argc, char** argv)
 {
 	std::cout << "가로와 세로의 개수를 입력해주세요.\n";
@@ -343,6 +379,7 @@ void GLGL::run(int argc, char** argv)
 	glutSpecialFunc(GLGL::SpecialKeyboard);
 	glutSpecialUpFunc(GLGL::SpecialKeyboardUp);
 	glutTimerFunc(10, FixedUpdate, NULL);
+	glutTimerFunc(100, makeShadows, NULL);
 	
 	glutMainLoop();
 }

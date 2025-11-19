@@ -8,17 +8,28 @@ class Character
 {
 public:
 	Character(glm::vec3 v = glm::vec3(0.0f, 0.0f, 5.0f));
+
+	enum class DrawType
+	{
+		POINTS = GL_POINTS,
+		LINES = GL_LINES,
+		TRIANGLES = GL_TRIANGLES,
+		STRIP = GL_LINE_STRIP
+	};
 	void initBuffer();
 	void updateVBO();
 
 	void goBackToOriginal(); // 처음 상태, 위치로
 
+
 	bool isOnGround() { return onGround; }
 	void setMoving(const glm::vec3 v) { moveDir = v; }
 	void setAngle(float theta) { angle = theta; }
 	const float getSpeed() const { return moveSpeed; }
+	const float getAngle() { return angle; }
 	const glm::vec3 getPos() { return pos; }
 	const glm::vec3 getDir() { return moveDir; }
+	
 
 	void increaseMoveSpeed() { if (moveSpeed <= 0.005f) moveSpeed += 0.002f; }
 	void decreaseMoveSpeed() { if (moveSpeed >= 0.002f) moveSpeed -= 0.001f; }
@@ -41,7 +52,7 @@ public:
 		move(glm::vec3(0.0f, 0.03f, 0.0f)); 
 	}
 
-	void Draw(GLuint shaderProgram);
+	void Draw(GLuint shaderProgram, DrawType drawType = DrawType::TRIANGLES);
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 
@@ -64,7 +75,7 @@ private:
 	float moveSpeed = 0.003f;
 
 	// 팔 흔드는 속도
-	float shakeSpeed = 0.01f;
+	float shakeSpeed = 0.03f;
 
 	// 점프할 때 다리 움직이는 속도
 	float legSpeed = 0.05f;
