@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <array>
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>

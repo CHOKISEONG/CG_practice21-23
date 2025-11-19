@@ -6,6 +6,7 @@
 #include "Character.h"
 #include "Rect.h"
 #include "Mountain.h"
+#include "KeyState.h"
 #include "Light.h"
 
 GLGL* GLGL::my = nullptr;
@@ -174,11 +175,13 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		mt->stop();
 		break;
 	case'y':
+		keyState.keyDown(key);
 		// 카메라가 y축 기준 양의 방향 회전
 		cam->rotateFromView(0.5f);
 		break;
 	case'Y':
 		// 카메라가 y축 기준 음의 방향 회전
+		keyState.keyDown(key);
 		cam->rotateFromView(-0.5f);
 		break;
 	case'r':
