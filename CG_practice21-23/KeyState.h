@@ -7,10 +7,20 @@ enum Mouse {
 	RIGHT
 };
 
+enum Alphabets
+{
+	a, b, c, d, e, f, g, 
+	h, i, j, k, l, m, n, o, p, 
+	q, r, s, t, u, v, w, x, y, z,
+	A, B, C, D, E, F, G, 
+	H, I, J, K, L, M, N, O, P,
+	Q, R, S, T, U, V, W, X, Y, Z
+};
+
 struct KeyState
 {
-	// 알파벳 대소문자 구별 안함
-	std::array<bool, 26> alphabets{};
+	// 0~25 소문자, 26~51 대문자
+	std::array<bool, 52> alphabets{};
 	std::array<bool, 10> numbers{};
 	std::array<bool, 2> mouse{};
 
@@ -20,9 +30,9 @@ struct KeyState
 		{
 			alphabets[ch - 'a'] = true;
 		}
-		else if (ch >= 'A' && ch <= 'A')
+		else if (ch >= 'A' && ch <= 'Z')
 		{
-			alphabets[ch - 'A'] = true;
+			alphabets[ch - 'A' + 26] = true;
 		}
 		else if (ch >= '0' && ch <= '9')
 		{
@@ -37,12 +47,16 @@ struct KeyState
 		}
 		else if (ch >= 'A' && ch <= 'A')
 		{
-			alphabets[ch - 'A'] = false;
+			alphabets[ch - 'A' + 26] = false;
 		}
 		else if (ch >= '0' && ch <= '9')
 		{
 			numbers[ch - '0'] = false;
 		}
+	}
+	void keyClear()
+	{
+		alphabets = std::array<bool, 52>{};
 	}
 
 	// 아직 쓸 일이 없음

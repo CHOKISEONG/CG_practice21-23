@@ -106,6 +106,15 @@ void FixedUpdate(int nothing)
 	{
 		cam->update(character);
 	}
+
+	if (keyState.alphabets[Alphabets::y])
+	{
+		cam->rotateFromView(0.5f);
+	}
+	if (keyState.alphabets[Alphabets::Y])
+	{
+		cam->rotateFromView(-0.5f);
+	}
 	
 	glutTimerFunc(10, FixedUpdate, NULL);
 }
@@ -176,13 +185,9 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	case'y':
 		keyState.keyDown(key);
-		// 카메라가 y축 기준 양의 방향 회전
-		cam->rotateFromView(0.5f);
 		break;
 	case'Y':
-		// 카메라가 y축 기준 음의 방향 회전
 		keyState.keyDown(key);
-		cam->rotateFromView(-0.5f);
 		break;
 	case'r':
 		// 미로 제작
@@ -233,6 +238,11 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	default:
 		break;
 	}
+}
+void GLGL::KeyboardUp(unsigned char key, int x, int y)
+{
+	// 걍 다 초기화하게 함
+	keyState.keyClear();
 }
 GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 {
@@ -333,6 +343,7 @@ void GLGL::run(int argc, char** argv)
 	glutDisplayFunc(GLGL::Draw);
 	glutReshapeFunc(GLGL::ReShape);
 	glutKeyboardFunc(GLGL::Keyboard);
+	glutKeyboardUpFunc(GLGL::KeyboardUp);
 	glutSpecialFunc(GLGL::SpecialKeyboard);
 	glutSpecialUpFunc(GLGL::SpecialKeyboardUp);
 	glutTimerFunc(10, FixedUpdate, NULL);

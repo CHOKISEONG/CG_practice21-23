@@ -15,6 +15,7 @@ public:
 	static void Draw();
 	static void ReShape(int w, int h);
 	static void Keyboard(unsigned char key, int x, int y);
+	static void KeyboardUp(unsigned char key, int x, int y);
 	static void SpecialKeyboard(int key, int x, int y);
 	static void SpecialKeyboardUp(int key, int x, int y);
 
