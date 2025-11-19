@@ -17,12 +17,21 @@ enum Alphabets
 	Q, R, S, T, U, V, W, X, Y, Z
 };
 
+enum Arrows
+{
+	Left,
+	Right,
+	Up,
+	Down
+};
+
 struct KeyState
 {
 	// 0~25 소문자, 26~51 대문자
 	std::array<bool, 52> alphabets{};
 	std::array<bool, 10> numbers{};
 	std::array<bool, 2> mouse{};
+	std::array<bool, 4> arrows{};
 
 	void keyDown(const char ch)
 	{
@@ -59,15 +68,32 @@ struct KeyState
 		alphabets = std::array<bool, 52>{};
 	}
 
+	void arrowDown(Arrows arrow)
+	{
+		arrows[arrow] = true;
+	}
+	void arrowUp(Arrows arrow)
+	{
+		arrows[arrow] = false;
+	}
+	bool isArrowDown()
+	{
+		for (const auto& a : arrows)
+		{
+			if (a == true) return true;
+		}
+		return false;
+	}
+
 	// 아직 쓸 일이 없음
 	void toggleMouse(Mouse _mouse)
 	{
-		if (_mouse == LEFT)
-			mouse[LEFT] = !mouse[LEFT];
-		else if (_mouse == RIGHT)
-			mouse[RIGHT] = !mouse[RIGHT];
+		if (_mouse == Mouse::LEFT)
+			mouse[Mouse::LEFT] = !mouse[Mouse::LEFT];
+		else if (_mouse == Mouse::RIGHT)
+			mouse[Mouse::RIGHT] = !mouse[Mouse::RIGHT];
 	}
 };
 
-// 편하게 쓸려고 struct에다가 전역에 둠
+// 편하게 쓸려고 전역에 변수 만들어 둠
 KeyState keyState;

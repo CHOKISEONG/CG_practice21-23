@@ -22,18 +22,7 @@ bool isMountainIsMaze = false;
 
 Character* character = nullptr;
 
-// 상하좌우 키 감지용
-// 0-상
-// 1-하
-// 2-좌
-// 3-우
-bool move_state[4];
 glm::vec3 moveDir;
-
-/*
-미니맵 직각투영으로 하기
-원래 카메라를 전체화면으로 띄우고 그 위에 미니맵을 겹쳐서 출력하기. 지금은 화면을 나눠서 출력하고 있음.
-*/
 
 int mtX, mtY;
 void make_objects()
@@ -49,19 +38,19 @@ void make_objects()
 	light = new Light(glm::vec3(0.0f, 5.0f, 0.0f));
 }
 
-void FixedUpdate(int nothing)
+GLvoid FixedUpdate(int nothing)
 {
 	mt->update();
 	if (character != nullptr)
 	{
-		if (move_state[2])
+		if (keyState.arrows[Arrows::Left])
 		{
-			if (move_state[0])
+			if (keyState.arrows[Arrows::Up])
 			{
 				moveDir = glm::vec3(-0.01f, 0.0f, -0.01f);
 				character->setAngle(-135.0f);
 			}
-			else if (move_state[1])
+			else if (keyState.arrows[Arrows::Down])
 			{
 				moveDir = glm::vec3(-0.01f, 0.0f, 0.01f);
 				character->setAngle(-45.0f);
@@ -72,14 +61,14 @@ void FixedUpdate(int nothing)
 				character->setAngle(-90.0f);
 			}
 		}
-		else if (move_state[3])
+		else if (keyState.arrows[Arrows::Right])
 		{
-			if (move_state[0])
+			if (keyState.arrows[Arrows::Up])
 			{
 				moveDir = glm::vec3(0.01f, 0.0f, -0.01f);
 				character->setAngle(135.0f);
 			}
-			else if (move_state[1])
+			else if (keyState.arrows[Arrows::Down])
 			{
 				moveDir = glm::vec3(0.01f, 0.0f, 0.01f);
 				character->setAngle(45.0f);
@@ -90,12 +79,12 @@ void FixedUpdate(int nothing)
 				character->setAngle(90.0f);
 			}
 		}
-		else if (move_state[0])
+		else if (keyState.arrows[Arrows::Up])
 		{
 			moveDir = glm::vec3(0.0f, 0.0f, -0.015f);
 			character->setAngle(180.0f);
 		}
-		else if (move_state[1])
+		else if (keyState.arrows[Arrows::Down])
 		{
 			moveDir = glm::vec3(0.0f, 0.0f, 0.015f);
 			character->setAngle(0.0f);
@@ -132,7 +121,7 @@ GLvoid GLGL::Draw()
 	glUseProgram(shaderProgramID);
 
 	// 원래 카메라
-	glViewport(0, 0, my->width - 400, my->height);
+	glViewport(0, 0, my->width, my->height);
 	cam->settingCamera(shaderProgramID);
 
 	if (light)
@@ -147,7 +136,7 @@ GLvoid GLGL::Draw()
 	mt->draw(shaderProgramID);
 	
 	// 미니맵
-	glViewport(my->width - 400, my->height - 300, 400, 300);
+	glViewport(my->width - 600, my->height - 400, 600, 400);
 	minimapCam->settingCamera(shaderProgramID);
 
 	if (light)
@@ -248,53 +237,51 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	}
 }
-void GLGL::KeyboardUp(unsigned char key, int x, int y)
+GLvoid GLGL::KeyboardUp(unsigned char key, int x, int y)
 {
 	// 걍 다 초기화하게 함
 	keyState.keyClear();
 }
 GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
 {
-	// 객체 이동
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		move_state[0] = true;
+		keyState.arrowDown(Arrows::Up);
 		break;
 	case GLUT_KEY_DOWN:
-		move_state[1] = true;
+		keyState.arrowDown(Arrows::Down);
 		break;
 	case GLUT_KEY_LEFT:
-		move_state[2] = true;
+		keyState.arrowDown(Arrows::Left);
 		break;
 	case GLUT_KEY_RIGHT:
-		move_state[3] = true;
+		keyState.arrowDown(Arrows::Right);
 		break;
 	default:
 		break;
 	}
 }
-void GLGL::SpecialKeyboardUp(int key, int x, int y)
+GLvoid GLGL::SpecialKeyboardUp(int key, int x, int y)
 {
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		move_state[0] = false;
+		keyState.arrowUp(Arrows::Up);
 		break;
 	case GLUT_KEY_DOWN:
-		move_state[1] = false;
+		keyState.arrowUp(Arrows::Down);
 		break;
 	case GLUT_KEY_LEFT:
-		move_state[2] = false;
+		keyState.arrowUp(Arrows::Left);
 		break;
 	case GLUT_KEY_RIGHT:
-		move_state[3] = false;
+		keyState.arrowUp(Arrows::Right);
 		break;
 	default:
 		break;
 	}
 }
-
 GLvoid GLGL::ReShape(int w, int h)
 {
 	my->width = w;

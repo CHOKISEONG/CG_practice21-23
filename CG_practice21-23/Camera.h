@@ -27,10 +27,12 @@ public:
 
 	void update(Character* character);
 
-	const glm::vec3 getPos() const { return pos; }
-
 	void setViewType(std::string str) { viewType = str; }
+
+	const glm::vec3 getPos() const { return pos; }
+	const glm::vec3 getDir() const { return direction; }
 	const std::string getViewType() const { return viewType; }
+	const std::string getCamType() const { return camType; }
 
 	void changeWidthHeight(float w, float h) { width = w, height = h; }
 	void move(float x, float y, float z = 0.0f) 
@@ -38,8 +40,8 @@ public:
 		pos.x += x; pos.y += y; pos.z += z; 
 	}
 
-	// rotateX가 true면 x축회전, false면 y축회전으로 함
 	void rotate(float theta, glm::vec3 axis = glm::vec3(0.0f,1.0f,0.0f));
+
 	void rotateFromView(float theta, glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f));
 
 	void toFirstPerson() { camType = std::string("firstPerson"); };
