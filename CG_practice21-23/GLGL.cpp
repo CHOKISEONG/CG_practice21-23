@@ -98,11 +98,11 @@ void FixedUpdate(int nothing)
 		{
 			moveDir = glm::vec3(0.0f, 0.0f, 0.0f);
 		}
+
 		character->setMoving(moveDir);
 		character->update(mt->getTrees());
-		light->teleport(character->getPos() + glm::vec3(0.0f, -0.3f, 0.0f));
 	}
-	if (character != nullptr)
+	if (character)
 	{
 		cam->update(character);
 	}
@@ -129,28 +129,37 @@ GLvoid GLGL::Draw()
 	glViewport(0, 0, my->width - 400, my->height);
 	cam->settingCamera(shaderProgramID);
 
-	light->applyLight(shaderProgramID);
-	mt->draw(shaderProgramID);
-	if (character != nullptr)
+	if (light)
+	{
+		light->applyLight(shaderProgramID);
+	}
+	
+	if (character)
 	{
 		character->Draw(shaderProgramID);
 	}
+	mt->draw(shaderProgramID);
 	
 	// 미니맵
 	glViewport(my->width - 400, my->height - 300, 400, 300);
 	minimapCam->settingCamera(shaderProgramID);
 
-	light->applyLight(shaderProgramID);
-	mt->draw(shaderProgramID);
-	if (character != nullptr)
+	if (light)
+	{
+		light->applyLight(shaderProgramID);
+	}
+
+	if (character)
 	{
 		character->Draw(shaderProgramID);
 	}
+	mt->draw(shaderProgramID);
 
 	glutSwapBuffers();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
+	keyState.keyDown(key);
 	switch (key)
 	{
 	case'o':
@@ -183,12 +192,6 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		// 육면체들이 움직이는거 멈춤
 		mt->stop();
 		break;
-	case'y':
-		keyState.keyDown(key);
-		break;
-	case'Y':
-		keyState.keyDown(key);
-		break;
 	case'r':
 		// 미로 제작
 		if (!isMountainIsMaze)
@@ -204,7 +207,8 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	case's':
 		// 미로에서 객체가 나타남
 		character = new Character();
-		light->teleport(glm::vec3(0.0f, 0.5f, 5.0f));
+		light->dontDrawBox();
+		light->teleport(glm::vec3(0.0f, -5.0f, 0.0f));
 		break;
 	case'+':
 		// 육면체 위/아래 움직이는 속도 증가
@@ -228,9 +232,8 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	case'c':
 		// 모든 값 초기화
 		make_objects();
-		// 일단 이렇게 함
 		delete character;
-		character = new Character();
+		character = nullptr;
 		break;
 	case'q':
 		exit(0);

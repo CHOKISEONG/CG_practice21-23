@@ -2,6 +2,7 @@
 
 #include "header.h"
 #include "Cube.h"
+#include "Light.h"
 
 class Character
 {
@@ -47,6 +48,8 @@ private:
 	std::vector<Vertex> orgVertices;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;
+
+	Light* light; // 캐릭터가 가지고 있는 빛
 
 	// 중심 좌표
 	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);

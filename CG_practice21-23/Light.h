@@ -33,6 +33,15 @@ public:
 		lightBox->teleport(v);
 	}
 
+	void drawBox()
+	{
+		isBoxVisible = true;
+	}
+	void dontDrawBox()
+	{
+		isBoxVisible = false;
+	}
+
 	void applyLight(GLuint shaderProgram)
 	{
 		unsigned int lightPosLocation = glGetUniformLocation(shaderProgram, "lightPos");
@@ -41,11 +50,16 @@ public:
 		int lightColorLocation = glGetUniformLocation(shaderProgram, "lightColor");
 		glUniform3f(lightColorLocation, color.x, color.y, color.z);
 
-		lightBox->Draw(shaderProgram);
+		if (isBoxVisible)
+		{
+			lightBox->Draw(shaderProgram);
+		}
 	}
 
 private:
 	Cube* lightBox;
+	bool isBoxVisible = true; // 박스 그릴지 여부
+
 	glm::vec3 pos;
 	glm::vec3 color;
 };

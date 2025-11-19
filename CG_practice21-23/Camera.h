@@ -20,6 +20,8 @@ private:
 	std::string viewType{ "perspective" };
 
 	std::string camType{ "none" };
+
+	glm::vec3 firstPersonDir = glm::vec3(0.0f,0.0f,1.0f); // 1인칭 시점에서 쓰이는 바라보는 방향 저장용
 public:
 	void settingCamera(GLuint shaderProgram);
 

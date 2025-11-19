@@ -91,6 +91,10 @@ Character::Character(glm::vec3 v)
 		index.push_back(i + 0); index.push_back(i + 1); index.push_back(i + 2); index.push_back(i + 0); index.push_back(i + 2); index.push_back(i + 3);
 	}
 	move(v);
+
+	light = new Light(v);
+	light->dontDrawBox();
+
 	initBuffer();
 }
 
@@ -375,6 +379,9 @@ void Character::Draw(GLuint shaderProgram) {
 	glDisable(GL_CULL_FACE);
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
 	glEnable(GL_CULL_FACE);
+
+	light->teleport(pos);
+	light->applyLight(shaderProgram);
 
 	glBindVertexArray(0);
 }
