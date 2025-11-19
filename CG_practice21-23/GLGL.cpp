@@ -17,7 +17,9 @@ Camera* cam = nullptr;
 Camera* minimapCam = nullptr;
 
 Light* light = nullptr;
+
 Mountain* mt = nullptr;
+int mtX, mtY;
 bool isMountainIsMaze = false;
 
 Character* character = nullptr;
@@ -26,7 +28,9 @@ int shadowsTimer = 0;
 
 glm::vec3 moveDir;
 
-int mtX, mtY;
+float timer = 30.0f;
+char str[10];
+
 void make_objects()
 {
 	cam = new Camera();
@@ -123,6 +127,7 @@ GLvoid GLGL::Draw()
 
 	// 원래 카메라
 	glViewport(0, 0, my->width, my->height);
+
 	cam->settingCamera(shaderProgramID);
 
 	if (light)
@@ -140,6 +145,8 @@ GLvoid GLGL::Draw()
 	}
 	mt->draw(shaderProgramID);
 	
+	
+
 	// 미니맵
 	glViewport(my->width - 600, my->height - 400, 600, 400);
 	minimapCam->settingCamera(shaderProgramID);
@@ -352,7 +359,7 @@ void GLGL::run(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowPosition(400, 200);
 	glutInitWindowSize(my->width, my->height);
-	glutCreateWindow("openGL practice 21");
+	glutCreateWindow("homework");
 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
@@ -363,7 +370,7 @@ void GLGL::run(int argc, char** argv)
 	else
 		std::cout << "GLEW Initialized\n";
 
-	glutFullScreen();
+	//glutFullScreen();
 
 	make_shaderProgram();
 	

@@ -12,7 +12,7 @@ Mountain::Mountain(float length, int _row, int _col)
 
 	for (float i{-length}; i < length; i += 2 * width)
 	{
-		for (float j{ -length}; j < length; j += 2 * height)
+		for (float j{ -length}; j < length - height; j += 2 * height)
 		{
 			trees.push_back(new Cube(width, height, glm::vec3(urd(gen),urd(gen),urd(gen))));
 			trees[treeIdx++]->move(glm::vec3(i + width, 0.0f, j + height));
