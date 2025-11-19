@@ -363,7 +363,7 @@ void GLGL::run(int argc, char** argv)
 	else
 		std::cout << "GLEW Initialized\n";
 
-	//glutFullScreen();
+	glutFullScreen();
 
 	make_shaderProgram();
 	

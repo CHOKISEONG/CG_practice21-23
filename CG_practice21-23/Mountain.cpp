@@ -46,7 +46,7 @@ void Mountain::unityTreeSize()
 {
 	for (auto& tree : trees)
 	{
-		tree->changeHeight(0.3f);
+		tree->changeHeight(1.0f);
 		tree->updateHeight();
 	}
 	isTreeMove = false;
