@@ -4,7 +4,6 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Character.h"
-#include "Rect.h"
 #include "Mountain.h"
 #include "KeyState.h"
 #include "Light.h"
@@ -241,6 +240,7 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		make_objects();
 		delete character;
 		character = nullptr;
+		shadows.clear();
 		break;
 	case'q':
 		exit(0);
