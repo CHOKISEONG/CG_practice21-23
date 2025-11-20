@@ -236,7 +236,6 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		character->jumpStart();
 		break;
 	case'c':
-		// 모든 값 초기화
 		make_objects();
 		delete character;
 		character = nullptr;
@@ -334,7 +333,7 @@ void makeShadows(int nothing)
 void GLGL::run(int argc, char** argv)
 {
 	std::cout << "가로와 세로의 개수를 입력해주세요.\n";
-	std::cout << "제한 : 5 ~ 25\n";
+	std::cout << "제한 : 5 ~ 80\n 입력: ";
 	std::cin >> mtX >> mtY;
 
 	std::cout << " o/p: 투영을 선택한다 (직각 투영 / 원근 투영) " <<
@@ -348,10 +347,10 @@ void GLGL::run(int argc, char** argv)
 		"\n 미로에서움직이는객체확인할수있다.다시누르면움직임다시시작된다. " <<
 		"\n s : 미로에서 객체가 나타난다. " <<
 		"\n → / ← / ↑ / ↓ : 객체를 미로에서 앞 / 뒤 / 좌 / 우 이동. " <<
+		"\n j : 점프하기 " <<
 		"\n + / -: 육면체 이동하는 속도 증가 / 감소 " <<
 		"\n 1 / 3 : 카메라 시점 1인칭 / 3인칭 변환 " <<
 		"\n 1인칭시점(객체시점) / 3인칭시점(쿼터뷰시점) " <<
-		"\n j : 점프하기 " <<
 		"\n c : 모든 값 초기화 " <<
 		"\n q : 프로그램 종료";
 	my = this;
