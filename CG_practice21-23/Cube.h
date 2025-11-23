@@ -25,6 +25,7 @@ public:
 	Cube(float rad);
 
 	const std::vector<glm::vec3> getPos();
+	void setHeight(float amount);
 
 	void initBuffer();
 	void updateVBO();
@@ -37,6 +38,7 @@ public:
 	void setType(Type _type) { type = _type; }
 	Type getType() { return type; }
 	void changePolygon();
+	void changeColor(float f);
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 

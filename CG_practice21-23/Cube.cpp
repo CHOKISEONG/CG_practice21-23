@@ -171,6 +171,14 @@ const std::vector<glm::vec3> Cube::getPos()
 	return pos;
 }
 
+void Cube::setHeight(float amount)
+{
+	for (auto& a : vertices)
+	{
+		a.pos.y = amount;
+	}
+}
+
 void Cube::initBuffer()
 {
 	glGenVertexArrays(1, &VAO);
@@ -380,5 +388,13 @@ void Cube::changePolygon()
 			17, 18, 22, 17, 22, 21
 
 		};
+	}
+}
+
+void Cube::changeColor(float f)
+{
+	for (auto& c : vertices)
+	{
+		c.color = glm::vec3(f, f, f);
 	}
 }

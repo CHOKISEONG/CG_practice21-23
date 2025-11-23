@@ -46,31 +46,35 @@ Light light;
 
 // 그릴 도형들
 Cube* cube = nullptr;
+Cube* base = nullptr;
 std::vector<Sphere*> sphere;
 
-int isRotation = 0;
-int isRevolution = 0;
+bool isRevolution = false;
 
 void make_objects()
 {
 	cam = new Camera();
 
 	cube = new Cube(25);
-	sphere.push_back(new Sphere(1.5f));
+	cube->setType(Cube::Type::squarePyramid);
+	cube->changePolygon();
+
+	base = new Cube(3.0f);
+	base->setHeight(0.0f);
+	base->move(glm::vec3(0.0f, -1.0f, 0.0f));
+	base->changeColor(0.1f);
 
 	// 중심 구를 기준으로 공전하는 행성 3개
-	sphere.push_back(new Sphere(0.5f));
-	sphere.push_back(new Sphere(0.5f));
-	sphere.push_back(new Sphere(0.5f));
+	sphere.push_back(new Sphere(0.1f));
+	sphere.push_back(new Sphere(0.3f));
+	sphere.push_back(new Sphere(0.4f));
+	sphere[0]->move(2.0f, 0.0f);
 	sphere[1]->move(5.0f, 0.0f);
-	sphere[2]->move(-3.0f, -3.0f);
-	sphere[3]->move(3.5f, -3.5f);
+	sphere[2]->move(6.5f, 0.0f);
+	sphere[0]->setAxis();
 	sphere[1]->setAxis();
 	sphere[2]->setAxis();
-	sphere[3]->setAxis();
-	sphere[1]->makeChildren();
 	sphere[2]->makeChildren();
-	sphere[3]->makeChildren();
 
 
 	light.lightBox = new Cube(0.1f);
@@ -112,11 +116,12 @@ GLvoid GLGL::Draw()
 
 	cam->settingCamera(shaderProgramID);
 
-	//cube->Draw(shaderProgramID);
+	cube->Draw(shaderProgramID);
 	for (int i{}; i < sphere.size(); ++i)
 	{
 		sphere[i]->draw(shaderProgramID);
 	}
+	base->Draw(shaderProgramID);
 
 	light.lightBox->Draw(shaderProgramID);
 
@@ -142,46 +147,34 @@ GLvoid GLGL::Idle()
 		o->revolution();
 	}
 
-	if (isRevolution == 1)
+	if (isRevolution)
 	{
 		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
 	}
-	else if (isRevolution == -1)
-	{
-		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
-	}
 
-	if (isRotation == 1)
-	{
-		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
-	}
-	else if (isRotation == -1)
-	{
-		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
-	}
 	glutPostRedisplay();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case'c':
-		light.color.x = urd(gen);
-		light.color.y = urd(gen);
-		light.color.z = urd(gen);
-		break;
-	case'm':
-		// 조명 켜기/끄기
-		if (light.lightButton == false)
-			light.turnOn();
-		else
-			light.turnOff();
+	case's':
+
 		break;
 	case'r':
-		isRevolution = 1;
+		isRevolution = !isRevolution;
 		break;
-	case'R':
-		isRevolution = -1;
+	case'n':
+		
+		break;
+	case'f':
+
+		break;
+	case'+':
+
+		break;
+	case'-':
+
 		break;
 	case'q':
 		exit(0);
