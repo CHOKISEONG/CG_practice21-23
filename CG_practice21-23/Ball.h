@@ -30,9 +30,8 @@ public:
     ~Ball();
 
     const glm::vec3 getPos() const { return pos; }
-    bool isBallInPolygon(const std::vector<glm::vec3> rectPoints);
 
-    void update(const std::vector<glm::vec3> rectPoints);
+    void update();
 
     void draw(GLuint shaderProgram, DrawType drawType) const;
 };

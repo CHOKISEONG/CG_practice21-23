@@ -4,6 +4,7 @@ uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 viewPos;
 uniform vec3 obj_color;
+uniform float ambientLight;
 
 // uniform으로 하고 싶을 때 - obj_color
 // vbo에서 받아서 하고 싶을 때 - objectColor
@@ -15,7 +16,6 @@ out vec4 Fragcolor;
 
 void main ()
 {
-	float ambientLight = 0.3;
 	vec3 ambient = ambientLight * lightColor;
 
 	vec3 normalVector = normalize(normal);

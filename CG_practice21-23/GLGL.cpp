@@ -43,11 +43,16 @@ struct Light
 	}
 };
 Light light;
+float ambientLight = 0.3f;
 
 // 그릴 도형들
 Cube* cube = nullptr;
 Cube* base = nullptr;
 std::vector<Sphere*> sphere;
+
+// 눈
+std::vector<Ball*> snows;
+bool snowFalling = false;
 
 bool isRevolution = false;
 
@@ -79,6 +84,13 @@ void make_objects()
 
 	light.lightBox = new Cube(0.1f);
 	light.move(glm::vec3(0.0f, 0.0f, 4.0f));
+
+	snows.reserve(1000);
+	for (int i{}; i < 1000; ++i)
+	{
+		snows.push_back(new Ball(0.03, urd(gen) * 6 - 3, urd(gen) * 20 + 6, urd(gen) * 6 - 3));
+	}
+	
 }
 
 GLvoid GLGL::ReShape(int w, int h)
@@ -123,6 +135,11 @@ GLvoid GLGL::Draw()
 	}
 	base->Draw(shaderProgramID);
 
+	for (const auto& snow : snows)
+	{
+		snow->draw(shaderProgramID, DrawType::DRAW_SOLID);
+	}
+
 	light.lightBox->Draw(shaderProgramID);
 
 	// 조명의 위치
@@ -132,6 +149,9 @@ GLvoid GLGL::Draw()
 	// 조명의 색깔 (흰색으로 함)
 	int lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor");
 	glUniform3f(lightColorLocation, light.color.x, light.color.y, light.color.z);
+
+	int ambientLightLocation = glGetUniformLocation(shaderProgramID, "ambientLight");
+	glUniform1f(ambientLightLocation, ambientLight);
 	
 	// 카메라 위치
 	unsigned int viewPosLocation = glGetUniformLocation(shaderProgramID, "viewPos");
@@ -146,7 +166,14 @@ GLvoid GLGL::Idle()
 	{
 		o->revolution();
 	}
-
+	if (snowFalling)
+	{
+		for (auto& o : snows)
+		{
+			o->update();
+		}
+	}
+	
 	if (isRevolution)
 	{
 		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
@@ -159,22 +186,25 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case's':
-
+		// 하늘에서눈이내린다. 작은육면체또는구들을 랜덤한속도로위에서아래로내려오게한다.  
+		// 충분한숫자의객체를사용한다.  
+		// 바닥에닿으면다시위에서내려오기시작한다 / 멈춘다.
+		snowFalling = !snowFalling;
 		break;
 	case'r':
 		isRevolution = !isRevolution;
 		break;
 	case'n':
-		
+		light.move(glm::vec3(light.pos.x * -0.01f, 0.0f, light.pos.z * -0.01f));
 		break;
 	case'f':
-
+		light.move(glm::vec3(light.pos.x * 0.01f, 0.0f, light.pos.z * 0.01f));
 		break;
 	case'+':
-
+		ambientLight += ambientLight * 0.1f;
 		break;
 	case'-':
-
+		ambientLight += ambientLight * -0.1f;
 		break;
 	case'q':
 		exit(0);
