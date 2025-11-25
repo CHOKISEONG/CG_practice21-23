@@ -2,7 +2,7 @@
 #include "stb_image.h"
 #include "Cube.h"
 
-Cube::Cube(int practiceNum)
+Cube::Cube(int practiceNum, const char* str)
 {
 	if (practiceNum == 21)
 	{
@@ -93,7 +93,7 @@ Cube::Cube(int practiceNum)
 	}
 
 	initBuffer();
-	initTexture();
+	initTexture(str);
 }
 
 const std::vector<glm::vec3> Cube::getPos()
@@ -135,7 +135,7 @@ void Cube::initBuffer()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW);
 }
 
-void Cube::initTexture()
+void Cube::initTexture(const char* str)
 {
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -145,10 +145,10 @@ void Cube::initTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	stbi_set_flip_vertically_on_load(1);
-	unsigned char* data = stbi_load("A.png", &width, &height, &numberOfChannel, 0);
+	unsigned char* data = stbi_load(str, &width, &height, &numberOfChannel, 0);
 	if (!data)
 	{
-		std::cerr << "Failed to load texture: A.png" << std::endl;
+		std::cerr << "Failed to load texture: " << str << std::endl;
 		return;
 	}
 
@@ -162,67 +162,6 @@ void Cube::initTexture()
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	stbi_image_free(data);
-}
-
-GLubyte* Cube::LoadDIBitmap(const char* filename, BITMAPINFO** info)
-{
-	FILE* fp;
-	GLubyte* bits;
-	int bitsize, infosize;
-	BITMAPFILEHEADER header;
-
-	//--- 바이너리읽기모드로파일을연다
-	if ((fopen_s(&fp, filename, "rb")) == NULL)
-		return NULL;
-
-	//--- 비트맵파일헤더를읽는다.
-	if (fread(&header, sizeof(BITMAPFILEHEADER), 1, fp) < 1) {
-		fclose(fp);
-		return NULL;
-	}
-
-	//--- 파일이BMP 파일인지확인한다.
-	if (header.bfType != 'MB') {
-		fclose(fp);
-		return NULL;
-	}
-
-	//--- BITMAPINFOHEADER 위치로간다.
-	infosize = header.bfOffBits - sizeof(BITMAPFILEHEADER);
-
-	//--- 비트맵이미지데이터를넣을메모리할당을한다.
-	if ((*info = (BITMAPINFO*)malloc(infosize)) == NULL) {
-		fclose(fp);
-		return NULL;
-	}
-
-	//--- 비트맵인포헤더를읽는다.
-	if (fread(*info, 1, infosize, fp) < (unsigned int)infosize) {
-		free(*info);
-		fclose(fp);
-		return NULL;
-	}
-
-	//--- 비트맵의크기설정
-	if ((bitsize = (*info)->bmiHeader.biSizeImage) == 0)
-		bitsize = ((*info)->bmiHeader.biWidth * (*info)->bmiHeader.biBitCount + 7) / 8.0 * abs((*info)->bmiHeader.biHeight);
-
-	//--- 비트맵의크기만큼메모리를할당한다.
-	if ((bits = (unsigned char*)malloc(bitsize)) == NULL) {
-		free(*info);
-		fclose(fp);
-		return NULL;
-	}
-
-	//--- 비트맵데이터를bit(GLubyte 타입)에저장한다.
-	if (fread(bits, 1, bitsize, fp) < (unsigned int)bitsize) {
-		free(*info); free(bits);
-		fclose(fp);
-		return NULL;
-	}
-
-	fclose(fp);
-	return bits;
 }
 
 void Cube::updateVBO()

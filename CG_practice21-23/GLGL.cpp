@@ -4,10 +4,16 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Ball.h"
+#include "Background.h"
 
 // 셰이더, 마우스 위치
 GLGL* GLGL::my = nullptr;
 GLuint shaderProgramID;
+
+GLuint mapShader;
+
+// 배경
+Background* bg;
 
 // 카메라
 Camera* cam = nullptr;
@@ -53,17 +59,10 @@ void make_objects()
 {
 	cam = new Camera();
 
-	cube = new Cube(25);
+	cube = new Cube(25, "A.png");
 
-	light.lightBox = new Cube(0.1f);
+	light.lightBox = new Cube(21, "A.png");
 	light.move(glm::vec3(5.0f, 0.0f, 0.0f));
-}
-
-void delete_objects()
-{
-	delete cam;
-	delete cube;
-	delete light.lightBox;
 }
 
 GLvoid GLGL::ReShape(int w, int h)
@@ -74,8 +73,16 @@ GLvoid GLGL::ReShape(int w, int h)
 }
 GLvoid GLGL::Draw()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	if (bg)
+	{
+		glUseProgram(mapShader);
+		bg->Draw(mapShader);
+	}
+	
+
 	glUseProgram(shaderProgramID);
 
 	cam->settingCamera(shaderProgramID);
@@ -133,6 +140,9 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		cube->setType(Cube::Type::squarePyramid);
 		cube->changePolygon();
 		break;
+	case 'm':
+		bg = new Background("Background.png");
+		break;
 	case 'x':
 		isRotation_X = 1;
 		break;
@@ -148,8 +158,8 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	case 's':
 		isRotation_X = 0;
 		isRotation_Y = 0;
-		delete_objects();
-		make_objects();
+		delete cube;
+		cube = new Cube(25, "A.png");
 		break;
 	case'q':
 		exit(0);
@@ -178,6 +188,7 @@ void GLGL::run(int argc, char** argv)
 		std::cout << "GLEW Initialized\n";
 
 	make_shaderProgram();
+	make_shaderProgram_map();
 	
 	make_objects();
 
@@ -244,6 +255,62 @@ void GLGL::make_fragmentShaders()
 	if (!result)
 	{
 		glGetShaderInfoLog(my->fragmentShader, 512, NULL, errorLog);
+		std::cerr << "ERROR: frag_shader 컴파일 실패\n" << errorLog << std::endl;
+		return;
+	}
+	else
+		std::cout << "fragment shader 컴파일 성공\n";
+}
+void GLGL::make_shaderProgram_map()
+{
+	make_vertexShaders_map();
+	make_fragmentShaders_map();
+
+	mapShader = glCreateProgram();
+
+	glAttachShader(mapShader, my->vertexShader_map);
+	glAttachShader(mapShader, my->fragmentShader_map);
+	glLinkProgram(mapShader);
+
+	glDeleteShader(my->vertexShader_map);
+	glDeleteShader(my->fragmentShader_map);
+
+	glUseProgram(mapShader);
+}
+void GLGL::make_vertexShaders_map()
+{
+	my->vertexSource_map = filetobuf("vertex_map.glsl");
+	my->vertexShader_map = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(my->vertexShader_map, 1, (const GLchar**)&my->vertexSource_map, NULL);
+	glCompileShader(my->vertexShader_map);
+
+	// 에러 체크
+	GLint result;
+	GLchar errorLog[512];
+	glGetShaderiv(my->vertexShader_map, GL_COMPILE_STATUS, &result);
+	if (!result)
+	{
+		glGetShaderInfoLog(my->vertexShader_map, 512, NULL, errorLog);
+		std::cerr << "ERROR: vertex shader 컴파일 실패\n" << errorLog << std::endl;
+		return;
+	}
+	else
+		std::cout << "vertex shader 컴파일 성공\n";
+}
+void GLGL::make_fragmentShaders_map()
+{
+	my->fragmentSource_map = filetobuf("fragment_map.glsl");
+	my->fragmentShader_map = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(my->fragmentShader_map, 1, (const GLchar**)&my->fragmentSource_map, NULL);
+	glCompileShader(my->fragmentShader_map);
+
+	// 에러 체크
+	GLint result;
+	GLchar errorLog[512];
+	glGetShaderiv(my->fragmentShader_map, GL_COMPILE_STATUS, &result);
+	if (!result)
+	{
+		glGetShaderInfoLog(my->fragmentShader_map, 512, NULL, errorLog);
 		std::cerr << "ERROR: frag_shader 컴파일 실패\n" << errorLog << std::endl;
 		return;
 	}

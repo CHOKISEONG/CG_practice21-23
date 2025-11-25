@@ -19,13 +19,12 @@ public:
 	};
 
 	// 실습 번호마다 맞게 생성을 위해
-	Cube(int practiceNum);
+	Cube(int practiceNum, const char* str);
 
 	const std::vector<glm::vec3> getPos();
 
 	void initBuffer();
-	void initTexture();
-	GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info);
+	void initTexture(const char* str);
 
 	void updateVBO();
 	void Draw(GLuint shaderProgram);
