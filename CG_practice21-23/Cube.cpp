@@ -44,32 +44,30 @@ Cube::Cube(int practiceNum)
 		// 정사각형 테스트
 		vertices =
 		{
-			{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {1.0f, 1.0f} },
-			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {1.0f, 0.0f} },
-			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f} },
-			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 1.0f} },
-			{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f} },
-			{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f} },
-
-			{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 1.0f} },
-			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f} },
-
-			{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
-			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
-			{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
-			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f} },
-			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {1.0f, 1.0f} }
+			{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.5f} },
+			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
+			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
+			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
+			{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
+			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
+			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
+			{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
+			{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
+			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
+			{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      },
+			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} }
 
 		};
 
@@ -95,8 +93,6 @@ Cube::Cube(int practiceNum)
 	}
 
 	initBuffer();
-
-	// 텍스처 초기화 (stb_image 사용)
 	initTexture();
 }
 
@@ -130,7 +126,7 @@ void Cube::initBuffer()
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glEnableVertexAttribArray(1);
 
-	// 텍스쳐 (location = 2) - vec2로 수정
+	// 텍스쳐 (location = 2)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texture));
 	glEnableVertexAttribArray(2);
 
@@ -148,7 +144,6 @@ void Cube::initTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	// 이미지 로드 (PNG)
 	stbi_set_flip_vertically_on_load(1);
 	unsigned char* data = stbi_load("A.png", &width, &height, &numberOfChannel, 0);
 	if (!data)
@@ -304,68 +299,66 @@ void Cube::changePolygon()
 {
 	if (type == Type::cube)
 	{
-		const float color = 1.0f;
 		const float length = 1.0f;
 		vertices =
 		{
-			{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {1.0f, 1.0f} },
-			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {1.0f, 0.0f} },
-			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f} },
-			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 1.0f} },
-			{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f} },
-			{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f} },
-			{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 1.0f} },
-			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f} },
-			{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
-			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
-			{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
-			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f} },
-			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {1.0f, 1.0f} }
+			{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.5f} },
+			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
+			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
+			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
+			{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
+			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
+			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
+			{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
+			{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
+			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
+			{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      }, 
+			{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      },
+			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} }
 
 		};
 	}
 	else if (type == Type::squarePyramid)
 	{
-		const float color = 1.0f;
 		const float length = 1.0f;
 		vertices =
 		{
 			// 앞,뒤, 좌, 우, 상, 하
-			{ {  0.0f,  length, 0.0f },		 {0.0f, 0.0f, 1.0f }, {1.0f, 1.0f} },
-			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {1.0f, 0.0f} },
-			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f} },
-			{ { -0.0f,  length, 0.0f },		 {0.0f, 0.0f, 1.0f }, {0.0f, 1.0f} },
-			{ {  0.0f,  length, -0.0f },	 {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f} },
-			{ { -0.0f,  length, -0.0f },	 {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f} },
-			{ {  0.0f,  length, 0.0f },		 { 1.0f, 0.0f, 0.0f}, {1.0f, 1.0f} },
-			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -0.0f,  length, 0.0f },		 {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  0.0f,  length, -0.0f },	 { 1.0f, 0.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -0.0f,  length, -0.0f },	 {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f} },
-			{ {  0.0f,  length, 0.0f },		 {0.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
-			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} },
-			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f} },
-			{ { -0.0f,  length, 0.0f },		 {0.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
-			{ {  0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {0.0f, 1.0f} },
-			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
-			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f} },
-			{ { -0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {1.0f, 1.0f} }
+			{ {  0.0f,  length, 0.0f },		 {0.0f, 0.0f, 1.0f }, {0.333333f, 0.5f} },
+			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
+			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
+			{ { -0.0f,  length, 0.0f },		 {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
+			{ {  0.0f,  length, -0.0f },	 {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
+			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
+			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
+			{ { -0.0f,  length, -0.0f },	 {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
+			{ {  0.0f,  length, 0.0f },		 { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
+			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+			{ { -0.0f,  length, 0.0f },		 {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
+			{ {  0.0f,  length, -0.0f },	 { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ { -0.0f,  length, -0.0f },	 {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ {  0.0f,  length, 0.0f },		 {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      }, 
+			{ { -0.0f,  length, 0.0f },		 {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      },
+			{ { -0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} }
 
 		};
 	}
