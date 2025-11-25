@@ -25,6 +25,7 @@ public:
 
 	void initBuffer();
 	void initTexture();
+	GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info);
 
 	void updateVBO();
 	void Draw(GLuint shaderProgram);
@@ -38,8 +39,10 @@ public:
 	void changePolygon();
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
+
 	unsigned int texture;
-	BITMAP* bmp;
+	BITMAPINFO* bmp;
+	GLsizei width, height, numberOfChannel;
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;
