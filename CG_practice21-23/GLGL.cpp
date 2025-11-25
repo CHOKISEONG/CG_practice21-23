@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 
-
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include "GLGL.h"
 #include "Camera.h"
 #include "Cube.h"
@@ -46,8 +47,8 @@ Light light;
 // 그릴 도형들
 Cube* cube = nullptr;
 
-int isRotation = 0;
-int isRevolution = 0;
+int isRotation_X = 0;
+int isRotation_Y = 0;
 
 void make_objects()
 {
@@ -59,33 +60,19 @@ void make_objects()
 	light.move(glm::vec3(5.0f, 0.0f, 0.0f));
 }
 
+void delete_objects()
+{
+	delete cam;
+	delete cube;
+	delete light.lightBox;
+}
+
 GLvoid GLGL::ReShape(int w, int h)
 {
 	my->width = w;
 	my->height = h;
 	glViewport(0, 0, my->width, my->height);
 }
-//GLvoid GLGL::PassiveMotion(int x, int y)
-//{
-//	crx = (2.0f * x - my->width) / my->width;
-//	cry = -(2.0f * y - my->height) / my->height;
-//
-//	float dx = crx - pvx;
-//	float dy = cry - pvy;
-//
-//	pvx = crx;
-//	pvy = cry;
-//}
-//GLvoid GLGL::Motion(int x, int y)
-//{
-//	crx = (2.0f * x - my->width) / my->width;
-//	cry = -(2.0f * y - my->height) / my->height;
-//
-//	pvx = crx;
-//	pvy = cry;
-//
-//	glutPostRedisplay();
-//}
 GLvoid GLGL::Draw()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -95,8 +82,6 @@ GLvoid GLGL::Draw()
 	cam->settingCamera(shaderProgramID);
 
 	cube->Draw(shaderProgramID);
-
-	light.lightBox->Draw(shaderProgramID);
 
 	// 조명의 위치
 	unsigned int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos");
@@ -116,68 +101,56 @@ GLvoid GLGL::Draw()
 GLvoid GLGL::Idle()
 {
 	cam->update();
-	
-	if (isRevolution == 1)
+
+	if (isRotation_X == 1)
 	{
-		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
+		cube->rotate(glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 	}
-	else if (isRevolution == -1)
+	else if (isRotation_X == -1)
 	{
-		light.revolution(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
+		cube->rotate(glm::vec3(1.0f, 0.0f, 0.0f), -1.0f);
 	}
 
-	if (isRotation == 1)
+	if (isRotation_Y == 1)
 	{
 		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
 	}
-	else if (isRotation == -1)
+	else if (isRotation_Y == -1)
 	{
 		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
 	}
+
 	glutPostRedisplay();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case'n':
-		// 육면체 / 사각뿔 그리기
-		if (cube->getType() == Cube::Type::cube)
-		{
-			cube->setType(Cube::Type::squarePyramid);
-			cube->changePolygon();
-		}
-		else if (cube->getType() == Cube::Type::squarePyramid)
-		{
-			cube->setType(Cube::Type::cube);
-			cube->changePolygon();
-		}
-		
+	case 'c':
+		cube->setType(Cube::Type::cube);
+		cube->changePolygon();
 		break;
-	case'm':
-		// 조명 켜기/끄기
-		if (light.lightButton == false)
-			light.turnOn();
-		else
-			light.turnOff();
+	case'p':
+		cube->setType(Cube::Type::squarePyramid);
+		cube->changePolygon();
+		break;
+	case 'x':
+		isRotation_X = 1;
+		break;
+	case 'X':
+		isRotation_X = -1;
 		break;
 	case'y':
-		// 객체를 y축에 대하여 회전(제자리에서 자전)
-		if (!isRotation) isRotation = 1;
-		else isRotation = -isRotation;
+		isRotation_Y = 1;
 		break;
-	case'r':
-		// 조명을 객체의 중심 y축에 대하여 양/음 뱡향으로 공전
-		if (!isRevolution) isRevolution = 1;
-		else isRevolution = -isRevolution;
+	case 'Y':
+		isRotation_Y = -1;
 		break;
-	case'z':
-		// 조명을 객체에 가깝게 이동
-		light.move(glm::vec3(-light.pos.x / 10, -light.pos.y / 10, -light.pos.z / 10));
-		break;
-	case'Z':
-		// 조명을 객체에 멀게 이동
-		light.move(glm::vec3(light.pos.x / 10, light.pos.y / 10, light.pos.z / 10));
+	case 's':
+		isRotation_X = 0;
+		isRotation_Y = 0;
+		delete_objects();
+		make_objects();
 		break;
 	case'q':
 		exit(0);
@@ -186,25 +159,6 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		break;
 	}
 }
-GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
-{
-	switch (key)
-	{
-	default:
-		break;
-	}
-
-	glutPostRedisplay();
-}
-//GLvoid GLGL::Mouse(int button, int state, int x, int y)
-//{
-//	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-//	{
-//		std::cout << "바닥이 열린다.\n";
-//
-//		cube->baseOpen();
-//	}
-//}
 
 void GLGL::run(int argc, char** argv)
 {

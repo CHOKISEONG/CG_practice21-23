@@ -5,8 +5,8 @@
 struct Vertex
 {
 	glm::vec3 pos;
-	glm::vec3 color;
 	glm::vec3 normal;
+	glm::vec2 texture;
 };
 
 class Cube
@@ -21,12 +21,11 @@ public:
 	// 실습 번호마다 맞게 생성을 위해
 	Cube(int practiceNum);
 
-	// rad 길이의 큐브 생성을 위한 생성자
-	Cube(float rad);
-
 	const std::vector<glm::vec3> getPos();
 
 	void initBuffer();
+	void initTexture();
+
 	void updateVBO();
 	void Draw(GLuint shaderProgram);
 
@@ -39,6 +38,8 @@ public:
 	void changePolygon();
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
+	unsigned int texture;
+	BITMAP* bmp;
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;

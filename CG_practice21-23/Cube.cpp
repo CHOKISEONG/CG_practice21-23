@@ -42,35 +42,32 @@ Cube::Cube(int practiceNum)
 		// 정사각형 테스트
 		vertices =
 		{
-			// 앞,뒤
-			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f} },
-			{ {  length, -length, length }, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f} },
-			{ { -length, -length, length }, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f} },
-			{ { -length,  length, length }, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f} },
-			{ {  length,  length, -length }, {0.0f, 1.0f, 1.0f}, {0.0f, 0.0f, -1.0f} },
-			{ {  length, -length, -length }, {0.0f, 1.0f, 1.0f}, {0.0f, 0.0f, -1.0f} },
-			{ { -length, -length, -length }, {0.0f, 1.0f, 1.0f}, {0.0f, 0.0f, -1.0f} },
-			{ { -length,  length, -length }, {0.0f, 1.0f, 1.0f}, {0.0f, 0.0f, -1.0f} },
+			{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {1.0f, 1.0f} },
+			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {1.0f, 0.0f} },
+			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f} },
+			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 1.0f} },
+			{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f} },
+			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f} },
+			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f} },
+			{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f} },
 
-			// 좌,우
-			{ {  length,  length, length },  {0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f, 0.0f} },
-			{ {  length, -length, length },  {0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f, 0.0f} },
-			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f} },
-			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f} },
-			{ {  length,  length, -length }, {0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f, 0.0f} },
-			{ {  length, -length, -length }, {0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f, 0.0f} },
-			{ { -length, -length, -length }, {0.0f, 0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f} },
-			{ { -length,  length, -length }, {0.0f, 0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f} },
+			{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
+			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
+			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
+			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
+			{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
+			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
+			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
+			{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} },
 
-			// 상,하
-			{ {  length,  length, length },  {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} },
-			{ {  length, -length, length },  {0.7f, 0.7f, 0.7f}, {0.0f, -1.0f, 0.0f} },
-			{ { -length, -length, length },  {0.7f, 0.7f, 0.7f}, {0.0f, -1.0f, 0.0f} },
-			{ { -length,  length, length },  {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} },
-			{ {  length,  length, -length }, {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} },
-			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f}, {0.0f, -1.0f, 0.0f} },
-			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f}, {0.0f, -1.0f, 0.0f} },
-			{ { -length,  length, -length }, {1.0f, 1.0f, 0.0f}, {0.0f,  1.0f, 0.0f} }
+			{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
+			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} },
+			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} },
+			{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
+			{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
+			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} },
+			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} },
+			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.0f, 0.0f} }
 
 		};
 
@@ -94,68 +91,6 @@ Cube::Cube(int practiceNum)
 
 		};
 	}
-
-	initBuffer();
-}
-
-Cube::Cube(float rad)
-{
-	const float color = 1.0f;
-
-	const float length = rad;
-	vertices =
-	{
-		// 앞,뒤
-		{ {  length,  length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
-		{ {  length, -length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
-		{ { -length, -length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
-		{ { -length,  length, length }, {color, color, color}, {0.0f, 0.0f, 1.0f} },
-		{ {  length,  length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
-		{ {  length, -length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
-		{ { -length, -length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
-		{ { -length,  length, -length }, {color, color, color}, {0.0f, 0.0f, -1.0f} },
-
-		// 좌,우
-		{ {  length,  length, length },  {color, color, color}, { 1.0f, 0.0f, 0.0f} },
-		{ {  length, -length, length },  {color, color, color}, { 1.0f, 0.0f, 0.0f} },
-		{ { -length, -length, length },  {color, color, color}, {-1.0f, 0.0f, 0.0f} },
-		{ { -length,  length, length },  {color, color, color}, {-1.0f, 0.0f, 0.0f} },
-		{ {  length,  length, -length }, {color, color, color}, { 1.0f, 0.0f, 0.0f} },
-		{ {  length, -length, -length }, {color, color, color}, { 1.0f, 0.0f, 0.0f} },
-		{ { -length, -length, -length }, {color, color, color}, {-1.0f, 0.0f, 0.0f} },
-		{ { -length,  length, -length }, {color, color, color}, {-1.0f, 0.0f, 0.0f} },
-
-		// 상,하
-		{ {  length,  length, length },  {color, color, color}, {0.0f,  1.0f, 0.0f} },
-		{ {  length, -length, length },  {color, color, color}, {0.0f, -1.0f, 0.0f} },
-		{ { -length, -length, length },  {color, color, color}, {0.0f, -1.0f, 0.0f} },
-		{ { -length,  length, length },  {color, color, color}, {0.0f,  1.0f, 0.0f} },
-		{ {  length,  length, -length }, {color, color, color}, {0.0f,  1.0f, 0.0f} },
-		{ {  length, -length, -length }, {color, color, color}, {0.0f, -1.0f, 0.0f} },
-		{ { -length, -length, -length }, {color, color, color}, {0.0f, -1.0f, 0.0f} },
-		{ { -length,  length, -length }, {color, color, color}, {0.0f,  1.0f, 0.0f} }
-
-	};
-
-	index =
-	{
-
-		// 앞면
-		0, 3, 1, 1, 3, 2,
-		// 뒷면
-		4, 5, 6, 4, 6, 7,
-
-		// 왼쪽면
-		11, 14, 10, 11, 15, 14,
-		// 오른쪽면
-		8, 9, 13, 8, 13, 12,
-
-		// 윗면
-		16, 23, 19, 16, 20, 23,
-		// 아랫면
-		17, 18, 22, 17, 22, 21
-
-	};
 
 	initBuffer();
 }
@@ -186,17 +121,29 @@ void Cube::initBuffer()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
 	glEnableVertexAttribArray(0);
 
-	// 색상 (location = 1)
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+	// 노말 (location = 1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glEnableVertexAttribArray(1);
 
-	// 노멀벡터 (location = 2)
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	// 텍스쳐 (location = 2)
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texture));
 	glEnableVertexAttribArray(2);
 
 	// index 연결하기
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW);
+}
+
+void Cube::initTexture()
+{
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	unsigned char* data = LoadDIBitmap("texture.bmp"), & bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 }
 
 void Cube::updateVBO()
@@ -215,6 +162,7 @@ void Cube::Draw(GLuint shaderProgram) {
 	GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
 }
 
