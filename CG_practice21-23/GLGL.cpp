@@ -21,7 +21,6 @@ Camera* cam = nullptr;
 // ºû
 struct Light
 {
-	Cube* lightBox;
 	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -32,13 +31,10 @@ struct Light
 	void move(glm::vec3 v)
 	{
 		pos += v;
-		lightBox->move(v);
 	}
 
 	void revolution(glm::vec3 v, float rad)
 	{
-		lightBox->revolution(v, rad);
-
 		glm::vec4 p(pos, 1.0f);
 		glm::mat4 rotMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rad), v);
 		p = rotMatrix * p;
@@ -58,10 +54,9 @@ int isRotation_Y = 0;
 void make_objects()
 {
 	cam = new Camera();
+	bg = new Background("Background.png");
+	cube = new Cube(1.0f, "A.png");
 
-	cube = new Cube(25, "A.png");
-
-	light.lightBox = new Cube(21, "A.png");
 	light.move(glm::vec3(5.0f, 0.0f, 0.0f));
 }
 
@@ -110,7 +105,7 @@ GLvoid GLGL::Idle()
 
 	if (isRotation_X == 1)
 	{
-		cube->rotate(glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
+		cube->rotate(glm::vec3(0.0f, 0.0f, 1.0f), 1.0f);
 	}
 	else if (isRotation_X == -1)
 	{
@@ -133,15 +128,13 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'c':
-		cube->setType(Cube::Type::cube);
-		cube->changePolygon();
+		cube->changePolygon(Cube::Type::cube);
 		break;
 	case'p':
-		cube->setType(Cube::Type::squarePyramid);
-		cube->changePolygon();
+		cube->changePolygon(Cube::Type::squarePyramid);
 		break;
-	case 'm':
-		bg = new Background("Background.png");
+	case 'o':
+		cube->changePolygon(Cube::Type::square);
 		break;
 	case 'x':
 		isRotation_X = 1;
@@ -159,7 +152,10 @@ GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 		isRotation_X = 0;
 		isRotation_Y = 0;
 		delete cube;
-		cube = new Cube(25, "A.png");
+		cube = new Cube(1.0f, "A.png");
+		break;
+	case'i':
+		cube->rotate(glm::vec3(1.0f, 0.0f, 0.0f));
 		break;
 	case'q':
 		exit(0);
@@ -192,7 +188,7 @@ void GLGL::run(int argc, char** argv)
 	
 	make_objects();
 
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
 	glutDisplayFunc(GLGL::Draw);

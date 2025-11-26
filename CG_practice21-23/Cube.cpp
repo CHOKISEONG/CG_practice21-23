@@ -2,95 +2,59 @@
 #include "stb_image.h"
 #include "Cube.h"
 
-Cube::Cube(int practiceNum, const char* str)
+Cube::Cube(float length, const char* str)
 {
-	if (practiceNum == 21)
+	// 앞-뒤-우-좌-상-하 순으로 만듬
+	vertices =
 	{
-		float length = 1.0f;
+		{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.5f} },
+		{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
+		{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
+		{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
 
-		// 정사각형 테스트
-		vertices =
-		{
-			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
-			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
-			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
-			{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
-			{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
-			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
-		};
+		{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
+		{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
+		{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
+		{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
 
-		index =
-		{
-			// 오른쪽면
-			0, 1, 5, 0, 5, 4,
-			// 왼쪽면
-			3, 6, 2, 3, 7, 6,
-			// 윗면
-			0, 7, 3, 0, 4, 7,
-			// 아랫면
-			1, 2, 6, 1, 6, 5,
-			// 뒷면
-			4, 5, 6, 4, 6, 7,
-		};
-	}
-	else if (practiceNum == 25)
+		{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
+		{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
+		{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
+		{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+
+		{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+		{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
+		{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
+		{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
+
+		{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
+		{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
+		{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
+		{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} },
+
+		{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+		{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      },
+		{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+		{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      }
+	};
+
+	index =
 	{
-		float length = 1.0f;
-
-		// 정사각형 테스트
-		vertices =
-		{
-			{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.5f} },
-			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
-			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
-			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
-			{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
-			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
-			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
-			{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
-			{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
-			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
-			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
-			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
-			{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
-			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
-			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
-			{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
-			{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
-			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
-			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      },
-			{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
-			{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
-			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
-			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      },
-			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} }
-
-		};
-
-		index =
-		{
+		// 앞면
+		0, 3, 1, 1, 3, 2,
+		// 뒷면
+		4, 5, 6, 4, 6, 7,
 			
-			// 앞면
-			0, 3, 1, 1, 3, 2,
-			// 뒷면
-			4, 5, 6, 4, 6, 7,
-			
-			// 왼쪽면
-			11, 14, 10, 11, 15, 14,
-			// 오른쪽면
-			8, 9, 13, 8, 13, 12,
+		// 왼쪽면
+		13, 14, 12, 13, 15, 14,
+		// 오른쪽면
+		8, 9, 11, 8, 11, 10,
 
-			// 윗면
-			16, 23, 19, 16, 20, 23,
-			// 아랫면
-			17, 18, 22, 17, 22, 21
-
-		};
-	}
+		// 윗면
+		16, 19, 17, 16, 18, 19,
+		// 아랫면
+		20, 21, 23, 20, 23, 22
+	};
 
 	initBuffer();
 	initTexture(str);
@@ -177,6 +141,7 @@ void Cube::Draw(GLuint shaderProgram) {
 	glBindVertexArray(VAO);
 
 	glm::mat4 model = glm::mat4(1.0f);
+	model *= glm::translate(glm::mat4(1.0f), position);
 	GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -187,14 +152,6 @@ void Cube::Draw(GLuint shaderProgram) {
 	glUniform1i(samplerLoc, 0);
 
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
-}
-
-void Cube::move(glm::vec3 v)
-{
-	for (auto& i : vertices)
-	{
-		i.pos += v;
-	}
 }
 
 void Cube::rotate(glm::vec3 v, float rad)
@@ -219,23 +176,40 @@ void Cube::rotate(glm::vec3 v, float rad)
 	}
 }
 
-void Cube::revolution(glm::vec3 v, float rad)
+
+// 어떤 면을 돌릴지도 인자로 받아서 그 면만 돌리게
+void Cube::rotateWithPivot(glm::vec3 v, float rad, Face face, glm::vec3 pivot)
 {
-	for (int i{}; i < vertices.size(); ++i)
+	int start = (face == Face::All) ? 0 : static_cast<int>(face) * 4;
+	int end = (face == Face::All) ? vertices.size() : static_cast<int>(face) * 4 + 4;
+
+	glm::mat4 T1 = glm::translate(glm::mat4(1.0f), -pivot);
+	glm::mat4 T2 = glm::translate(glm::mat4(1.0f), pivot);
+
+	for (int i{ start }; i < end; ++i)
 	{
 		glm::vec4 pos(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z, 1.0f);
 		glm::mat4 rotMatrix = glm::mat4(1.0f);
 		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
-		pos = rotMatrix * pos;
+		pos = T2 * rotMatrix * T1 * pos;
 		vertices[i].pos.x = pos.x;
 		vertices[i].pos.y = pos.y;
 		vertices[i].pos.z = pos.z;
+
+		pos = glm::vec4(vertices[i].normal.x, vertices[i].normal.y, vertices[i].normal.z, 1.0f);
+		rotMatrix = glm::mat4(1.0f);
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
+		pos = T2 * rotMatrix * T1 * pos;
+		vertices[i].normal.x = pos.x;
+		vertices[i].normal.y = pos.y;
+		vertices[i].normal.z = pos.z;
 	}
-	
 }
 
-void Cube::changePolygon()
+void Cube::changePolygon(Type type_)
 {
+	type = type_;
+
 	if (type == Type::cube)
 	{
 		const float length = 1.0f;
@@ -245,27 +219,48 @@ void Cube::changePolygon()
 			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
 			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
 			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
+
 			{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
 			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
 			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
 			{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
+
 			{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
 			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
-			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
-			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
 			{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
 			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+
+			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
 			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
 			{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
+
 			{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
-			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
-			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      }, 
 			{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
 			{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
-			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
-			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      },
-			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} }
+			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} },
 
+			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      }
+		};
+		index =
+		{
+			// 앞면
+			0, 3, 1, 1, 3, 2,
+			// 뒷면
+			4, 5, 6, 4, 6, 7,
+
+			// 왼쪽면
+			13, 14, 12, 13, 15, 14,
+			// 오른쪽면
+			8, 9, 11, 8, 11, 10,
+
+			// 윗면
+			16, 19, 17, 16, 18, 19,
+			// 아랫면
+			20, 21, 23, 20, 23, 22
 		};
 	}
 	else if (type == Type::squarePyramid)
@@ -284,21 +279,51 @@ void Cube::changePolygon()
 			{ { -0.0f,  length, -0.0f },	 {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
 			{ {  0.0f,  length, 0.0f },		 { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
 			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
-			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
-			{ { -0.0f,  length, 0.0f },		 {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
 			{ {  0.0f,  length, -0.0f },	 { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
 			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+			{ { -0.0f,  length, 0.0f },		 {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
 			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
 			{ { -0.0f,  length, -0.0f },	 {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
 			{ {  0.0f,  length, 0.0f },		 {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
-			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
-			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      }, 
 			{ { -0.0f,  length, 0.0f },		 {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
 			{ {  0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ { -0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      }, 
 			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
-			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      },
-			{ { -0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} }
+			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      }
+		};
+		index =
+		{
+			// 앞면
+			0, 3, 1, 1, 3, 2,
+			// 뒷면
+			4, 5, 6, 4, 6, 7,
 
+			// 왼쪽면
+			13, 14, 12, 13, 15, 14,
+			// 오른쪽면
+			8, 9, 11, 8, 11, 10,
+
+			// 윗면
+			16, 19, 17, 16, 18, 19,
+			// 아랫면
+			20, 21, 23, 20, 23, 22
+		};
+	}
+	else if (type == Type::square)
+	{
+		vertices =
+		{
+			{ {  1.0f, -1.0f,  1.0f},  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -1.0f, -1.0f,  1.0f},  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  1.0f, -1.0f, -1.0f }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ { -1.0f, -1.0f, -1.0f }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      }
+		};
+		index =
+		{
+			0, 1, 3, 1, 3, 2
 		};
 	}
 }
