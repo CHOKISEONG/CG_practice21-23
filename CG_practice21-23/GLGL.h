@@ -10,15 +10,20 @@ public:
 	static void make_vertexShaders();
 	static void make_fragmentShaders();
 	static void make_shaderProgram();
+
+	static void make_vertexShaders_map();
+	static void make_fragmentShaders_map();
+	static void make_shaderProgram_map();
+
 	static char* filetobuf(const char* file);
 	static void Draw();
 	static void ReShape(int w, int h);
-	static void Motion(int x, int y);
-	static void PassiveMotion(int x, int y);
+	// static void Motion(int x, int y);
+	// static void PassiveMotion(int x, int y);
 	static void Idle();
-	static void Mouse(int button, int state, int x, int y);
+	// static void Mouse(int button, int state, int x, int y);
 	static void Keyboard(unsigned char key, int x, int y);
-	static void SpecialKeyboard(int key, int x, int y);
+	// static void SpecialKeyboard(int key, int x, int y);
 	
 
 	void run(int argc, char** argv);
@@ -34,4 +39,8 @@ private:
 	GLuint width = 1920, height = 1080;
 	GLchar* vertexSource, * fragmentSource;
 	GLuint vertexShader, fragmentShader;
+
+	// ¹è°æ
+	GLchar* vertexSource_map, * fragmentSource_map;
+	GLuint vertexShader_map, fragmentShader_map;
 };

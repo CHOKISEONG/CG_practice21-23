@@ -4,31 +4,60 @@
 #include "Camera.h"
 #include "Cube.h"
 #include "Ball.h"
+#include "Background.h"
 
 // 셰이더, 마우스 위치
 GLGL* GLGL::my = nullptr;
 GLuint shaderProgramID;
-float crx, cry;
-float pvx, pvy;
+
+GLuint mapShader;
+
+// 배경
+Background* bg;
 
 // 카메라
 Camera* cam = nullptr;
 
+// 빛
+struct Light
+{
+	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	bool lightButton = true;
+	void turnOn() { color = glm::vec3(1.0f); lightButton = true;}
+	void turnOff() { color = glm::vec3(0.1f); lightButton = false; }
+
+	void move(glm::vec3 v)
+	{
+		pos += v;
+	}
+
+	void revolution(glm::vec3 v, float rad)
+	{
+		glm::vec4 p(pos, 1.0f);
+		glm::mat4 rotMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rad), v);
+		p = rotMatrix * p;
+		pos.x = p.x;
+		pos.y = p.y;
+		pos.z = p.z;
+	}
+};
+Light light;
+
 // 그릴 도형들
 Cube* cube = nullptr;
-std::vector<Cube*> smallCube;
 
-std::vector<Ball*> balls;
+int isRotation_X = 0;
+int isRotation_Y = 0;
 
 void make_objects()
 {
 	cam = new Camera();
+	bg = new Background("Background.png");
+	cube = new Cube(1.0f, "A.png");
 
-	cube = new Cube(21);
-
-	smallCube.push_back(new Cube(0.8f, 0.1f));
-	smallCube.push_back(new Cube(0.5f, 0.2f));
-	smallCube.push_back(new Cube(-0.1f, 0.4f));
+	light.move(glm::vec3(5.0f, 0.0f, 0.0f));
 }
 
 GLvoid GLGL::ReShape(int w, int h)
@@ -37,133 +66,102 @@ GLvoid GLGL::ReShape(int w, int h)
 	my->height = h;
 	glViewport(0, 0, my->width, my->height);
 }
-GLvoid GLGL::PassiveMotion(int x, int y)
+GLvoid GLGL::Draw()
 {
-	crx = (2.0f * x - my->width) / my->width;
-	cry = -(2.0f * y - my->height) / my->height;
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	float dx = crx - pvx;
-	float dy = cry - pvy;
-
-	cube->rotate(dx, dy);
-
-	if (!cube->getBaseOpened())
+	if (bg)
 	{
-		for (auto& sc : smallCube)
-			sc->rotate(dx, dy);
+		glUseProgram(mapShader);
+		bg->Draw(mapShader);
 	}
 	
 
-	pvx = crx;
-	pvy = cry;
-}
-GLvoid GLGL::Motion(int x, int y)
-{
-	crx = (2.0f * x - my->width) / my->width;
-	cry = -(2.0f * y - my->height) / my->height;
-
-	pvx = crx;
-	pvy = cry;
-
-	glutPostRedisplay();
-}
-GLvoid GLGL::Draw()
-{
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
+
 	cam->settingCamera(shaderProgramID);
 
 	cube->Draw(shaderProgramID);
-	for (const auto& sc : smallCube)
-		sc->Draw(shaderProgramID);
-	for (const auto& b : balls)
-		b->draw(shaderProgramID, DrawType::DRAW_WIRE);
 
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
-	glEnable(GL_DEPTH_TEST);
+	// 조명의 위치
+	unsigned int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos");
+	glUniform3f(lightPosLocation, light.pos.x, light.pos.y, light.pos.z);
+
+	// 조명의 색깔 (흰색으로 함)
+	int lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor");
+	glUniform3f(lightColorLocation, light.color.x, light.color.y, light.color.z);
+	
+	// 카메라 위치
+	unsigned int viewPosLocation = glGetUniformLocation(shaderProgramID, "viewPos");
+	glm::vec3 camPos = cam->getPos();
+	glUniform3f(viewPosLocation, camPos.x, camPos.y, camPos.z);
+
 	glutSwapBuffers();
 }
 GLvoid GLGL::Idle()
 {
-	cube->baseOpenAnimation();
-	for (auto& sc : smallCube)
-		sc->handlePhysics(cube);
-	for (auto& b : balls)
-		b->update(cube->getPos());
 	cam->update();
+
+	if (isRotation_X == 1)
+	{
+		cube->rotate(glm::vec3(0.0f, 0.0f, 1.0f), 1.0f);
+	}
+	else if (isRotation_X == -1)
+	{
+		cube->rotate(glm::vec3(1.0f, 0.0f, 0.0f), -1.0f);
+	}
+
+	if (isRotation_Y == 1)
+	{
+		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
+	}
+	else if (isRotation_Y == -1)
+	{
+		cube->rotate(glm::vec3(0.0f, 1.0f, 0.0f), -1.0f);
+	}
 
 	glutPostRedisplay();
 }
 GLvoid GLGL::Keyboard(unsigned char key, int x, int y)
 {
-	static float isMoving = false;
-	static double ballSize = 0.0;
 	switch (key)
 	{
-	case 'z':
-		cam->move(0.0f, 0.0f, 1.0f);
+	case 'c':
+		cube->changePolygon(Cube::Type::cube);
 		break;
-	case 'Z':
-		cam->move(0.0f, 0.0f, -1.0f);
+	case'p':
+		cube->changePolygon(Cube::Type::squarePyramid);
 		break;
-	case 'y':
-		if (!isMoving) isMoving = true;
-		else
-		{
-			cam->rotateStart(0.1f);
-		}
+	case 'o':
+		cube->changePolygon(Cube::Type::square);
+		break;
+	case 'x':
+		isRotation_X = 1;
+		break;
+	case 'X':
+		isRotation_X = -1;
+		break;
+	case'y':
+		isRotation_Y = 1;
 		break;
 	case 'Y':
-		if (!isMoving) isMoving = true;
-		else
-		{
-			cam->rotateStart(-0.1f);
-		}
+		isRotation_Y = -1;
 		break;
-	case 'B':
-		
-		if (balls.size() < 5)
-		{
-			ballSize += 0.02;
-			balls.push_back(new Ball(ballSize, ballSize, ballSize, ballSize));
-		}
+	case 's':
+		isRotation_X = 0;
+		isRotation_Y = 0;
+		delete cube;
+		cube = new Cube(1.0f, "A.png");
+		break;
+	case'i':
+		cube->rotate(glm::vec3(1.0f, 0.0f, 0.0f));
+		break;
+	case'q':
+		exit(0);
 		break;
 	default:
 		break;
-	}
-}
-GLvoid GLGL::SpecialKeyboard(int key, int x, int y)
-{
-	switch (key)
-	{
-	case GLUT_KEY_LEFT:
-		cam->move(-1.0f,0.0f);
-		break;
-	case GLUT_KEY_RIGHT:
-		cam->move(1.0f, 0.0f);
-		break;
-	case GLUT_KEY_UP:
-		cam->move(0.0f, 1.0f);
-		break;
-	case GLUT_KEY_DOWN:
-		cam->move(0.0f, -1.0f);
-		break;
-	
-	default:
-		break;
-	}
-
-	glutPostRedisplay();
-}
-GLvoid GLGL::Mouse(int button, int state, int x, int y)
-{
-	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-	{
-		std::cout << "바닥이 열린다.\n";
-
-		cube->baseOpen();
 	}
 }
 
@@ -186,16 +184,20 @@ void GLGL::run(int argc, char** argv)
 		std::cout << "GLEW Initialized\n";
 
 	make_shaderProgram();
+	make_shaderProgram_map();
 	
 	make_objects();
 
+	//glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
 	glutDisplayFunc(GLGL::Draw);
 	glutReshapeFunc(GLGL::ReShape);
-	glutMouseFunc(GLGL::Mouse);
-	glutMotionFunc(GLGL::Motion);
-	glutPassiveMotionFunc(GLGL::PassiveMotion);
+	//glutMouseFunc(GLGL::Mouse);
+	//glutMotionFunc(GLGL::Motion);
+	//glutPassiveMotionFunc(GLGL::PassiveMotion);
 	glutKeyboardFunc(GLGL::Keyboard);
-	glutSpecialFunc(GLGL::SpecialKeyboard);
+	//glutSpecialFunc(GLGL::SpecialKeyboard);
 	glutIdleFunc(GLGL::Idle);
 	glutMainLoop();
 }
@@ -249,6 +251,62 @@ void GLGL::make_fragmentShaders()
 	if (!result)
 	{
 		glGetShaderInfoLog(my->fragmentShader, 512, NULL, errorLog);
+		std::cerr << "ERROR: frag_shader 컴파일 실패\n" << errorLog << std::endl;
+		return;
+	}
+	else
+		std::cout << "fragment shader 컴파일 성공\n";
+}
+void GLGL::make_shaderProgram_map()
+{
+	make_vertexShaders_map();
+	make_fragmentShaders_map();
+
+	mapShader = glCreateProgram();
+
+	glAttachShader(mapShader, my->vertexShader_map);
+	glAttachShader(mapShader, my->fragmentShader_map);
+	glLinkProgram(mapShader);
+
+	glDeleteShader(my->vertexShader_map);
+	glDeleteShader(my->fragmentShader_map);
+
+	glUseProgram(mapShader);
+}
+void GLGL::make_vertexShaders_map()
+{
+	my->vertexSource_map = filetobuf("vertex_map.glsl");
+	my->vertexShader_map = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(my->vertexShader_map, 1, (const GLchar**)&my->vertexSource_map, NULL);
+	glCompileShader(my->vertexShader_map);
+
+	// 에러 체크
+	GLint result;
+	GLchar errorLog[512];
+	glGetShaderiv(my->vertexShader_map, GL_COMPILE_STATUS, &result);
+	if (!result)
+	{
+		glGetShaderInfoLog(my->vertexShader_map, 512, NULL, errorLog);
+		std::cerr << "ERROR: vertex shader 컴파일 실패\n" << errorLog << std::endl;
+		return;
+	}
+	else
+		std::cout << "vertex shader 컴파일 성공\n";
+}
+void GLGL::make_fragmentShaders_map()
+{
+	my->fragmentSource_map = filetobuf("fragment_map.glsl");
+	my->fragmentShader_map = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(my->fragmentShader_map, 1, (const GLchar**)&my->fragmentSource_map, NULL);
+	glCompileShader(my->fragmentShader_map);
+
+	// 에러 체크
+	GLint result;
+	GLchar errorLog[512];
+	glGetShaderiv(my->fragmentShader_map, GL_COMPILE_STATUS, &result);
+	if (!result)
+	{
+		glGetShaderInfoLog(my->fragmentShader_map, 512, NULL, errorLog);
 		std::cerr << "ERROR: frag_shader 컴파일 실패\n" << errorLog << std::endl;
 		return;
 	}

@@ -30,12 +30,21 @@
     <ClCompile Include="Ball.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl">
       <Filter>리소스 파일</Filter>
     </None>
     <None Include="vertex.glsl">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="vertex_map.glsl">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="fragment_map.glsl">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>
@@ -55,5 +64,19 @@
     <ClInclude Include="Ball.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="A.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Background.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

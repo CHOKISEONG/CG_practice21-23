@@ -1,81 +1,63 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include "Cube.h"
 
-Cube::Cube(int practiceNum)
+Cube::Cube(float length, const char* str)
 {
-	if (practiceNum == 21)
-	{
-		float length = 1.0f;
-
-		// 정사각형 테스트
-		vertices =
-		{
-			{ {  length,  length, length }, {1.0f, 0.0f, 0.0f} },
-			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
-			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
-			{ { -length,  length, length }, {1.0f, 1.0f, 0.0f} },
-			{ {  length,  length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ {  length, -length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ { -length, -length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ { -length,  length, -length }, {0.7f, 0.7f, 0.7f} },
-			{ {  length, -length, length }, {0.0f, 1.0f, 0.0f} },
-			{ { -length, -length, length }, {0.0f, 0.0f, 1.0f} },
-		};
-		orgVertices = vertices;
-		index =
-		{
-			// 오른쪽면
-			0, 1, 5, 0, 5, 4,
-			// 왼쪽면
-			3, 6, 2, 3, 7, 6,
-			// 윗면
-			0, 7, 3, 0, 4, 7,
-			// 아랫면
-			1, 2, 6, 1, 6, 5,
-			// 뒷면
-			4, 5, 6, 4, 6, 7,
-		};
-
-		bottomPos.y = -length;
-	}
-
-	initBuffer();
-}
-
-Cube::Cube(float zPos, float rad)
-{
-	
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution<float> zeroToOne(0.0f, 1.0f);
-	const float color = zeroToOne(gen);
-
+	// 앞-뒤-우-좌-상-하 순으로 만듬
 	vertices =
 	{
-		{ {  rad,  rad, rad }, {color, color, color} },
-		{ {  rad, -rad, rad }, {color, color, color} },
-		{ { -rad, -rad, rad }, {color, color, color} },
-		{ { -rad,  rad, rad }, {color, color, color} },
-		{ {  rad,  rad, -rad },	{color, color, color} },
-		{ {  rad, -rad, -rad },	{color, color, color} },
-		{ { -rad, -rad, -rad },	{color, color, color} },
-		{ { -rad,  rad, -rad },	{color, color, color} },
+		{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.5f} },
+		{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
+		{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
+		{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
+
+		{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
+		{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
+		{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
+		{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
+
+		{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
+		{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
+		{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
+		{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+
+		{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+		{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
+		{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
+		{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
+
+		{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
+		{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
+		{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
+		{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} },
+
+		{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+		{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      },
+		{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+		{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      }
 	};
-	orgVertices = vertices;
+
 	index =
 	{
-		0, 5, 1, 0, 4, 5,
-		3, 2, 6, 3, 6, 7,
-		0, 3, 7, 0, 7, 4,
-		1, 6, 2, 1, 5, 6,
-		4, 6, 5, 4, 7, 6,
-		0, 1, 2, 0, 2, 3
-	};
-	bottomPos.y = -rad;
+		// 앞면
+		0, 3, 1, 1, 3, 2,
+		// 뒷면
+		4, 5, 6, 4, 6, 7,
+			
+		// 왼쪽면
+		13, 14, 12, 13, 15, 14,
+		// 오른쪽면
+		8, 9, 11, 8, 11, 10,
 
-	isThisHavePhysics = true;
-	move(glm::vec3(0.0f, -1.0f + rad, zPos));
+		// 윗면
+		16, 19, 17, 16, 18, 19,
+		// 아랫면
+		20, 21, 23, 20, 23, 22
+	};
 
 	initBuffer();
+	initTexture(str);
 }
 
 const std::vector<glm::vec3> Cube::getPos()
@@ -98,20 +80,52 @@ void Cube::initBuffer()
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex),vertices.data(),GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
 	// 위치 (location = 0)
-	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex, pos));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
 	glEnableVertexAttribArray(0);
 
-	// 색상 (location = 1)
-	glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex, color));
+	// 노말 (location = 1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glEnableVertexAttribArray(1);
+
+	// 텍스쳐 (location = 2)
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texture));
+	glEnableVertexAttribArray(2);
 
 	// index 연결하기
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW);
-	glBindVertexArray(0);
+}
+
+void Cube::initTexture(const char* str)
+{
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	stbi_set_flip_vertically_on_load(1);
+	unsigned char* data = stbi_load(str, &width, &height, &numberOfChannel, 0);
+	if (!data)
+	{
+		std::cerr << "Failed to load texture: " << str << std::endl;
+		return;
+	}
+
+	GLenum format = GL_RGB;
+	if (numberOfChannel == 1) format = GL_RED;
+	else if (numberOfChannel == 3) format = GL_RGB;
+	else if (numberOfChannel == 4) format = GL_RGBA;
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	stbi_image_free(data);
 }
 
 void Cube::updateVBO()
@@ -121,176 +135,195 @@ void Cube::updateVBO()
 }
 
 void Cube::Draw(GLuint shaderProgram) {
+	updateVBO();
+
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
 
 	glm::mat4 model = glm::mat4(1.0f);
+	model *= glm::translate(glm::mat4(1.0f), position);
 	GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
+	// 텍스처 활성/바인딩 및 샘플러 설정
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	GLint samplerLoc = glGetUniformLocation(shaderProgram, "outTexture");
+	glUniform1i(samplerLoc, 0);
+
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(index.size()), GL_UNSIGNED_INT, 0);
-
-	glBindVertexArray(0);
 }
 
-void Cube::move(glm::vec3 v)
+void Cube::rotate(glm::vec3 v, float rad)
 {
-	for (auto& i : vertices)
-	{
-		i.pos += v;
-	}
-	bottomPos += v;
-
-	updateVBO();
-}
-
-void Cube::rotate(float dx, float dy)
-{
-	const float rad = (dx > 0) ? -0.1f : 0.1f;
-	if (rotateAmount >= 60.0f && rad > 0.0f) return;
-	if (rotateAmount <= -60.0f && rad < 0.0f) return;
-
 	for (int i{}; i < vertices.size(); ++i)
 	{
 		glm::vec4 pos(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z, 1.0f);
 		glm::mat4 rotMatrix = glm::mat4(1.0f);
-		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), glm::vec3(0.0f, 0.0f, 1.0f));
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
 		pos = rotMatrix * pos;
 		vertices[i].pos.x = pos.x;
 		vertices[i].pos.y = pos.y;
 		vertices[i].pos.z = pos.z;
+
+		pos = glm::vec4(vertices[i].normal.x, vertices[i].normal.y, vertices[i].normal.z, 1.0f);
+		rotMatrix = glm::mat4(1.0f);
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
+		pos = rotMatrix * pos;
+		vertices[i].normal.x = pos.x;
+		vertices[i].normal.y = pos.y;
+		vertices[i].normal.z = pos.z;
 	}
-
-	glm::vec4 pos(bottomPos.x, bottomPos.y, bottomPos.z, 1.0f);
-	glm::mat4 rotMatrix = glm::mat4(1.0f);
-	rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), glm::vec3(0.0f, 0.0f, 1.0f));
-	pos = rotMatrix * pos;
-	bottomPos.x = pos.x;
-	bottomPos.y = pos.y;
-	bottomPos.z = pos.z;
-
-	rotateAmount += rad;
-
-	updateVBO();
 }
 
-void Cube::adaptC(Cube* c)
+
+// 어떤 면을 돌릴지도 인자로 받아서 그 면만 돌리게
+void Cube::rotateWithPivot(glm::vec3 v, float rad, Face face, glm::vec3 pivot)
 {
-	glm::vec2 a(c->vertices[1].pos.x, c->vertices[1].pos.y);
-	glm::vec2 b(c->vertices[2].pos.x, c->vertices[2].pos.y);
+	int start = (face == Face::All) ? 0 : static_cast<int>(face) * 4;
+	int end = (face == Face::All) ? vertices.size() : static_cast<int>(face) * 4 + 4;
 
-	glm::vec2 point1(vertices[1].pos.x, vertices[1].pos.y);
-	glm::vec2 point2(vertices[2].pos.x, vertices[2].pos.y);
+	glm::mat4 T1 = glm::translate(glm::mat4(1.0f), -pivot);
+	glm::mat4 T2 = glm::translate(glm::mat4(1.0f), pivot);
 
-	glm::vec2 ab = b - a;
-	glm::vec2 abNorm = glm::normalize(ab);
-	glm::vec2 normal(-abNorm.y, abNorm.x);
-
-	float dist1 = glm::dot(point1 - a, normal);
-	float dist2 = glm::dot(point2 - a, normal);
-
-	float avgDist = (dist1 + dist2) / 2.0f;
-	const float threshold = 1e-3f;
-
-	if (fabs(avgDist) > threshold)
-		move(glm::vec3(-normal.x * avgDist, -normal.y * avgDist, 0.0f));
-}
-
-void Cube::baseOpen()
-{
-	isBaseOpened = true;
-
-	index =
+	for (int i{ start }; i < end; ++i)
 	{
-		// 오른쪽면
-		0, 1, 5, 0, 5, 4,
-		// 왼쪽면
-		3, 6, 2, 3, 7, 6,
-		// 윗면
-		0, 7, 3, 0, 4, 7,
-		// 아랫면
-		8, 9, 6, 8, 6, 5,
-		// 뒷면
-		4, 5, 6, 4, 6, 7,
-	};
+		glm::vec4 pos(vertices[i].pos.x, vertices[i].pos.y, vertices[i].pos.z, 1.0f);
+		glm::mat4 rotMatrix = glm::mat4(1.0f);
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
+		pos = T2 * rotMatrix * T1 * pos;
+		vertices[i].pos.x = pos.x;
+		vertices[i].pos.y = pos.y;
+		vertices[i].pos.z = pos.z;
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW);
-	glBindVertexArray(0);
-}
-
-void Cube::baseOpenAnimation()
-{
-	if (!isBaseOpened) return;
-	static float angleAmount = 0.0f;
-	if (angleAmount <= -1.5f) return;
-
-	glm::vec3 A = vertices[5].pos; 
-	glm::vec3 B = vertices[6].pos; 
-	glm::vec3 axis = glm::normalize(B - A); 
-	constexpr float angle = glm::radians(-1.0f); 
-
-	glm::vec4 pos(vertices[8].pos, 1.0f);
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, A);         
-	model = glm::rotate(model, angle, axis);  
-	model = glm::translate(model, -A);        
-	pos = model * pos;
-
-	vertices[8].pos = glm::vec3(pos);
-
-	pos = glm::vec4(vertices[9].pos, 1.0f);
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, A);
-	model = glm::rotate(model, angle, axis);
-	model = glm::translate(model, -A);
-	pos = model * pos;
-
-	vertices[9].pos = glm::vec3(pos);
-
-	angleAmount += angle;
-	updateVBO();
-}
-
-void Cube::handlePhysics(Cube* c)
-{
-	if (!isThisHavePhysics) return;
-
-	if (c->isBaseOpened)
-	{
-		move(glm::vec3(0.0f, -0.01f, 0.0f));
-		updateVBO();
-		return;
+		pos = glm::vec4(vertices[i].normal.x, vertices[i].normal.y, vertices[i].normal.z, 1.0f);
+		rotMatrix = glm::mat4(1.0f);
+		rotMatrix = glm::rotate(rotMatrix, glm::radians(rad), v);
+		pos = T2 * rotMatrix * T1 * pos;
+		vertices[i].normal.x = pos.x;
+		vertices[i].normal.y = pos.y;
+		vertices[i].normal.z = pos.z;
 	}
+}
 
-	adaptC(c);
+void Cube::changePolygon(Type type_)
+{
+	type = type_;
 
-	glm::vec2 a(c->vertices[1].pos.x, c->vertices[1].pos.y);
-	glm::vec2 b(c->vertices[2].pos.x, c->vertices[2].pos.y);
-	glm::vec2 ab = b - a;
-	glm::vec2 abNorm = glm::normalize(ab);
-
-	glm::vec2 gravityVec(0.0f, -0.02f);
-	float slideAmount = glm::dot(gravityVec, abNorm);
-
-	glm::vec2 moveVec = abNorm * slideAmount;
-
-	glm::vec2 p1(vertices[1].pos.x, vertices[1].pos.y);
-	glm::vec2 p2(vertices[2].pos.x, vertices[2].pos.y);
-
-	glm::vec2 p1Next = p1 + moveVec;
-	glm::vec2 p2Next = p2 + moveVec;
-
-	float ab2 = glm::dot(ab, ab);
-	float t1 = glm::dot(p1Next - a, ab) / ab2;
-	float t2 = glm::dot(p2Next - a, ab) / ab2;
-
-	if (t1 >= 0.0f && t1 <= 1.0f && t2 >= 0.0f && t2 <= 1.0f)
+	if (type == Type::cube)
 	{
-		move(glm::vec3(moveVec.x, moveVec.y, 0.0f));
+		const float length = 1.0f;
+		vertices =
+		{
+			{ {  length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.5f} },
+			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
+			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
+			{ { -length,  length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
+
+			{ {  length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
+			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
+			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
+			{ { -length,  length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
+
+			{ {  length,  length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
+			{ {  length,  length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+
+			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+			{ { -length,  length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
+			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ { -length,  length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
+
+			{ {  length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ { -length,  length, length },  {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ { -length,  length, -length }, {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} },
+
+			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      }
+		};
+		index =
+		{
+			// 앞면
+			0, 3, 1, 1, 3, 2,
+			// 뒷면
+			4, 5, 6, 4, 6, 7,
+
+			// 왼쪽면
+			13, 14, 12, 13, 15, 14,
+			// 오른쪽면
+			8, 9, 11, 8, 11, 10,
+
+			// 윗면
+			16, 19, 17, 16, 18, 19,
+			// 아랫면
+			20, 21, 23, 20, 23, 22
+		};
 	}
-	
-	updateVBO();
+	else if (type == Type::squarePyramid)
+	{
+		const float length = 1.0f;
+		vertices =
+		{
+			// 앞,뒤, 좌, 우, 상, 하
+			{ {  0.0f,  length, 0.0f },		 {0.0f, 0.0f, 1.0f }, {0.333333f, 0.5f} },
+			{ {  length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.333333f, 0.0f} },
+			{ { -length, -length, length },  {0.0f, 0.0f, 1.0f }, {0.0f, 0.0f}      },
+			{ { -0.0f,  length, 0.0f },		 {0.0f, 0.0f, 1.0f }, {0.0f, 0.5f}      },
+			{ {  0.0f,  length, -0.0f },	 {0.0f, 0.0f, -1.0f}, {0.333333f, 0.5f} },
+			{ {  length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.333333f, 0.0f} },
+			{ { -length, -length, -length }, {0.0f, 0.0f, -1.0f}, {0.666666f, 0.0f} },
+			{ { -0.0f,  length, -0.0f },	 {0.0f, 0.0f, -1.0f}, {0.666666f, 0.5f} },
+			{ {  0.0f,  length, 0.0f },		 { 1.0f, 0.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  length, -length, length },  { 1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}      },
+			{ {  0.0f,  length, -0.0f },	 { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  length, -length, -length }, { 1.0f, 0.0f, 0.0f}, {0.666666f, 0.0f} },
+			{ { -length, -length, length },  {-1.0f, 0.0f, 0.0f}, {0.0f, 0.5f}      },
+			{ { -0.0f,  length, 0.0f },		 {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}      },
+			{ { -length, -length, -length }, {-1.0f, 0.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ { -0.0f,  length, -0.0f },	 {-1.0f, 0.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ {  0.0f,  length, 0.0f },		 {0.0f,  1.0f, 0.0f}, {0.333333f, 0.5f} },
+			{ { -0.0f,  length, 0.0f },		 {0.0f,  1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ {  0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {0.333333f, 1.0f} },
+			{ { -0.0f,  length, -0.0f },	 {0.0f,  1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ {  length, -length, length },  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -length, -length, length },  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      }, 
+			{ {  length, -length, -length }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ { -length, -length, -length }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      }
+		};
+		index =
+		{
+			// 앞면
+			0, 3, 1, 1, 3, 2,
+			// 뒷면
+			4, 5, 6, 4, 6, 7,
+
+			// 왼쪽면
+			13, 14, 12, 13, 15, 14,
+			// 오른쪽면
+			8, 9, 11, 8, 11, 10,
+
+			// 윗면
+			16, 19, 17, 16, 18, 19,
+			// 아랫면
+			20, 21, 23, 20, 23, 22
+		};
+	}
+	else if (type == Type::square)
+	{
+		vertices =
+		{
+			{ {  1.0f, -1.0f,  1.0f},  {0.0f, -1.0f, 0.0f}, {0.666666f, 0.5f} },
+			{ { -1.0f, -1.0f,  1.0f},  {0.0f, -1.0f, 0.0f}, {1.0f, 0.5f}      },
+			{ {  1.0f, -1.0f, -1.0f }, {0.0f, -1.0f, 0.0f}, {0.666666f, 1.0f} },
+			{ { -1.0f, -1.0f, -1.0f }, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}      }
+		};
+		index =
+		{
+			0, 1, 3, 1, 3, 2
+		};
+	}
 }

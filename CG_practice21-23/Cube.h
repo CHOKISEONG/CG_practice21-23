@@ -5,45 +5,62 @@
 struct Vertex
 {
 	glm::vec3 pos;
-	glm::vec3 color;
+	glm::vec3 normal;
+	glm::vec2 texture;
 };
 
 class Cube
 {
 public:
-	// 실습 번호마다 맞게 생성을 위해
-	Cube(int practiceNum);
+	enum class Type
+	{
+		cube,
+		squarePyramid,
+		square
+	};
 
-	// 실습21 작은 큐브 생성을 위한 생성자
-	Cube(float zPos, float rad);
+	enum class Face
+	{
+		Front,
+		Back,
+		Right,
+		Left,
+		Top,
+		Bottom,
+		All
+	};
+
+	// 코딩 시험 준비용
+	Cube(float length, const char* str);
 
 	const std::vector<glm::vec3> getPos();
 
 	void initBuffer();
+	void initTexture(const char* str);
+
 	void updateVBO();
 	void Draw(GLuint shaderProgram);
 
-	void move(glm::vec3 v);
-	void rotate(float dx = 0.0f, float dy = 0.0f);
+	void move(glm::vec3 v) 
+	{
+		position += v;
+	}
+	void rotate(glm::vec3 v, float rad = 1.0f);
+	void rotateWithPivot(glm::vec3 v, float rad, Face face, glm::vec3 pivot = glm::vec3(0.0f,0.0f,0.0f));
 
-	// 물리 다루기 연습
-	void handlePhysics(Cube* c);
-
-	void adaptC(Cube* c);
-
-	void baseOpen();
-	bool getBaseOpened() { return isBaseOpened; }
-	void baseOpenAnimation();
+	Type getType() { return type; }
+	void changePolygon(Type type);
 private:
 	GLuint VAO = 0, VBO = 0, EBO = 0;
 
-	std::vector<Vertex> orgVertices;
+	unsigned int texture;
+	BITMAPINFO* bmp;
+	GLsizei width, height, numberOfChannel;
+
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> index;
-	glm::vec3 bottomPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	float rotateAmount = 0.0f;
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	bool isThisHavePhysics = false;
-	bool isBaseOpened = false;
+	Type type;
 };
